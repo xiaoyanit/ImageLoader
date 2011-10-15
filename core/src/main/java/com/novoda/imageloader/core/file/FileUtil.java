@@ -10,6 +10,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 
+import com.novoda.imageloader.core.exception.ImageNotFoundException;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -28,7 +30,7 @@ public class FileUtil {
       copyStream(is, os);
       os.close();
     } catch (FileNotFoundException fnfe) {
-      Log.e(TAG, "Unknown Exception while getting the image" + fnfe.getMessage(), fnfe);
+      throw new ImageNotFoundException();
     } catch (Exception ex) {
       Log.e(TAG, "Unknown Exception while getting the image " + ex.getMessage(), ex);
     } finally {

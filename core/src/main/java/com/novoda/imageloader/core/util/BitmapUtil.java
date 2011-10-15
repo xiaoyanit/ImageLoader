@@ -45,9 +45,16 @@ public class BitmapUtil {
     return scaledBitmap;
   }
 
-  public Bitmap decodeImageResourceAndScaleBitmap(Context context, Settings settings) {
-    Bitmap image = BitmapFactory.decodeResource(context.getResources(),
-        settings.getDefaultImageId());
+  public Bitmap decodeDefaultAndScaleBitmap(Context context, Settings settings) {
+    return decodeResourceAndScale(context, settings, settings.getDefaultImageId());
+  }
+  
+  public Bitmap decodeNotFoundAndScaleBitmap(Context context, Settings settings) {
+    return decodeResourceAndScale(context, settings, settings.getNotFoundImageId());
+  }
+
+  private Bitmap decodeResourceAndScale(Context context, Settings settings, int resourceId) {
+    Bitmap image = BitmapFactory.decodeResource(context.getResources(), resourceId);
     return scaleBitmap(image, settings.getImageWidth(), settings.getImageHeight());
   }
 

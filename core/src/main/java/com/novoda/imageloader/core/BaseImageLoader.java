@@ -110,9 +110,9 @@ public class BaseImageLoader implements ImageManager {
   }
 
   private ImageCache initCache(Context context, Settings settings) {
-    Bitmap b = bitmapUtil.decodeImageResourceAndScaleBitmap(context, settings);
     ImageCache cache = createCache();
-    cache.setDefaultImage(b);
+    cache.setDefaultImage(bitmapUtil.decodeDefaultAndScaleBitmap(context, settings));
+    cache.setNotFoundImage(bitmapUtil.decodeNotFoundAndScaleBitmap(context, settings));
     return cache;
   }
   

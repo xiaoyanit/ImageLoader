@@ -8,6 +8,7 @@ public class MapCache implements ImageCache {
 
   private HashMap<String, Bitmap> cache = new HashMap<String, Bitmap>();
   private Bitmap defaultImage;
+  private Bitmap notFoundImage;
 
   @Override
   public boolean hasImage(String url) {
@@ -37,6 +38,14 @@ public class MapCache implements ImageCache {
   @Override
   public void setDefaultImage(Bitmap defaultImage) {
     this.defaultImage = defaultImage;
+  }
+
+  public Bitmap getNotFoundImage() {
+    return notFoundImage;
+  }
+
+  public void setNotFoundImage(Bitmap notFoundImage) {
+    this.notFoundImage = notFoundImage;
   }
   
 }

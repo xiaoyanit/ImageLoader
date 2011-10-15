@@ -15,5 +15,9 @@ public interface ImageCache {
   Bitmap getDefaultImage();
   
   void setDefaultImage(Bitmap defaultImage);
+  
+  Bitmap getNotFoundImage();
+  
+  void setNotFoundImage(Bitmap defaultImage);
 
 }

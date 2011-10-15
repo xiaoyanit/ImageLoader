@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.Display;
 import android.view.WindowManager;
 
+import com.novoda.imageloader.core.exception.MissingSettingException;
 import com.novoda.imageloader.core.file.FileUtil;
 
 public class SettingsBuilder {
@@ -27,6 +28,11 @@ public class SettingsBuilder {
     return this;
   }
   
+  public SettingsBuilder fileNotFoundImageId(int fileNotFoundImageId) {
+    settings.setNotFoundImageId(fileNotFoundImageId);
+    return this;
+  }
+  
   public SettingsBuilder enableQueryInHashGeneration(boolean enableQueryInHashGeneration) {
     settings.setQueryIncludedInHash(enableQueryInHashGeneration);
     return this;
@@ -36,6 +42,12 @@ public class SettingsBuilder {
     settings.setCacheDir(new FileUtil().prepareCacheDirectory(context));
     if(!isSizeSet) {
       setDisplayImageSize(context);
+    }
+    if(settings.getDefaultImageId() == -1) {
+      throw new MissingSettingException("You need to set a default image id");
+    }
+    if(settings.getNotFoundImageId() == -1) {
+      settings.setNotFoundImageId(settings.getDefaultImageId());
     }
     return settings;
   }

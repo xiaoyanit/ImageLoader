@@ -32,4 +32,14 @@ public class NoCache implements ImageCache {
   
   }
 
+  @Override
+  public Bitmap getNotFoundImage() {
+    return null;
+  }
+
+  @Override
+  public void setNotFoundImage(Bitmap defaultImage) {
+    
+  }
+
 }

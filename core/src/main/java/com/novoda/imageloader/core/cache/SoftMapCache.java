@@ -9,6 +9,7 @@ public class SoftMapCache implements ImageCache {
 
   private HashMap<String, SoftReference<Bitmap>> cache = new HashMap<String, SoftReference<Bitmap>>();
   private Bitmap defaultImage;
+  private Bitmap notFoundImage;
 
   @Override
   public boolean hasImage(String url) {
@@ -48,6 +49,16 @@ public class SoftMapCache implements ImageCache {
   @Override
   public void setDefaultImage(Bitmap defaultImage) {
     this.defaultImage = defaultImage;
+  }
+
+  @Override
+  public Bitmap getNotFoundImage() {
+    return notFoundImage;
+  }
+
+  @Override
+  public void setNotFoundImage(Bitmap notFoundImage) {
+    this.notFoundImage = notFoundImage;
   }
 
 }

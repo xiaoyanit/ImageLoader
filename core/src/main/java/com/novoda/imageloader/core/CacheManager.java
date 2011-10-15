@@ -1,5 +1,7 @@
 package com.novoda.imageloader.core;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 import android.app.Activity;
@@ -9,6 +11,7 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.novoda.imageloader.core.cache.ImageCache;
+import com.novoda.imageloader.core.exception.ImageNotFoundException;
 
 public class CacheManager {
 
@@ -17,6 +20,7 @@ public class CacheManager {
   private ImageCache cache;
   private PhotosLoader thread;
   private Stack<Image> stack;
+  private List<String> notFoundImages;
   private ImageManager imageLoader;
 
   public static class Image {
@@ -33,6 +37,7 @@ public class CacheManager {
     this.imageLoader = imageLoader;
     this.cache = cache;
     this.stack = new Stack<Image>();
+    this.notFoundImages = new ArrayList<String>();
     thread = new PhotosLoader();
     thread.setPriority(Thread.NORM_PRIORITY - 1);
   }
@@ -87,35 +92,48 @@ public class CacheManager {
     @Override
     public void run() {
       while (true) {
-        try {
-          if (stack.size() == 0) {
-            synchronized (this) {
-              try {
-                isWaiting = true;
-                wait();
-              } catch (Exception e) {
-                Log.v(TAG, "Pausing the thread error " + e.getMessage());
-              }
-            }
-          }
-          Image image = stack.pop();
-          Bitmap bmp = imageLoader.getBitmap(image.url, true);
-          if (bmp == null) {
-            bmp = cache.getDefaultImage();
-            clean(image);
-          } else {
-            cache.put(image.url, bmp);
-          }
-          if (image.imageView.getTag() != null
-              && ((String) image.imageView.getTag()).equals(image.url)) {
-            BitmapDisplayer bd = new BitmapDisplayer(bmp, image.imageView);
-            Activity a = (Activity) image.imageView.getContext();
-            a.runOnUiThread(bd);
-          }
-        } catch (Throwable e) {
-          Log.e(TAG, "Throwable : " + e.getMessage(), e);
-        }
+        pauseThreadIfnecessary();
+        Image image = stack.pop();
+        loadAndShowImage(image);
+      }
+    }
 
+    private void pauseThreadIfnecessary() {
+      if (stack.size() == 0) {
+        synchronized (this) {
+          try {
+            isWaiting = true;
+            wait();
+          } catch (Exception e) {
+            Log.v(TAG, "Pausing the thread error " + e.getMessage());
+          }
+        }
+      }
+    }
+
+    private void loadAndShowImage(Image image) {
+      try {
+        Bitmap bmp = imageLoader.getBitmap(image.url, true);
+        if (bmp == null) {
+          bmp = cache.getDefaultImage();
+          clean(image);
+        } else {
+          cache.put(image.url, bmp);
+        }
+        displayImage(image, bmp);
+      } catch(ImageNotFoundException inf) {
+        notFoundImages.add(image.url);
+      } catch (Throwable e) {
+        Log.e(TAG, "Throwable : " + e.getMessage(), e);
+      }
+    }
+
+    private void displayImage(Image image, Bitmap bmp) {
+      if (image.imageView.getTag() != null
+          && ((String) image.imageView.getTag()).equals(image.url)) {
+        BitmapDisplayer bd = new BitmapDisplayer(bmp, image.imageView);
+        Activity a = (Activity) image.imageView.getContext();
+        a.runOnUiThread(bd);
       }
     }
   }
@@ -140,10 +158,16 @@ public class CacheManager {
   }
 
   public boolean hasImageInCache(String url) {
+    if(notFoundImages.contains(url)) {
+      return true;
+    }
     return cache.hasImage(url);
   }
 
   public Bitmap getImageFromCache(String url) {
+    if(notFoundImages.contains(url)) {
+      return cache.getNotFoundImage();
+    }
     return cache.get(url);
   }
 
