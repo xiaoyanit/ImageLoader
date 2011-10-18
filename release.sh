@@ -26,7 +26,7 @@ clear
 mvn android-release:prepare
 echo 3/4 Android manifests updates finish!
 echo ===========================================================================
-echo Should I continue to to push all the changes to git?
+echo Should I continue to push all the changes to git?
 read
 clear
 git add --all
