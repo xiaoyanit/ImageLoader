@@ -18,12 +18,8 @@ How to use the library
 If you are using maven you need to define the repo and then the dependency
 <repositories>
   <repository>
-    <id>public-mvn-repo-snapshots</id>
-    <url>https://github.com/novoda/public-mvn-repo/raw/master/snapshots</url>
-  </repository>
-  <repository>
     <id>public-mvn-repo-releases</id>
-    <url>https://github.com/novoda/public-mvn-repo/raw/master/releases</url>
+    <url>https://github.com/novoda/public-mvn-repo/raw/master/releases%3C/url>
   </repository>
 </repositories>
 
@@ -40,5 +36,6 @@ Working with eclipse
 better to use eclipse 3.7 and maven 3.0.3
 import core as maven project
 for acceptance and demo :
-- run : mvn clean package
+- run : mvn clean initialize
 - create a new android project in eclipse
+- add the necessary jars from the lib folder
