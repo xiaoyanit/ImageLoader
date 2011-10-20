@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.novoda</groupId>
     <artifactId>android</artifactId>
-    <version>0.1.5</version>
+    <version>1.7</version>
   </parent>
   <groupId>com.novoda.imageloader</groupId>
   <artifactId>imageloader-parent</artifactId>
@@ -51,39 +51,10 @@
     </license>
   </licenses>
 
-  <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>com.giago.maven</groupId>
-          <artifactId>maven-android-release-plugin</artifactId>
-          <version>1.0</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-    <plugins>
-      <plugin>
-        <artifactId>maven-scm-plugin</artifactId>
-        <configuration>
-          <scmVersionType>branch</scmVersionType>
-          <scmVersion>${scm.branch}</scmVersion>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-release-plugin</artifactId>
-        <configuration>
-          <autoVersionSubmodules>true</autoVersionSubmodules>
-          <useReleaseProfile>false</useReleaseProfile>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-
   <modules>
     <module>core</module>
     <module>demo</module>
     <module>acceptance</module>
-    <!-- <module>monkey</module> -->
   </modules>
 
 </project>
