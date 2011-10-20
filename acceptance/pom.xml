@@ -48,7 +48,7 @@
         <extensions>true</extensions>
         <configuration>
           <sdk>
-            <platform>14</platform>
+            <platform>8</platform>
           </sdk>
           <test>
             <skip>false</skip>
