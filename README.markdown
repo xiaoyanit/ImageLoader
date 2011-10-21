@@ -14,30 +14,28 @@
 
 >If you are using maven you need to define the repo and then the dependency
 
-<pre><code>
-<repositories>
-  <repository>
-    <id>public-mvn-repo-releases</id>
-    <url>https://github.com/novoda/public-mvn-repo/raw/master/releases</url>
-  </repository>
-</repositories>
-</pre></code>
+><repositories>
+>  <repository>
+>    <id>public-mvn-repo-releases</id>
+>    <url>https://github.com/novoda/public-mvn-repo/raw/master/releases</url>
+>  </repository>
+></repositories>
 
-<pre><code>
-<dependency>
-  <groupId>com.novoda.imageloader.core</groupId>
-  <artifactId>imageloader-core</artifactId>
-  <version>1.3.3</version>
-</dependency>
-</pre></code>
+><dependency>
+>  <groupId>com.novoda.imageloader.core</groupId>
+>  <artifactId>imageloader-core</artifactId>
+> <version>1.3.3</version>
+></dependency>
 
 # Working with eclipse
 
->better to use eclipse 3.7 and maven 3.0.3
->import core as maven project
->for acceptance and demo :
+## Parent project and core
+import the projects with maven, should be easy and painless
+
+## for demo and acceptance
 > - run : mvn clean initialize
 > - create a new android project in eclipse
 > - add the necessary jars from the lib folder
->
+
+## Notes
 >Note : build support sdk 14 as is using the new android-maven-plugin:3.0.0-alpha13
