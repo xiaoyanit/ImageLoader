@@ -1,9 +1,7 @@
-h1. General information
+h1. ImageLoader
 
-h2. ImageLoader
-
-Image loader is a simple library that give you the ability to decouple the logic to load the image from the one to present the data.
-It does that away from the ui thread, and by caching images in the sdcard if awailable.
+Image loader is a simple library that give you the ability to decouple the logic to fetch, load and cache images.
+It does that away from the ui thread, and by caching images with two level in memory or in the sdcard if awailable.
 
 h2. How to use the library
 
