@@ -132,8 +132,6 @@ h3. For demo and acceptance
 * create a new android project in eclipse
 * add the necessary jars from the lib folder
 
-h2
-
 h2. Notes
 
 * Note : build support sdk 14 as is using the new android-maven-plugin:3.0.0-alpha13
