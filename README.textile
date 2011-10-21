@@ -3,7 +3,7 @@ h1. General information
 h2. ImageLoader
 
 Image loader is a simple library that give you the ability to decouple the logic to load the image from the one to present the data.
-It does that away from the ui thread, and by caching images and the sdcard if awailable.
+It does that away from the ui thread, and by caching images in the sdcard if awailable.
 
 h2. How to use the library
 
@@ -36,6 +36,7 @@ The demo project is a good way to start. Import it in eclipse and check the task
 If you are lazy this are the steps :
 
 h3. Application
+
 In the application add the folling code the instantiate the image loader:
 
 <pre><code>
@@ -56,6 +57,7 @@ In the application add the folling code the instantiate the image loader:
 This is setting up the image loader with size of the images that are taken from the display and the background image use while the image loader is fetching the real image.
 
 h3. Cleaning up sdcard
+
 If you want the image loader to clean up the sdcard, you can use the following line of code on the create of the application:
 
 <pre><code>
