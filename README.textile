@@ -1,19 +1,13 @@
 h1. General information
 
-h2. ImageLoader component
+h2. ImageLoader
 
-* core contains a java maven based project
-* demo mvn android based project to test imageLoader
-* acceptance mvn android based project with robotium test
-* monkey some example that take a snapshot using monkey runner
-
-For client project that need to include the image loader you just need the jar. 
-
-You can find the jar at : 
-
-https://github.com/novoda/public-mvn-repo/raw/master/releases/com/novoda/imageloader/imageloader-core/1.3.11/imageloader-core-1.3.11.jar
+Image loader is a simple library that give you the ability to decouple the logic to load the image from the one to present the data.
+It does that away from the ui thread, and by caching images and the sdcard if awailable.
 
 h2. How to use the library
+
+h3. Using maven
 
 If you are using maven you need to define the repo and then the dependency
 
@@ -30,7 +24,101 @@ If you are using maven you need to define the repo and then the dependency
  <version>1.3.3</version>
 </dependency></code></pre>
 
-h1. Working with eclipse
+h3. Direct jar usage
+
+If you don't care about building tool you can just download the jar manually from this link
+
+https://github.com/novoda/public-mvn-repo/raw/master/releases/com/novoda/imageloader/imageloader-core/1.3.11/imageloader-core-1.3.11.jar
+
+h2. How to implement
+
+The demo project is a good way to start. Import it in eclipse and check the task list to see where are all the TODO list.
+If you are lazy this are the steps :
+
+h3. Application
+In the application add the folling code the instantiate the image loader:
+
+<pre><code>
+  @Override
+  public void onCreate() {
+    super.onCreate();
+    SettingsBuilder builder = new SettingsBuilder();
+    builder.defaultImageId(R.drawable.bg_img_loading);
+    Settings settings = builder.build(this);
+    imageLoader = new BaseImageLoader(this, settings);
+  }
+
+  public static final ImageManager getImageLoader() {
+    return imageLoader;
+  }
+</code></pre>
+
+This is setting up the image loader with size of the images that are taken from the display and the background image use while the image loader is fetching the real image.
+
+h3. Cleaning up sdcard
+If you want the image loader to clean up the sdcard, you can use the following line of code on the create of the application:
+
+<pre><code>
+imageManager.reduceFileCache(this);
+</code></pre>
+
+In the settings you can override the default expiration period that is set to 7 days.
+
+h3. In the activity
+
+When you need to load the image in a view object you just need to get the imageLoader from the application and call load.
+This is an example of a list view with the binder setting the url in the imageView as a tag.
+
+<pre><code>
+private ViewBinder getViewBinder() {
+  return new ViewBinder() {
+    @Override
+    public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+      try {
+        ((ImageView) view).setTag(cursor.getString(columnIndex));
+        // TODO add this to your class
+        imageLoader.load(cursor.getString(columnIndex), ImageLoaderDemoActivity.this,
+            (ImageView) view);
+        //
+      } catch (Exception e) {
+        Log.e("ImageLoader", "exception : " + e.getMessage());
+      }
+      return true;
+    }
+  };
+}
+</code></pre>
+
+The image loader will fetch the image from the cache if is still there or from the sdcard or will fetch the resource from the network in the worse scenario.
+
+h3. In the manifest
+
+There are two things you need to add : Permissions and the service to clean up the files.
+
+<pre><code>
+<uses-permission a:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+<uses-permission a:name="android.permission.INTERNET" />
+<uses-permission a:name="android.permission.ACCESS_NETWORK_STATE" />
+</pre></code>
+
+<pre><code>
+<service android:name="com.novoda.imageloader.core.service.CacheCleaner" android:exported="true">
+  <intent-filter>
+    <action android:name="com.novoda.imageloader.core.action.CLEAN_CACHE" />
+  </intent-filter>
+</service>
+</code></pre>
+
+
+
+h1. Helping out with the project
+
+h2. ImageLoader projects
+
+* core contains a java maven based project
+* demo mvn android based project to test imageLoader
+* acceptance mvn android based project with robotium test
+* monkey some example that take a snapshot using monkey runner (deprecated)
 
 h3. Parent project and core
 
@@ -41,6 +129,8 @@ h3. For demo and acceptance
 * run : <code>mvn clean initialize</code>
 * create a new android project in eclipse
 * add the necessary jars from the lib folder
+
+h2
 
 h2. Notes
 
