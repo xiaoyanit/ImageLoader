@@ -39,3 +39,5 @@ for acceptance and demo :
 - run : mvn clean initialize
 - create a new android project in eclipse
 - add the necessary jars from the lib folder
+
+Note : build support sdk 14 as is using the new android-maven-plugin:3.0.0-alpha13
