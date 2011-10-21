@@ -113,6 +113,11 @@ There are two things you need to add : Permissions and the service to clean up t
 
 h1. Helping out with the project
 
+h2. Report issues
+
+If you have any problem with the library or new functionality you need to add, let us know and we will do something about it.
+Send us a message or create an issue with github.
+
 h2. ImageLoader projects
 
 * core contains a java maven based project
