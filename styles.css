@@ -36,7 +36,7 @@
 	dt { font-weight: bold; }
 	dd { margin: 0.25em 0 1em 1em; }
 	a img { border: 0; vertical-align: middle; }
-	a:link, a:visited, a:active { color: #72a4b4; text-shadow: 1px 0px 1px #000; text-decoration: none; font-weight: bold; }
+	a:link, a:visited, a:active { color: #72a4b4; text-decoration: none; font-weight: bold; }
 	a:hover { border-bottom: 1px #72a4b4 dotted; }
 	a.img:hover { border-bottom: 0px; }
 
@@ -70,7 +70,7 @@
 
 	#footer { margin-top: 60px; font-size: 0.9em; color: #666; }
 	#footer p { margin: 0; }
-	#footer a:link, #footer a:visited, #footer a:active { color: #666; text-decoration: underline; text-shadow: 1px 0px 3px #000; }
+	#footer a:link, #footer a:visited, #footer a:active { color: #666; text-decoration: underline; }
 	#footer a:hover { border-bottom: 0; color: #888; }
 	#footer .social { text-align: right; }
 
