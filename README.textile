@@ -10,7 +10,7 @@ h2. ImageLoader component
 For client project that need to include the image loader you just need the jar
 you can find the jar at : https://github.com/novoda/public-mvn-repo 
 
-h2 How to use the library
+h2. How to use the library
 
 If you are using maven you need to define the repo and then the dependency
 
@@ -32,11 +32,11 @@ If you are using maven you need to define the repo and then the dependency
 
 h1. Working with eclipse
 
-h2. Parent project and core
+h3. Parent project and core
 
-import the projects with maven, should be easy and painless
+Import the projects with maven, should be easy and painless. 
 
-h2. for demo and acceptance
+h3. For demo and acceptance
 
 * run : <code>mvn clean initialize</code>
 * create a new android project in eclipse
