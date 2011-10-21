@@ -14,6 +14,7 @@
 
 >If you are using maven you need to define the repo and then the dependency
 
+<pre><code>
 ><repositories>
 >  <repository>
 >    <id>public-mvn-repo-releases</id>
@@ -26,6 +27,7 @@
 >  <artifactId>imageloader-core</artifactId>
 > <version>1.3.3</version>
 ></dependency>
+</code></pre>
 
 # Working with eclipse
 
