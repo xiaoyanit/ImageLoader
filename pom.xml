@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.novoda</groupId>
     <artifactId>android</artifactId>
-    <version>1.7</version>
+    <version>2.0.0</version>
   </parent>
   <groupId>com.novoda.imageloader</groupId>
   <artifactId>imageloader-parent</artifactId>
@@ -22,13 +22,6 @@
       <url>https://github.com/novoda/public-mvn-repo/raw/master/releases</url>
     </repository>
   </repositories>
-  
-  <pluginRepositories>
-    <pluginRepository>
-      <id>public-mvn-repo-releases</id>
-      <url>https://github.com/novoda/public-mvn-repo/raw/master/releases</url>
-    </pluginRepository>
-  </pluginRepositories>
 
   <distributionManagement>
     <repository>

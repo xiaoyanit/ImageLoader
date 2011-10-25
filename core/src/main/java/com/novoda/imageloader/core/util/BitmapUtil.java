@@ -41,7 +41,6 @@ public class BitmapUtil {
       finalWidth = new Float(imageWidth * factor).intValue();
     }
     Bitmap scaledBitmap = Bitmap.createScaledBitmap(b, finalWidth, finalHeight, true);
-    b.recycle();
     return scaledBitmap;
   }
 

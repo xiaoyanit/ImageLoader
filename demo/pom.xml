@@ -10,6 +10,10 @@
   <name>imageloader-demo</name>
   <packaging>apk</packaging>
 
+  <properties>
+    <eclipse.excludeArtifactIds>android,commons-codec,commons-logging,httpclient,opengl-api,httpcore,json,xpp3,xmlParserAPIs,imageloader-demo,junit,javassist,objenesis,h2</eclipse.excludeArtifactIds>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.google.android</groupId>
@@ -26,39 +30,6 @@
 
   <build>
     <sourceDirectory>src</sourceDirectory>
-    <plugins>
-      <plugin>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>copy-dependencies</id>
-            <phase>package</phase>
-            <goals>
-              <goal>copy-dependencies</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>libs</outputDirectory>
-              <excludeArtifactIds>
-                android,commons-codec,commons-logging,httpclient,opengl-api,httpcore,json,xpp3,xmlParserAPIs,imageloader-demo,junit,javassist,objenesis,h2
-              </excludeArtifactIds>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <artifactId>maven-clean-plugin</artifactId>
-        <configuration>
-          <filesets>
-            <fileset>
-              <directory>libs</directory>
-              <includes>
-                <include>*.jar</include>
-              </includes>
-            </fileset>
-          </filesets>
-        </configuration>
-      </plugin>
-    </plugins>
   </build>
 
 </project>
