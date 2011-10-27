@@ -174,5 +174,9 @@ public class CacheManager {
   public void resetCache(ImageCache cache) {
     this.cache.clean();
   }
+  
+  public Bitmap getDefaultImage() {
+  	return cache.getDefaultImage();
+  }
 
 }

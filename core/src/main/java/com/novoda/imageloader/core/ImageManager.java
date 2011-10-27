@@ -7,6 +7,8 @@ import android.widget.ImageView;
 public interface ImageManager {
 
   void load(String url, Context activity, ImageView imageView);
+  
+  void loadFromCacheOnly(String url, Context activity, ImageView imageView);
 
   Bitmap getBitmap(String url, boolean scale);
 

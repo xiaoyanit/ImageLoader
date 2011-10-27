@@ -14,6 +14,11 @@ public class CustomUriMatcher extends UriMatcher {
   public static final String IMAGE_WITHMEANINGLESSQUERY_COLLECTION_TYPE = "vnd.android.cursor.dir/vnd.imageloader.demo.imagewithmeaninglessquery";
   public static final int IMAGE_WITHMEANINGLESSQUERY_INCOMING_ITEM = 30;
   public static final int IMAGE_WITHMEANINGLESSQUERY_INCOMING_COLLECTION = 40;
+  
+  public static final String IMAGE_FROMCACHEONLY_ITEM_TYPE = "vnd.android.cursor.item/vnd.imageloader.demo.fromcacheonly";
+  public static final String IMAGE_FROMCACHEONLY_COLLECTION_TYPE = "vnd.android.cursor.dir/vnd.imageloader.demo.fromcacheonly";
+  public static final int IMAGE_FROMCACHEONLY_INCOMING_ITEM = 50;
+  public static final int IMAGE_FROMCACHEONLY_INCOMING_COLLECTION = 60;
 
   public CustomUriMatcher(int code) {
     super(code);
@@ -30,6 +35,8 @@ public class CustomUriMatcher extends UriMatcher {
     add("image" + "/#", IMAGE_INCOMING_ITEM);
     add("imagewithmeaninglessquery", IMAGE_WITHMEANINGLESSQUERY_INCOMING_COLLECTION);
     add("imagewithmeaninglessquery" + "/#", IMAGE_WITHMEANINGLESSQUERY_INCOMING_ITEM);
+    add("fromcacheonly", IMAGE_FROMCACHEONLY_INCOMING_COLLECTION);
+    add("fromcacheonly" + "/#", IMAGE_FROMCACHEONLY_INCOMING_ITEM);
   }
 
   public void add(String path, int code) {

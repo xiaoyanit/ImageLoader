@@ -15,7 +15,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 	private Context context;
 
 	public DatabaseManager(Context context) {
-		super(context, "com.novoda.imageloader.demo", null, 15);
+		super(context, "com.novoda.imageloader.demo", null, 16);
 		this.context = context;
 	}
 
@@ -36,6 +36,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
 			"url text);");
 		stms.add("create table if not exists imagewithmeaninglessquery(_id integer primary key autoincrement, " +
 	      "url text);");
+		stms.add("create table if not exists fromcacheonly(_id integer primary key autoincrement, " +
+			      "url text);");
 		AssetManager mngr = context.getAssets();
 		try {
 			stms.addAll(SqlFile.statementsFrom(new InputStreamReader(mngr
@@ -51,6 +53,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 		List<String> stms = new ArrayList<String>();
 		stms.add("drop table if exists image;");
 		stms.add("drop table if exists imagewithmeaninglessquery;");
+		stms.add("drop table if exists fromcacheonly;");
 		exec(db, stms);
 	}
 

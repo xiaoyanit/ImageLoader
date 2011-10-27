@@ -191,6 +191,9 @@ insert into imagewithmeaninglessquery(url) values ("http://farm4.static.flickr.c
 insert into imagewithmeaninglessquery(url) values ("http://farm4.static.flickr.com/3606/3684282839_cf49bc36c7.jpg?test=xxx");
 insert into imagewithmeaninglessquery(url) values ("http://farm4.static.flickr.com/3606/3684282839_cf49bc36c7.jpg?test=xxx&tes1=tres");
 
+insert into fromcacheonly(url) values ("http://sphotos.ak.fbcdn.net/hphotos-ak-snc1/hs167.snc1/6260_1197917382607_1068664406_638145_880043_n.jpg");
+insert into fromcacheonly(url) values ("http://www.wolf-howl.com/wp-content/uploads/google-garbage.jpg");
+
 
 
 
