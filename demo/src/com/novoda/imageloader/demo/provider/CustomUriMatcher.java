@@ -1,23 +1,21 @@
 package com.novoda.imageloader.demo.provider;
 
+import com.novoda.imageloader.demo.activity.BigImages;
+import com.novoda.imageloader.demo.activity.FromCacheOnly;
+import com.novoda.imageloader.demo.activity.ImageLongList;
+
 import android.content.UriMatcher;
 import android.net.Uri;
 
 public class CustomUriMatcher extends UriMatcher {
 
-  public static final String IMAGE_ITEM_TYPE = "vnd.android.cursor.item/vnd.imageloader.demo.image";
-  public static final String IMAGE_COLLECTION_TYPE = "vnd.android.cursor.dir/vnd.imageloader.demo.image";  
-  public static final int IMAGE_INCOMING_ITEM = 10;
+  public static final String IMAGE_COLLECTION_TYPE = "vnd.android.cursor.dir/vnd.imageloader.demo." + ImageLongList.class.getSimpleName().toLowerCase();  
   public static final int IMAGE_INCOMING_COLLECTION = 20;
   
-  public static final String IMAGE_WITHMEANINGLESSQUERY_ITEM_TYPE = "vnd.android.cursor.item/vnd.imageloader.demo.imagewithmeaninglessquery";
-  public static final String IMAGE_WITHMEANINGLESSQUERY_COLLECTION_TYPE = "vnd.android.cursor.dir/vnd.imageloader.demo.imagewithmeaninglessquery";
-  public static final int IMAGE_WITHMEANINGLESSQUERY_INCOMING_ITEM = 30;
-  public static final int IMAGE_WITHMEANINGLESSQUERY_INCOMING_COLLECTION = 40;
+  public static final String IMAGE_BIGIMAGES_COLLECTION_TYPE = "vnd.android.cursor.dir/vnd.imageloader.demo." + BigImages.class.getSimpleName().toLowerCase();
+  public static final int IMAGE_BIGIMAGES_INCOMING_COLLECTION = 40;
   
-  public static final String IMAGE_FROMCACHEONLY_ITEM_TYPE = "vnd.android.cursor.item/vnd.imageloader.demo.fromcacheonly";
-  public static final String IMAGE_FROMCACHEONLY_COLLECTION_TYPE = "vnd.android.cursor.dir/vnd.imageloader.demo.fromcacheonly";
-  public static final int IMAGE_FROMCACHEONLY_INCOMING_ITEM = 50;
+  public static final String IMAGE_FROMCACHEONLY_COLLECTION_TYPE = "vnd.android.cursor.dir/vnd.imageloader.demo." + FromCacheOnly.class.getSimpleName().toLowerCase();
   public static final int IMAGE_FROMCACHEONLY_INCOMING_COLLECTION = 60;
 
   public CustomUriMatcher(int code) {
@@ -31,12 +29,9 @@ public class CustomUriMatcher extends UriMatcher {
   }
 
   public void setUp() {
-    add("image", IMAGE_INCOMING_COLLECTION);
-    add("image" + "/#", IMAGE_INCOMING_ITEM);
-    add("imagewithmeaninglessquery", IMAGE_WITHMEANINGLESSQUERY_INCOMING_COLLECTION);
-    add("imagewithmeaninglessquery" + "/#", IMAGE_WITHMEANINGLESSQUERY_INCOMING_ITEM);
-    add("fromcacheonly", IMAGE_FROMCACHEONLY_INCOMING_COLLECTION);
-    add("fromcacheonly" + "/#", IMAGE_FROMCACHEONLY_INCOMING_ITEM);
+    add(ImageLongList.class.getSimpleName().toLowerCase(), IMAGE_INCOMING_COLLECTION);
+    add(BigImages.class.getSimpleName().toLowerCase(), IMAGE_BIGIMAGES_INCOMING_COLLECTION);
+    add(FromCacheOnly.class.getSimpleName().toLowerCase(), IMAGE_FROMCACHEONLY_INCOMING_COLLECTION);
   }
 
   public void add(String path, int code) {

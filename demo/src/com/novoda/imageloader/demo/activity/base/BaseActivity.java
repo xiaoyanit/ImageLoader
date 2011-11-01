@@ -1,4 +1,4 @@
-package com.novoda.imageloader.demo;
+package com.novoda.imageloader.demo.activity.base;
 
 import android.app.Activity;
 

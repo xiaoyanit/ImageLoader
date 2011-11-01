@@ -5,9 +5,9 @@ import android.test.suitebuilder.annotation.LargeTest;
 import android.widget.ListView;
 
 import com.jayway.android.robotium.solo.Solo;
-import com.novoda.imageloader.demo.ImageLoaderDemoActivity;
+import com.novoda.imageloader.demo.activity.ImageLongList;
 
-public class ImageLoaderDemoActivityTest extends ActivityInstrumentationTestCase2<ImageLoaderDemoActivity>{
+public class ImageLoaderDemoActivityTest extends ActivityInstrumentationTestCase2<ImageLongList>{
 
 	private static final int QUICK = 2;
 	private static final int NORMAL = 7;
@@ -16,7 +16,7 @@ public class ImageLoaderDemoActivityTest extends ActivityInstrumentationTestCase
 	private ListView list;
 
 	public ImageLoaderDemoActivityTest() {
-		super("com.novoda.imageloader.demo", ImageLoaderDemoActivity.class);
+		super("com.novoda.imageloader.demo", ImageLongList.class);
 	}
 	
 	@Override

@@ -95,7 +95,7 @@ public class FileUtil {
         out.write(buf, 0, len);
       }
     } catch (IOException e) {
-      throw new RuntimeException();
+      throw new RuntimeException(e.getMessage());
     } finally {
       closeSilently(out);
       closeSilently(in);

@@ -29,8 +29,8 @@ public class ImageLoaderDemoProvider extends ContentProvider {
       type = CustomUriMatcher.IMAGE_COLLECTION_TYPE;
       break;
     }
-    case CustomUriMatcher.IMAGE_WITHMEANINGLESSQUERY_INCOMING_COLLECTION: {
-      type = CustomUriMatcher.IMAGE_WITHMEANINGLESSQUERY_COLLECTION_TYPE;
+    case CustomUriMatcher.IMAGE_BIGIMAGES_INCOMING_COLLECTION: {
+      type = CustomUriMatcher.IMAGE_BIGIMAGES_COLLECTION_TYPE;
       break;
     }
     case CustomUriMatcher.IMAGE_FROMCACHEONLY_INCOMING_COLLECTION: {
@@ -61,31 +61,9 @@ public class ImageLoaderDemoProvider extends ContentProvider {
   }
 
   @Override
-  public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
-      String sortOrder) {
-    Cursor cursor;
-    switch (matcher.match(uri)) {
-    case CustomUriMatcher.IMAGE_INCOMING_COLLECTION: {
-      cursor = getDataBase().query("image", projection, selection, selectionArgs, null, null,
-          sortOrder);
-      break;
-    }
-    case CustomUriMatcher.IMAGE_WITHMEANINGLESSQUERY_INCOMING_COLLECTION: {
-      cursor = getDataBase().query("imagewithmeaninglessquery", projection, selection, selectionArgs, null, null,
-          sortOrder);
-      break;
-    }
-    case CustomUriMatcher.IMAGE_FROMCACHEONLY_INCOMING_COLLECTION: {
-        cursor = getDataBase().query("fromcacheonly", projection, selection, selectionArgs, null, null,
-            sortOrder);
-        break;
-      }
-    default: {
-      Log.e("ImageLoader", "Problem with query, not Implemented for : " + uri);
-      throw new RuntimeException("Problem with query, not Implemented for : " + uri);
-    }
-    }
-    return cursor;
+  public Cursor query(Uri uri, String[] p, String s, String[] args, String o) {
+	  String n = uri.getLastPathSegment();
+	  return getDataBase().query(n, p, s, args, null, null, o);
   }
 
   @Override

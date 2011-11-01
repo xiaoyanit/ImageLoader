@@ -10,18 +10,23 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.novoda.imageloader.core.Settings;
+import com.novoda.imageloader.core.file.FileUtil;
 
 public class BitmapUtil {
 
   private static final String TAG = "ImageLoader";
 
   public Bitmap decodeFileAndScale(File f, boolean scale, Settings settings) {
+  	FileInputStream fis = null;
     try {
       f.setLastModified(System.currentTimeMillis());
-      Bitmap unscaledBitmap = BitmapFactory.decodeStream(new FileInputStream(f));
+      fis = new FileInputStream(f);
+      Bitmap unscaledBitmap = BitmapFactory.decodeStream(fis);
       return scaleBitmap(unscaledBitmap, settings.getImageWidth(), settings.getImageHeight());
     } catch (FileNotFoundException e) {
       Log.e(TAG, e.getMessage(), e);
+    } finally {
+    	new FileUtil().closeSilently(fis);
     }
     return null;
   }
@@ -40,11 +45,10 @@ public class BitmapUtil {
       finalHeight = new Float(imageHeight * factor).intValue();
       finalWidth = new Float(imageWidth * factor).intValue();
     }
-    Bitmap scaledBitmap = Bitmap.createScaledBitmap(b, finalWidth, finalHeight, true);
-    return scaledBitmap;
+    return Bitmap.createScaledBitmap(b, finalWidth, finalHeight, true);
   }
 
-  public Bitmap decodeDefaultAndScaleBitmap(Context context, Settings settings) {
+	public Bitmap decodeDefaultAndScaleBitmap(Context context, Settings settings) {
     return decodeResourceAndScale(context, settings, settings.getDefaultImageId());
   }
   
