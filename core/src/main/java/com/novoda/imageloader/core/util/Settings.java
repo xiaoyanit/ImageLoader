@@ -1,4 +1,4 @@
-package com.novoda.imageloader.core;
+package com.novoda.imageloader.core.util;
 
 import java.io.File;
 
@@ -10,17 +10,11 @@ public class Settings {
   private File cacheDir;
   
   private long expirationPeriod;
-  private int imageHeight;
-  private int imageWidth;
-  private int defaultImageId;
-  private int notFoundImageId;
   private boolean isQueryIncludedInHash;
   
   public Settings() {
     this.expirationPeriod = DEFAULT_EXPIRATION_PERIOD;
     this.setQueryIncludedInHash(DEFAULT_INCLUDE_QUERY_IN_HASH);
-    this.defaultImageId = -1;
-    this.notFoundImageId = -1;
   }
 
   public File getCacheDir() {
@@ -29,30 +23,6 @@ public class Settings {
 
   public void setCacheDir(File cacheDir) {
     this.cacheDir = cacheDir;
-  }
-
-  public int getImageHeight() {
-    return imageHeight;
-  }
-
-  public void setImageHeight(int imageHeight) {
-    this.imageHeight = imageHeight;
-  }
-
-  public int getImageWidth() {
-    return imageWidth;
-  }
-
-  public void setImageWidth(int imageWidth) {
-    this.imageWidth = imageWidth;
-  }
-
-  public int getDefaultImageId() {
-    return defaultImageId;
-  }
-
-  public void setDefaultImageId(int defaultImageId) {
-    this.defaultImageId = defaultImageId;
   }
 
   public long getExpirationPeriod() {
@@ -69,14 +39,6 @@ public class Settings {
 
   public void setQueryIncludedInHash(boolean isQueryIncludedInHash) {
     this.isQueryIncludedInHash = isQueryIncludedInHash;
-  }
-
-  public int getNotFoundImageId() {
-    return notFoundImageId;
-  }
-
-  public void setNotFoundImageId(int notFoundImageId) {
-    this.notFoundImageId = notFoundImageId;
   }
 
 }

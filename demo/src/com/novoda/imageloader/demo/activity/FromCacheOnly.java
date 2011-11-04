@@ -3,7 +3,6 @@ package com.novoda.imageloader.demo.activity;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.novoda.imageloader.core.ImageManager;
 import com.novoda.imageloader.demo.activity.base.SingleTableBaseListActivity;
 
 public class FromCacheOnly extends SingleTableBaseListActivity {
@@ -13,9 +12,9 @@ public class FromCacheOnly extends SingleTableBaseListActivity {
 		return FromCacheOnly.class.getSimpleName().toLowerCase();
 	}
 	
-	protected void load(ImageManager imageLoader, View view, String url) {
+	protected void load(View view) {
 		// TODO add this to your class
-		imageLoader.loadFromCacheOnly(url, getApplicationContext(), (ImageView) view);
+		imageLoader.loadFromCacheOnly((ImageView) view);
 		//
 	}
 

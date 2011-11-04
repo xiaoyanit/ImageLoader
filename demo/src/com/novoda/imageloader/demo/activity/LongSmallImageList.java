@@ -5,19 +5,25 @@ import com.novoda.imageloader.demo.DemoApplication;
 import com.novoda.imageloader.demo.R;
 import com.novoda.imageloader.demo.activity.base.SingleTableBaseListActivity;
 
-public class ImageLongList extends SingleTableBaseListActivity {
-
-	private static final int SIZE = 400;
+public class LongSmallImageList extends SingleTableBaseListActivity {
 	
-	protected void prepareLoader() {
-		imageLoader = DemoApplication.getImageLoader();
-		imageTagFactory = new ImageTagFactory(SIZE, SIZE, R.drawable.bg_img_loading);
-		imageTagFactory.setErrorImageId(R.drawable.bg_img_notfound);
+	private static final int SIZE = 80;
+	
+	@Override
+	protected int getImageItem() {
+		return R.layout.small_image_item;
 	}
 	
 	@Override
+	protected void prepareLoader() {
+		imageLoader = DemoApplication.getThumbnailImageLoader();
+		imageTagFactory = new ImageTagFactory(SIZE, SIZE, R.drawable.bg_img_loading);
+		imageTagFactory.setErrorImageId(R.drawable.bg_img_notfound);
+	}
+
+	@Override
 	protected String getTableName() {
-		return ImageLongList.class.getSimpleName().toLowerCase();
+		return LongSmallImageList.class.getSimpleName().toLowerCase();
 	}
 
 }

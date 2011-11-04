@@ -3,6 +3,7 @@ package com.novoda.imageloader.demo.provider;
 import com.novoda.imageloader.demo.activity.BigImages;
 import com.novoda.imageloader.demo.activity.FromCacheOnly;
 import com.novoda.imageloader.demo.activity.ImageLongList;
+import com.novoda.imageloader.demo.activity.LongSmallImageList;
 
 import android.content.UriMatcher;
 import android.net.Uri;
@@ -17,6 +18,9 @@ public class CustomUriMatcher extends UriMatcher {
   
   public static final String IMAGE_FROMCACHEONLY_COLLECTION_TYPE = "vnd.android.cursor.dir/vnd.imageloader.demo." + FromCacheOnly.class.getSimpleName().toLowerCase();
   public static final int IMAGE_FROMCACHEONLY_INCOMING_COLLECTION = 60;
+  
+  public static final String IMAGE_LONGSMALLIMAGELIST_COLLECTION_TYPE = "vnd.android.cursor.dir/vnd.imageloader.demo." + LongSmallImageList.class.getSimpleName().toLowerCase();
+  public static final int IMAGE_LONGSMALLIMAGELIST_INCOMING_COLLECTION = 80;
 
   public CustomUriMatcher(int code) {
     super(code);
@@ -32,6 +36,7 @@ public class CustomUriMatcher extends UriMatcher {
     add(ImageLongList.class.getSimpleName().toLowerCase(), IMAGE_INCOMING_COLLECTION);
     add(BigImages.class.getSimpleName().toLowerCase(), IMAGE_BIGIMAGES_INCOMING_COLLECTION);
     add(FromCacheOnly.class.getSimpleName().toLowerCase(), IMAGE_FROMCACHEONLY_INCOMING_COLLECTION);
+    add(LongSmallImageList.class.getSimpleName().toLowerCase(), IMAGE_LONGSMALLIMAGELIST_INCOMING_COLLECTION);
   }
 
   public void add(String path, int code) {

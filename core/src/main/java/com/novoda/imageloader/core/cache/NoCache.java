@@ -2,10 +2,10 @@ package com.novoda.imageloader.core.cache;
 
 import android.graphics.Bitmap;
 
-public class NoCache implements ImageCache {
+public class NoCache implements BitmapCache {
 
   @Override
-  public boolean hasImage(String url) {
+  public boolean hasBitmap(String url) {
     return false;
   }
 
@@ -20,26 +20,6 @@ public class NoCache implements ImageCache {
 
   @Override
   public void clean() {
-  }
-
-  @Override
-  public Bitmap getDefaultImage() {
-    return null;
-  }
-
-  @Override
-  public void setDefaultImage(Bitmap defaultImage) {
-  
-  }
-
-  @Override
-  public Bitmap getNotFoundImage() {
-    return null;
-  }
-
-  @Override
-  public void setNotFoundImage(Bitmap defaultImage) {
-    
   }
 
 }

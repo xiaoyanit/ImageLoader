@@ -14,7 +14,5 @@ public class UrlUtil {
     }
     return url.substring(0, index);
   }
-  
-  
 
 }

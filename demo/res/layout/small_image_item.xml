@@ -9,7 +9,7 @@
       style="@style/Wrap"
       a:textStyle="bold"
       a:focusable="false"
-      a:minHeight="400dp"
+      a:minHeight="80dp"
       a:layout_gravity="center"
       a:focusableInTouchMode="false" />
 </LinearLayout>

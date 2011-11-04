@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 
+import com.novoda.imageloader.core.exception.ImageCopyException;
 import com.novoda.imageloader.core.exception.ImageNotFoundException;
 
 import android.content.Context;
@@ -21,6 +22,8 @@ public class FileUtil {
   private static final String DEFAULT_IMAGE_FOLDER_NAME = "/imagedata";
   private static final String TAG = "ImageLoader";
 
+  private static final int BUFFER_SIZE = 6*1024;
+  
   public void retrieveImage(String url, File f) {
     InputStream is = null;
     OutputStream os = null;
@@ -50,11 +53,10 @@ public class FileUtil {
   }
 
   public void copyStream(InputStream is, OutputStream os) {
-    final int bufferSize = 1024;
     try {
-      byte[] bytes = new byte[bufferSize];
+      byte[] bytes = new byte[BUFFER_SIZE];
       for (;;) {
-        int count = is.read(bytes, 0, bufferSize);
+        int count = is.read(bytes, 0, BUFFER_SIZE);
         if (count == -1) {
           break;
         }
@@ -83,7 +85,7 @@ public class FileUtil {
     return true;
   }
 
-  public void copy(File src, File dst) {
+  public void copy(File src, File dst) throws ImageCopyException {
     InputStream in = null;
     OutputStream out = null;
     try {
@@ -95,7 +97,7 @@ public class FileUtil {
         out.write(buf, 0, len);
       }
     } catch (IOException e) {
-      throw new RuntimeException(e.getMessage());
+      throw new ImageCopyException(e);
     } finally {
       closeSilently(out);
       closeSilently(in);

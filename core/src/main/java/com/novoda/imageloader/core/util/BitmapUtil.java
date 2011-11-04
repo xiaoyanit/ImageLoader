@@ -9,26 +9,33 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
-import com.novoda.imageloader.core.Settings;
 import com.novoda.imageloader.core.file.FileUtil;
+import com.novoda.imageloader.core.model.ImageWrapper;
 
 public class BitmapUtil {
 
   private static final String TAG = "ImageLoader";
 
-  public Bitmap decodeFileAndScale(File f, boolean scale, Settings settings) {
+  public Bitmap decodeFileAndScale(File f, int width, int height) {
   	FileInputStream fis = null;
     try {
       f.setLastModified(System.currentTimeMillis());
       fis = new FileInputStream(f);
       Bitmap unscaledBitmap = BitmapFactory.decodeStream(fis);
-      return scaleBitmap(unscaledBitmap, settings.getImageWidth(), settings.getImageHeight());
+      return scaleBitmap(unscaledBitmap, width, height);
     } catch (FileNotFoundException e) {
       Log.e(TAG, e.getMessage(), e);
     } finally {
     	new FileUtil().closeSilently(fis);
     }
     return null;
+  }
+  
+  public Bitmap scaleResourceBitmap(ImageWrapper iw, int resourceId) {
+  	Log.v("XXX", "scaleResourceBitmap");
+  	Context c = iw.getContext();
+  	Bitmap i = BitmapFactory.decodeResource(c.getResources(), resourceId);
+    return scaleBitmap(i, iw.getWidth(), iw.getHeight());
   }
 
   public Bitmap scaleBitmap(Bitmap b, int width, int height) {
@@ -46,19 +53,6 @@ public class BitmapUtil {
       finalWidth = new Float(imageWidth * factor).intValue();
     }
     return Bitmap.createScaledBitmap(b, finalWidth, finalHeight, true);
-  }
-
-	public Bitmap decodeDefaultAndScaleBitmap(Context context, Settings settings) {
-    return decodeResourceAndScale(context, settings, settings.getDefaultImageId());
-  }
-  
-  public Bitmap decodeNotFoundAndScaleBitmap(Context context, Settings settings) {
-    return decodeResourceAndScale(context, settings, settings.getNotFoundImageId());
-  }
-
-  private Bitmap decodeResourceAndScale(Context context, Settings settings, int resourceId) {
-    Bitmap image = BitmapFactory.decodeResource(context.getResources(), resourceId);
-    return scaleBitmap(image, settings.getImageWidth(), settings.getImageHeight());
   }
 
 }

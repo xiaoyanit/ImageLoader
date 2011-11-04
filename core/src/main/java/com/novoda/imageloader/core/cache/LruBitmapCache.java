@@ -1,16 +1,20 @@
 package com.novoda.imageloader.core.cache;
 
-import java.util.HashMap;
-
 import android.graphics.Bitmap;
 
-public class MapCache implements BitmapCache {
+import com.android.camera.gallery.LruCache;
 
-  private HashMap<String, Bitmap> cache = new HashMap<String, Bitmap>();
+public class LruBitmapCache implements BitmapCache {
 
+  private LruCache<String, Bitmap> cache;
+
+  public LruBitmapCache(int capacity) {
+  	cache = new LruCache<String, Bitmap>(capacity);
+  }
+  
   @Override
   public boolean hasBitmap(String url) {
-    return cache.containsKey(url);
+    return cache.hasKey(url);
   }
 
   @Override
