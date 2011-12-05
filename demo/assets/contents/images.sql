@@ -191,6 +191,7 @@ insert into bigimages(url) values ("http://visionwiz.net/wp-content/uploads/2011
 insert into bigimages(url) values ("http://riverdaughter.files.wordpress.com/2009/01/big-wave_surfing_01.jpg");
 insert into bigimages(url) values ("http://fishandchipz.files.wordpress.com/2011/08/khgroup.jpg");
 insert into bigimages(url) values ("http://dygz78ls5cy51.cloudfront.net/b1c9477c9a8d49ef9e2208ffc2c2a8b0");
+insert into bigimages(url) values ("https://lh5.googleusercontent.com/-H7c37dFDgIs/S5OKbgfDMZI/AAAAAAAARdo/KXgY7Z4g21A/s1280/DSC02667.JPG");
 
 insert into fromcacheonly(url) values ("http://sphotos.ak.fbcdn.net/hphotos-ak-snc1/hs167.snc1/6260_1197917382607_1068664406_638145_880043_n.jpg");
 insert into fromcacheonly(url) values ("http://www.wolf-howl.com/wp-content/uploads/google-garbage.jpg");
@@ -250,9 +251,6 @@ insert into LongSmallImageList(url) values ("http://www.dfrc.nasa.gov/Gallery/Ph
 insert into LongSmallImageList(url) values ("http://www.dfrc.nasa.gov/Gallery/Photo/Thumbnails/f15hidec.jpg");
 insert into LongSmallImageList(url) values ("http://www.dfrc.nasa.gov/Gallery/Photo/Thumbnails/f16afti.jpg");
 insert into LongSmallImageList(url) values ("http://www.dfrc.nasa.gov/Gallery/Photo/Thumbnails/f16xl-1.jpg");
-insert into LongSmallImageList(url) values ("http://www.dfrc.nasa.gov/Gallery/Photo/Thumbnails/f16xl_cawap.jpg");
-insert into LongSmallImageList(url) values ("http://www.dfrc.nasa.gov/Gallery/Photo/Thumbnails/f16xl-2.jpg");
-insert into LongSmallImageList(url) values ("http://www.dfrc.nasa.gov/Gallery/Photo/Thumbnails/f18chase.jpg");
 insert into LongSmallImageList(url) values ("http://www.dfrc.nasa.gov/Gallery/Photo/Thumbnails/f16xl_cawap.jpg");
 insert into LongSmallImageList(url) values ("http://www.dfrc.nasa.gov/Gallery/Photo/Thumbnails/f16xl-2.jpg");
 insert into LongSmallImageList(url) values ("http://www.dfrc.nasa.gov/Gallery/Photo/Thumbnails/f18chase.jpg");

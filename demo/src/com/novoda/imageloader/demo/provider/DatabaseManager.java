@@ -21,7 +21,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 	private Context context;
 
 	public DatabaseManager(Context context) {
-		super(context, "com.novoda.imageloader.demo", null, 19);
+		super(context, "com.novoda.imageloader.demo", null, 20);
 		this.context = context;
 	}
 

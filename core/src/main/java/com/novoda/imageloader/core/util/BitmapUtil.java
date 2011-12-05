@@ -17,22 +17,19 @@ public class BitmapUtil {
   private static final String TAG = "ImageLoader";
 
   public Bitmap decodeFileAndScale(File f, int width, int height) {
-  	FileInputStream fis = null;
-    try {
-      f.setLastModified(System.currentTimeMillis());
-      fis = new FileInputStream(f);
-      Bitmap unscaledBitmap = BitmapFactory.decodeStream(fis);
+      updateLastModifiedForCache(f);
+      int suggestedSize = height;
+      if (width > height) {
+      	suggestedSize = height;
+      }
+      Bitmap unscaledBitmap = decodeFile(f, suggestedSize);
+      if(unscaledBitmap == null) {
+      	return null;
+      }
       return scaleBitmap(unscaledBitmap, width, height);
-    } catch (FileNotFoundException e) {
-      Log.e(TAG, e.getMessage(), e);
-    } finally {
-    	new FileUtil().closeSilently(fis);
-    }
-    return null;
   }
-  
-  public Bitmap scaleResourceBitmap(ImageWrapper iw, int resourceId) {
-  	Log.v("XXX", "scaleResourceBitmap");
+
+	public Bitmap scaleResourceBitmap(ImageWrapper iw, int resourceId) {
   	Context c = iw.getContext();
   	Bitmap i = BitmapFactory.decodeResource(c.getResources(), resourceId);
     return scaleBitmap(i, iw.getWidth(), iw.getHeight());
@@ -52,7 +49,68 @@ public class BitmapUtil {
       finalHeight = new Float(imageHeight * factor).intValue();
       finalWidth = new Float(imageWidth * factor).intValue();
     }
-    return Bitmap.createScaledBitmap(b, finalWidth, finalHeight, true);
+    Bitmap scaled = Bitmap.createScaledBitmap(b, finalWidth, finalHeight, true);
+    recycle(b);
+    return scaled;
   }
 
+  private void recycle(Bitmap scaled) {
+  	try {
+  		scaled.recycle();
+  	} catch (Exception e) {
+  		//
+  	}
+  }
+  
+	private void updateLastModifiedForCache(File f) {
+	  f.setLastModified(System.currentTimeMillis());
+  }
+	
+	private Bitmap decodeFile(File f, int suggestedSize) {
+		FileInputStream fis = null;
+    try {
+    	final BitmapFactory.Options o = new BitmapFactory.Options();
+    	o.inJustDecodeBounds = true;
+    	fis  = new FileInputStream(f);
+    	BitmapFactory.decodeStream(fis, null, o);
+    	
+    	final int requiredSize = suggestedSize;
+    	int widthTmp = o.outWidth, heightTmp = o.outHeight;
+    	int scale = calculateScale(requiredSize, widthTmp, heightTmp);
+    	
+      // decode with inSampleSize
+      final BitmapFactory.Options o2 = new BitmapFactory.Options();
+      o2.inSampleSize = scale;
+      o2.inTempStorage = new byte[64 * 1024];
+      o2.inPurgeable = true;
+      Bitmap bitmap = null;
+      try {
+        bitmap =
+          BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
+      } catch (final Throwable e) {
+        System.gc();
+      }
+      return bitmap;
+		} catch (FileNotFoundException e) {
+			Log.e(TAG, e.getMessage(), e);
+			return null;
+		} finally {
+			new FileUtil().closeSilently(fis);
+		}
+  }
+
+	private int calculateScale(final int requiredSize, int widthTmp, int heightTmp) {
+	  int scale = 1;
+	  while (true) {
+	  	if ((widthTmp / 2) < requiredSize
+	  			|| (heightTmp / 2) < requiredSize) {
+	  			break;
+	  	}
+	  	widthTmp /= 2;
+	  	heightTmp /= 2;
+	  	scale *= 2;
+	  }
+	  return scale;
+  }
+  
 }
