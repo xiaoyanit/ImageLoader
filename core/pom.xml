@@ -9,6 +9,7 @@
   
   <artifactId>imageloader-core</artifactId>
   <name>imageloader-core</name>
+  <version>1.3.12-bitmapfactoryfix</version>
   <packaging>jar</packaging>
   
   <dependencies>
