@@ -35,7 +35,11 @@ public abstract class SingleThreadedLoader {
 
   public ImageWrapper pop() {
   	synchronized (stack) {
-  		return stack.pop();
+  		try {
+  			return stack.pop();
+  		} catch (Exception e) {
+  			return null;
+  		}
   	}
   }
   
@@ -72,7 +76,9 @@ public abstract class SingleThreadedLoader {
       while (true) {
         pauseThreadIfnecessary();	
         ImageWrapper image = pop();
-        loadAndShowImage(image);
+        if(image != null) {
+        	loadAndShowImage(image);
+        }
       }
     }
 
@@ -108,7 +114,6 @@ public abstract class SingleThreadedLoader {
         Log.e(TAG, "Throwable : " + e.getMessage(), e);
       }
     }
-
   }
   
 	private void startThread() {
