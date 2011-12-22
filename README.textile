@@ -26,7 +26,7 @@ h3. Direct jar usage
 
 If you don't care about building tool you can just download the jar manually from this link
 
-https://github.com/novoda/public-mvn-repo/raw/master/releases/com/novoda/imageloader/imageloader-core/1.3.11/imageloader-core-1.3.11.jar
+https://github.com/novoda/public-mvn-repo/raw/master/releases/com/novoda/imageloader/imageloader-core/1.4.1/imageloader-core-1.4.1.jar
 
 h2. How to implement
 
