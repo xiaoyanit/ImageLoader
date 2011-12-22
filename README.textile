@@ -19,7 +19,7 @@ If you are using maven you need to define the repo and then the dependency
 <pre><code><dependency>
   <groupId>com.novoda.imageloader.core</groupId>
   <artifactId>imageloader-core</artifactId>
- <version>1.3.11</version>
+ <version>1.4.1</version>
 </dependency></code></pre>
 
 h3. Direct jar usage
@@ -42,9 +42,8 @@ In the application add the folling code the instantiate the image loader:
   public void onCreate() {
     super.onCreate();
     SettingsBuilder builder = new SettingsBuilder();
-    builder.defaultImageId(R.drawable.bg_img_loading);
     Settings settings = builder.build(this);
-    imageLoader = new BaseImageLoader(this, settings);
+    imageLoader = new SingleThreadedImageLoader(this, settings);
   }
 
   public static final ImageManager getImageLoader() {
@@ -53,6 +52,22 @@ In the application add the folling code the instantiate the image loader:
 </code></pre>
 
 This is setting up the image loader with size of the images that are taken from the display and the background image use while the image loader is fetching the real image.
+
+The normal image loader works with softreferences. With a system with low memory as android the system reclaim space to often. This limit the performance of the cache.
+
+To avoid that we added a LruCache in the image loader library. This is very  useful when you have lots of small images.
+
+<pre><code>
+private static final int NUMBER_OF_IMAGE_IN_CACHE = 50;
+...
+thumbnailImageLoader = new SingleThreadedImageLoader(this, settings) {
+  @Override
+	protected BitmapCache createCache() {
+		return new LruBitmapCache(NUMBER_OF_IMAGE_IN_CACHE);
+	}
+};
+</code></pre>
+
 
 h3. Cleaning up sdcard
 
@@ -70,19 +85,20 @@ When you need to load the image in a view object you just need to get the imageL
 This is an example of a list view with the binder setting the url in the imageView as a tag.
 
 <pre><code>
+...
+ImageTagFactory imageTagFactory = new ImageTagFactory(this, R.drawable.bg_img_loading);
+imageTagFactory.setErrorImageId(R.drawable.bg_img_notfound);
+...
+
 private ViewBinder getViewBinder() {
   return new ViewBinder() {
     @Override
     public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-      try {
-        ((ImageView) view).setTag(cursor.getString(columnIndex));
-        // TODO add this to your class
-        imageLoader.load(cursor.getString(columnIndex), ImageLoaderDemoActivity.this,
-            (ImageView) view);
-        //
-      } catch (Exception e) {
-        Log.e("ImageLoader", "exception : " + e.getMessage());
-      }
+      // TODO add this to your class
+      ImageTag tag = imageTagFactory.build(cursor.getString(columnIndex))
+      ((ImageView) view).setTag(tag);
+      imageLoader.load(view);
+      //
       return true;
     }
   };
@@ -125,15 +141,18 @@ h2. ImageLoader projects
 * acceptance mvn android based project with robotium test
 * monkey some example that take a snapshot using monkey runner (deprecated)
 
+To build the projects :
+
+* run : <code>mvn clean install -Peclipse</code>
+
 h3. Parent project and core
 
 Import the projects with maven, should be easy and painless. 
 
 h3. For demo and acceptance
 
-* run : <code>mvn clean initialize</code>
 * create a new android project in eclipse
-* add the necessary jars from the lib folder
+* add the necessary jars from the libs folder
 
 h2. Notes
 
