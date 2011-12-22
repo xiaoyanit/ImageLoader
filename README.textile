@@ -1,7 +1,7 @@
 h1. ImageLoader
 
 Image loader is a simple library that give you the ability to decouple the logic to fetch, load and cache images.
-It does that away from the ui thread, and by caching images with two level in memory or in the sdcard if awailable.
+It does that away from the ui thread, and by caching images with two levels in memory or in the sdcard if awailable.
 
 h2. How to use the library
 
@@ -53,7 +53,7 @@ In the application add the folling code the instantiate the image loader:
 
 This is setting up the image loader with size of the images that are taken from the display and the background image use while the image loader is fetching the real image.
 
-The normal image loader works with softreferences. With a system with low memory as android the system reclaim space to often. This limit the performance of the cache.
+The normal image loader works with softreferences. With a system with low memory as android, the system reclaim space to often. This limit the performance of the cache.
 
 To avoid that we added a LruCache in the image loader library. This is very  useful when you have lots of small images.
 
@@ -154,6 +154,6 @@ h3. For demo and acceptance
 * create a new android project in eclipse
 * add the necessary jars from the libs folder
 
-h2. Notes
+h2. Requirements
 
-* Note : build support sdk 14 as is using the new android-maven-plugin:3.0.0-alpha13
+* maven 3.0.3+
