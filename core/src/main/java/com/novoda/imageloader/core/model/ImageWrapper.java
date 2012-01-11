@@ -71,4 +71,8 @@ public class ImageWrapper {
 	  return notFoundResourceId;
   }
 
+	public boolean isUrlChanged() {
+	  return !getUrl().equals(getCurrentUrl());
+  }
+
 }

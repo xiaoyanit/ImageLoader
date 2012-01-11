@@ -3,6 +3,7 @@ package com.novoda.imageloader.demo.activity.base;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -54,7 +55,8 @@ public abstract class SingleTableBaseListActivity extends BaseListActivity {
 		return new ViewBinder() {
 			@Override
 			public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-				((ImageView) view).setTag(imageTagFactory.build(cursor.getString(columnIndex)));
+				String url = cursor.getString(columnIndex);
+				((ImageView) view).setTag(imageTagFactory.build(url));
 				load(view);
 				return true;
 			}

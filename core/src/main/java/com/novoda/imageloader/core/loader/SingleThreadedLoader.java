@@ -50,7 +50,8 @@ public abstract class SingleThreadedLoader {
   private void clean(ImageWrapper p) {
   	synchronized (stack) {
       for (int j = 0; j < stack.size(); j++) {
-        if (stack.get(j).getUrl() != null && stack.get(j).getUrl().equals(p.getUrl())) {
+        if (stack.get(j).getUrl() != null 
+        		&& stack.get(j).getUrl().equals(p.getUrl())) {
           stack.remove(j);
           j--;
         }
@@ -98,7 +99,7 @@ public abstract class SingleThreadedLoader {
 
     private void loadAndShowImage(ImageWrapper iw) {
       try {
-      	if(!iw.getUrl().equals(iw.getCurrentUrl())) {
+      	if(iw.isUrlChanged()) {
       		return;
       	}
         Bitmap bmp = loadMissingBitmap(iw);

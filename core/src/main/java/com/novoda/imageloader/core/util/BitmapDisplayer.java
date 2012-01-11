@@ -22,6 +22,9 @@ public class BitmapDisplayer implements Runnable {
     if (bitmap == null) {
       return;
     }
+    if(imageView.isUrlChanged()) {
+  		return;
+  	}
     imageView.setBitmap(bitmap);
   }
 }
