@@ -68,6 +68,22 @@ thumbnailImageLoader = new SingleThreadedImageLoader(this, settings) {
 };
 </code></pre>
 
+h3. Additional settings
+
+Image loader use UrlConnection to fetch images. There are two important parameters that UrlConnection uses connectionTimeout and readTimeout.
+
+<pre><code>
+SettingsBuilder builder = new SettingsBuilder();
+Settings settings = builder.build(this);
+//Default value to 15 sec
+settings.setConnectionTimeout(20000);
+//Default value to 90 sec
+settings.setReadTimeout(60000);
+</code></pre>
+
+The connection timeout is the timeout in making the initial connection. The read timeout is the timeout on waiting to read data.
+
+
 
 h3. Cleaning up sdcard
 
