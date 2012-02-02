@@ -73,6 +73,7 @@ public class BitmapUtil {
     	o.inJustDecodeBounds = true;
     	fis  = new FileInputStream(f);
     	BitmapFactory.decodeStream(fis, null, o);
+    	closeSilently(fis);
     	
     	final int requiredSize = suggestedSize;
     	int widthTmp = o.outWidth, heightTmp = o.outHeight;
@@ -85,18 +86,24 @@ public class BitmapUtil {
       o2.inPurgeable = true;
       Bitmap bitmap = null;
       try {
-        bitmap =
-          BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
+      	fis  = new FileInputStream(f);
+        bitmap = BitmapFactory.decodeStream(fis, null, o2);
       } catch (final Throwable e) {
         System.gc();
+      } finally {
+      	closeSilently(fis);
       }
       return bitmap;
 		} catch (FileNotFoundException e) {
 			Log.e(TAG, e.getMessage(), e);
 			return null;
 		} finally {
-			new FileUtil().closeSilently(fis);
+			closeSilently(fis);
 		}
+  }
+
+	private void closeSilently(FileInputStream fis) {
+	  new FileUtil().closeSilently(fis);
   }
 
 	private int calculateScale(final int requiredSize, int widthTmp, int heightTmp) {

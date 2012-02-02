@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.net.URLConnection;
 
 import com.novoda.imageloader.core.exception.ImageCopyException;
 import com.novoda.imageloader.core.exception.ImageNotFoundException;
@@ -20,15 +21,18 @@ public class FileUtil {
 
   private static final String NOMEDIA_FILE_NAME = ".nomedia";
   private static final String DEFAULT_IMAGE_FOLDER_NAME = "/imagedata";
-  private static final String TAG = "ImageLoader";
+  private static final String TAG = "ImageLoader";  
 
   private static final int BUFFER_SIZE = 6*1024;
   
-  public void retrieveImage(String url, File f) {
+  public void retrieveImage(String url, File f, int connectionTimeout, int readTimeout) {
     InputStream is = null;
     OutputStream os = null;
     try {
-      is = new URL(url).openStream();
+    	URLConnection conn = new URL(url).openConnection();
+    	conn.setConnectTimeout(connectionTimeout);
+    	conn.setReadTimeout(readTimeout);
+      is = conn.getInputStream();
       os = new FileOutputStream(f);
       copyStream(is, os);
       os.close();

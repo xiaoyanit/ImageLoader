@@ -16,6 +16,16 @@ public class SettingsBuilder {
     settings.setQueryIncludedInHash(enableQueryInHashGeneration);
     return this;
   }
+  
+  public SettingsBuilder connectionTimeout(int connectionTimeout) {
+    settings.setConnectionTimeout(connectionTimeout);
+    return this;
+  }
+  
+  public SettingsBuilder readTimeout(int readTimeout) {
+    settings.setReadTimeout(readTimeout);
+    return this;
+  }
 
   public Settings build(Context context){
     settings.setCacheDir(new FileUtil().prepareCacheDirectory(context));

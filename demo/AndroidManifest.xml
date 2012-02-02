@@ -5,18 +5,31 @@
   <uses-sdk android:targetSdkVersion="7" />
 
   <application android:icon="@drawable/icon" android:label="@string/app_name" android:name=".DemoApplication">
-    <activity android:name=".activity.ImageLongList" android:theme="@android:style/Theme.NoTitleBar">
+    <activity android:name=".activity.ImageLongList" android:theme="@android:style/Theme.NoTitleBar" android:label="Image Loader Normal case">
         <intent-filter >
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
     </activity>
-    <activity android:name=".activity.LongSmallImageList" android:theme="@android:style/Theme.NoTitleBar">
+    <activity android:name=".activity.LongSmallImageList" android:theme="@android:style/Theme.NoTitleBar" android:label="Image Loader Lru example">
+        <intent-filter >
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
     </activity>
-    <activity android:name=".activity.BigImages" android:theme="@android:style/Theme.NoTitleBar"  >
+    <activity android:name=".activity.BigImages" android:theme="@android:style/Theme.NoTitleBar"  android:label="Image Loader really big images">
+        <intent-filter >
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
     </activity>
-    <activity android:name=".activity.FromCacheOnly" android:theme="@android:style/Theme.NoTitleBar" >
+    <activity android:name=".activity.FromCacheOnly" android:theme="@android:style/Theme.NoTitleBar"  android:label="Image Loader from cache only">
+        <intent-filter >
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
     </activity>
+    
     <provider android:name=".provider.ImageLoaderDemoProvider" android:authorities="com.novoda.imageloader.demo" />
     <service android:name="com.novoda.imageloader.core.service.CacheCleaner" android:exported="true">
       <intent-filter>

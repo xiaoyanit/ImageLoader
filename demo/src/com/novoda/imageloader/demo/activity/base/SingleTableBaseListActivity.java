@@ -3,7 +3,6 @@ package com.novoda.imageloader.demo.activity.base;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;

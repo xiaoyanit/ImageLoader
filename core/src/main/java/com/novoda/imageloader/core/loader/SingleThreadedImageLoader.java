@@ -130,7 +130,7 @@ public class SingleThreadedImageLoader implements ImageLoader {
 					return b;
 				}
 			}
-			new FileUtil().retrieveImage(url, f);
+			new FileUtil().retrieveImage(url, f, settings.getConnectionTimeout(), settings.getReadTimeout());
 			return bitmapUtil.decodeFileAndScale(f, width, height);
 		}
 		return null;
