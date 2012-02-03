@@ -8,14 +8,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
-
-import com.novoda.imageloader.core.exception.ImageCopyException;
-import com.novoda.imageloader.core.exception.ImageNotFoundException;
 
 import android.content.Context;
 import android.util.Log;
+
+import com.novoda.imageloader.core.exception.ImageCopyException;
+import com.novoda.imageloader.core.exception.ImageNotFoundException;
 
 public class FileUtil {
 
@@ -28,8 +28,9 @@ public class FileUtil {
   public void retrieveImage(String url, File f, int connectionTimeout, int readTimeout) {
     InputStream is = null;
     OutputStream os = null;
+    HttpURLConnection conn = null;
     try {
-    	URLConnection conn = new URL(url).openConnection();
+    	conn = (HttpURLConnection)new URL(url).openConnection();
     	conn.setConnectTimeout(connectionTimeout);
     	conn.setReadTimeout(readTimeout);
       is = conn.getInputStream();
@@ -39,8 +40,9 @@ public class FileUtil {
     } catch (FileNotFoundException fnfe) {
       throw new ImageNotFoundException();
     } catch (Exception ex) {
-      Log.e(TAG, "Unknown Exception while getting the image " + ex.getMessage(), ex);
+      Log.e(TAG, "Unknown Exception while getting the image " + ex.getMessage());
     } finally {
+    	conn.disconnect();
       closeSilently(is);
       closeSilently(os);
     }

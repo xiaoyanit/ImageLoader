@@ -2,19 +2,17 @@ package com.novoda.imageloader.core.util;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
 import com.novoda.imageloader.core.file.FileUtil;
 import com.novoda.imageloader.core.model.ImageWrapper;
 
 public class BitmapUtil {
 
-  private static final String TAG = "ImageLoader";
+  private static final int BUFFER_SIZE = 64 * 1024;
 
   public Bitmap decodeFileAndScale(File f, int width, int height) {
       updateLastModifiedForCache(f);
@@ -67,39 +65,42 @@ public class BitmapUtil {
   }
 	
 	private Bitmap decodeFile(File f, int suggestedSize) {
-		FileInputStream fis = null;
-    try {
-    	final BitmapFactory.Options o = new BitmapFactory.Options();
-    	o.inJustDecodeBounds = true;
-    	fis  = new FileInputStream(f);
-    	BitmapFactory.decodeStream(fis, null, o);
-    	closeSilently(fis);
-    	
-    	final int requiredSize = suggestedSize;
-    	int widthTmp = o.outWidth, heightTmp = o.outHeight;
-    	int scale = calculateScale(requiredSize, widthTmp, heightTmp);
-    	
-      // decode with inSampleSize
-      final BitmapFactory.Options o2 = new BitmapFactory.Options();
-      o2.inSampleSize = scale;
-      o2.inTempStorage = new byte[64 * 1024];
-      o2.inPurgeable = true;
+    	int scale = evaluateScale(f, suggestedSize);
+      final BitmapFactory.Options options = new BitmapFactory.Options();
+      options.inSampleSize = scale;
+      options.inTempStorage = new byte[BUFFER_SIZE];
+      options.inPurgeable = true;
       Bitmap bitmap = null;
+      FileInputStream fis = null;
       try {
       	fis  = new FileInputStream(f);
-        bitmap = BitmapFactory.decodeStream(fis, null, o2);
+        bitmap = BitmapFactory.decodeStream(fis, null, options);
       } catch (final Throwable e) {
         System.gc();
       } finally {
       	closeSilently(fis);
       }
       return bitmap;
-		} catch (FileNotFoundException e) {
-			Log.e(TAG, e.getMessage(), e);
-			return null;
-		} finally {
-			closeSilently(fis);
-		}
+  }
+
+	private int evaluateScale(File f, int suggestedSize) {
+	  final BitmapFactory.Options o = new BitmapFactory.Options();
+	  o.inJustDecodeBounds = true;
+	  decodeFileToPopulateOptions(f, o);
+	  return calculateScale(suggestedSize, o.outWidth, o.outHeight);
+  }
+
+	private void decodeFileToPopulateOptions(File f, final BitmapFactory.Options o) {
+	  FileInputStream fis = null;
+	  try {
+	  	fis  = new FileInputStream(f);
+	  	BitmapFactory.decodeStream(fis, null, o);
+	  	closeSilently(fis);
+	  } catch (final Throwable e) {
+	    System.gc();
+	  } finally {
+	  	closeSilently(fis);
+	  }
   }
 
 	private void closeSilently(FileInputStream fis) {
