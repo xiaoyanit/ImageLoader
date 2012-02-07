@@ -26,6 +26,11 @@ public class SettingsBuilder {
     settings.setReadTimeout(readTimeout);
     return this;
   }
+  
+  public SettingsBuilder disconnectOnEveryCall(boolean disconnectOnEveryCall) {
+    settings.setDisconnectOnEveryCall(disconnectOnEveryCall);
+    return this;
+  }
 
   public Settings build(Context context){
     settings.setCacheDir(new FileUtil().prepareCacheDirectory(context));

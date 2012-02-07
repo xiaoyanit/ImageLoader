@@ -25,7 +25,7 @@ public class FileUtil {
 
   private static final int BUFFER_SIZE = 6*1024;
   
-  public void retrieveImage(String url, File f, int connectionTimeout, int readTimeout) {
+  public void retrieveImage(String url, File f, int connectionTimeout, int readTimeout, boolean disconnect) {
     InputStream is = null;
     OutputStream os = null;
     HttpURLConnection conn = null;
@@ -36,13 +36,14 @@ public class FileUtil {
       is = conn.getInputStream();
       os = new FileOutputStream(f);
       copyStream(is, os);
-      os.close();
     } catch (FileNotFoundException fnfe) {
       throw new ImageNotFoundException();
     } catch (Exception ex) {
       Log.e(TAG, "Unknown Exception while getting the image " + ex.getMessage());
     } finally {
-    	conn.disconnect();
+    	if(conn != null && disconnect) {
+    		conn.disconnect();    		
+    	}
       closeSilently(is);
       closeSilently(os);
     }
