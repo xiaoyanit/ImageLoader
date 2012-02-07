@@ -16,6 +16,7 @@ import android.util.Log;
 
 import com.novoda.imageloader.core.exception.ImageCopyException;
 import com.novoda.imageloader.core.exception.ImageNotFoundException;
+import com.novoda.imageloader.core.util.Settings;
 
 public class FileUtil {
 
@@ -23,16 +24,19 @@ public class FileUtil {
   private static final String DEFAULT_IMAGE_FOLDER_NAME = "/imagedata";
   private static final String TAG = "ImageLoader";  
 
-  private static final int BUFFER_SIZE = 6*1024;
+  private static final int BUFFER_SIZE = 60*1024;
+  private static final byte[] BUFFER = new byte[BUFFER_SIZE];
   
-  public void retrieveImage(String url, File f, int connectionTimeout, int readTimeout, boolean disconnect) {
+  
+  public void retrieveImage(String url, File f, Settings settings) {
     InputStream is = null;
     OutputStream os = null;
     HttpURLConnection conn = null;
+    applayChangeonSdkVersion(settings.getSdkVersion());
     try {
     	conn = (HttpURLConnection)new URL(url).openConnection();
-    	conn.setConnectTimeout(connectionTimeout);
-    	conn.setReadTimeout(readTimeout);
+    	conn.setConnectTimeout(settings.getConnectionTimeout());
+    	conn.setReadTimeout(settings.getReadTimeout());
       is = conn.getInputStream();
       os = new FileOutputStream(f);
       copyStream(is, os);
@@ -41,7 +45,7 @@ public class FileUtil {
     } catch (Exception ex) {
       Log.e(TAG, "Unknown Exception while getting the image " + ex.getMessage());
     } finally {
-    	if(conn != null && disconnect) {
+    	if(conn != null && settings.getDisconnectOnEveryCall()) {
     		conn.disconnect();    		
     	}
       closeSilently(is);
@@ -49,7 +53,13 @@ public class FileUtil {
     }
   }
 
-  public void closeSilently(Closeable c) {
+  private void applayChangeonSdkVersion(String sdkVersion) {
+  	if (Integer.parseInt(sdkVersion) < 8) {
+      System.setProperty("http.keepAlive", "false");
+    }
+  }
+
+	public void closeSilently(Closeable c) {
     try {
       if (c != null) {
         c.close();
@@ -61,13 +71,14 @@ public class FileUtil {
 
   public void copyStream(InputStream is, OutputStream os) {
     try {
-      byte[] bytes = new byte[BUFFER_SIZE];
-      for (;;) {
-        int count = is.read(bytes, 0, BUFFER_SIZE);
-        if (count == -1) {
-          break;
+    	while (true) {
+        synchronized (BUFFER) {
+           int amountRead = is.read(BUFFER);
+           if (amountRead == -1) {
+              break;
+           }
+           os.write(BUFFER, 0, amountRead); 
         }
-        os.write(bytes, 0, count);
       }
     } catch (Exception ex) {
       Log.e(TAG, "Exception : ", ex);

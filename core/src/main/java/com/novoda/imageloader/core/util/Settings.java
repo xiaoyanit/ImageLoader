@@ -16,6 +16,7 @@ public class Settings {
   private long expirationPeriod;
   private boolean isQueryIncludedInHash;
 	private boolean disconnectOnEveryCall;
+	private String sdkVersion;
   
   public Settings() {
     this.setExpirationPeriod(DEFAULT_EXPIRATION_PERIOD);
@@ -72,5 +73,13 @@ public class Settings {
 	public void setDisconnectOnEveryCall(boolean disconnectOnEveryCall) {
 	  this.disconnectOnEveryCall = disconnectOnEveryCall;
   }
+
+	public void setSdkVersion(String sdkVersion) {
+	  this.sdkVersion = sdkVersion;
+  }
+	
+	public String getSdkVersion() {
+		return this.sdkVersion;
+	}
 
 }

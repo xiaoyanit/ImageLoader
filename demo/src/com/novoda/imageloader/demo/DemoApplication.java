@@ -21,6 +21,7 @@ public class DemoApplication extends Application {
     // TODO add this to your classs
     SettingsBuilder builder = new SettingsBuilder();
     Settings settings = builder.build(this);
+    settings.setDisconnectOnEveryCall(true);
     imageLoader = new SingleThreadedImageLoader(this, settings);
     thumbnailImageLoader = new SingleThreadedImageLoader(this, settings) {
     	@Override
