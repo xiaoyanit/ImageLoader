@@ -5,7 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
 
-import com.novoda.imageloader.core.util.BitmapDisplayer;
+import com.novoda.imageloader.core.loader.util.BitmapDisplayer;
 
 public class ImageWrapper {
  
@@ -14,6 +14,7 @@ public class ImageWrapper {
 	private int notFoundResourceId;
 	private int width;
 	private int height;
+	private boolean isUseCacheOnly;
   private ImageView imageView;
 
   public ImageWrapper(ImageView imageView) {
@@ -22,6 +23,7 @@ public class ImageWrapper {
     this.url = tag.getUrl();
     this.loadingResourceId = tag.getLoadingResourceId();
     this.notFoundResourceId = tag.getNotFoundResourceId();
+    this.isUseCacheOnly = tag.isUseOnlyCache();
     this.height = tag.getHeight();
     this.width = tag.getWidth();
     if(notFoundResourceId == 0) {
@@ -73,6 +75,10 @@ public class ImageWrapper {
 
 	public boolean isUrlChanged() {
 	  return !getUrl().equals(getCurrentUrl());
+  }
+
+	public boolean isUseCacheOnly() {
+	  return isUseCacheOnly;
   }
 
 }

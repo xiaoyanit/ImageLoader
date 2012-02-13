@@ -14,7 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.novoda.imageloader.core.Util;
-import com.novoda.imageloader.core.file.FileUtil;
+import com.novoda.imageloader.core.file.util.FileUtil;
 
 public class FileUtilTest {
 	

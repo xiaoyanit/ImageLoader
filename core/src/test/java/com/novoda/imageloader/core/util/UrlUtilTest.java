@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.novoda.imageloader.core.network.UrlUtil;
+
 public class UrlUtilTest {
   
   private UrlUtil urlUtil = new UrlUtil();

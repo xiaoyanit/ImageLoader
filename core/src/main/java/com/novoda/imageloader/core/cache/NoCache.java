@@ -1,8 +1,9 @@
 package com.novoda.imageloader.core.cache;
 
+
 import android.graphics.Bitmap;
 
-public class NoCache implements BitmapCache {
+public class NoCache implements CacheManager {
 
   @Override
   public boolean hasBitmap(String url) {

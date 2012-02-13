@@ -7,6 +7,7 @@ public class ImageTag {
 	private int notFoundResourceId;
 	private int height;
 	private int width;
+	private boolean useOnlyCache;
 	
 	public ImageTag(String url, int loadingResourceId, int notFoundResourceId, int width, int height) {
 		this.url = url;
@@ -34,6 +35,14 @@ public class ImageTag {
 	
 	public int getWidth() {
 	  return width;
+  }
+
+	public boolean isUseOnlyCache() {
+	  return useOnlyCache;
+  }
+
+	public void setUseOnlyCache(boolean useOnlyCache) {
+	  this.useOnlyCache = useOnlyCache;
   }
 	
 }

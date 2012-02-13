@@ -1,4 +1,4 @@
-package com.novoda.imageloader.core.file;
+package com.novoda.imageloader.core.file.util;
 
 import java.io.FilterInputStream;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package com.novoda.imageloader.core.util;
+package com.novoda.imageloader.core.loader.util;
 
 import android.graphics.Bitmap;
 

@@ -1,4 +1,4 @@
-package com.novoda.imageloader.core.util;
+package com.novoda.imageloader.core.network;
 
 public class UrlUtil {
 

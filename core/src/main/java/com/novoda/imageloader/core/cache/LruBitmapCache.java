@@ -2,9 +2,8 @@ package com.novoda.imageloader.core.cache;
 
 import android.graphics.Bitmap;
 
-import com.android.camera.gallery.LruCache;
 
-public class LruBitmapCache implements BitmapCache {
+public class LruBitmapCache implements CacheManager {
 
   private LruCache<String, Bitmap> cache;
 

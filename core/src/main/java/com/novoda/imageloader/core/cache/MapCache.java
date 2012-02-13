@@ -2,9 +2,10 @@ package com.novoda.imageloader.core.cache;
 
 import java.util.HashMap;
 
+
 import android.graphics.Bitmap;
 
-public class MapCache implements BitmapCache {
+public class MapCache implements CacheManager {
 
   private HashMap<String, Bitmap> cache = new HashMap<String, Bitmap>();
 

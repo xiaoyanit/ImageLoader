@@ -2,7 +2,7 @@ package com.novoda.imageloader.core.cache;
 
 import android.graphics.Bitmap;
 
-public interface BitmapCache {
+public interface CacheManager {
 
 	boolean hasBitmap(String url);
 
@@ -11,5 +11,5 @@ public interface BitmapCache {
 	void put(String url, Bitmap bmp);
 
 	void clean();
-
+	
 }

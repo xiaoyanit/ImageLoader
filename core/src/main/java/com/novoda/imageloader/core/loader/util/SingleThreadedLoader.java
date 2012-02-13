@@ -1,4 +1,4 @@
-package com.novoda.imageloader.core.loader;
+package com.novoda.imageloader.core.loader.util;
 
 import java.util.ArrayList;
 import java.util.List;

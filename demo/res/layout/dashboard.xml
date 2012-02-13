@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:adfonic="http://schemas.android.com/apk/lib/com.adfonic.android"
+        android:id="@+id/content"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+    
+    <Button
+        android:id="@+id/long_image_list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Long image list" />
+    
+    <Button
+        android:id="@+id/long_small_image_list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Long small image list" />
+    
+    <Button
+        android:id="@+id/from_cache_only"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="From cache only" />
+    
+    <Button
+        android:id="@+id/big_images"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Big images" />
+
+</LinearLayout>

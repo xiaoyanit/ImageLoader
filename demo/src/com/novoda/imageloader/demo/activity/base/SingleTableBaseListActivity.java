@@ -9,7 +9,7 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.SimpleCursorAdapter.ViewBinder;
 
-import com.novoda.imageloader.core.ImageLoader;
+import com.novoda.imageloader.core.ImageManager;
 import com.novoda.imageloader.core.model.ImageTagFactory;
 import com.novoda.imageloader.demo.DemoApplication;
 import com.novoda.imageloader.demo.R;
@@ -20,7 +20,7 @@ public abstract class SingleTableBaseListActivity extends BaseListActivity {
 	private static final int[] TO = new int[] { R.id.list_item_image };
 
 	// TODO add this to your class
-	protected ImageLoader imageLoader;
+	protected ImageManager imageManager;
 	protected ImageTagFactory imageTagFactory;
 	//
 
@@ -35,14 +35,14 @@ public abstract class SingleTableBaseListActivity extends BaseListActivity {
 	}
 
 	protected void prepareLoader() {
-		imageLoader = DemoApplication.getImageLoader();
+		imageManager = DemoApplication.getImageLoader();
 		imageTagFactory = new ImageTagFactory(this, R.drawable.bg_img_loading);
 		imageTagFactory.setErrorImageId(R.drawable.bg_img_notfound);
 	}
 	
 	protected void load(View view) {
 		// TODO add this to your class
-		imageLoader.load((ImageView) view);
+		imageManager.getLoader().load((ImageView) view);
 		//
 	}
 

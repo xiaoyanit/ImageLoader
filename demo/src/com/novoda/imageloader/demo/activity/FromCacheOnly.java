@@ -1,8 +1,8 @@
 package com.novoda.imageloader.demo.activity;
 
-import android.view.View;
-import android.widget.ImageView;
-
+import com.novoda.imageloader.core.model.ImageTagFactory;
+import com.novoda.imageloader.demo.DemoApplication;
+import com.novoda.imageloader.demo.R;
 import com.novoda.imageloader.demo.activity.base.SingleTableBaseListActivity;
 
 public class FromCacheOnly extends SingleTableBaseListActivity {
@@ -12,10 +12,10 @@ public class FromCacheOnly extends SingleTableBaseListActivity {
 		return FromCacheOnly.class.getSimpleName().toLowerCase();
 	}
 	
-	protected void load(View view) {
-		// TODO add this to your class
-		imageLoader.loadFromCacheOnly((ImageView) view);
-		//
+	protected void prepareLoader() {
+		imageManager = DemoApplication.getImageLoader();
+		imageTagFactory = new ImageTagFactory(this, R.drawable.bg_img_loading);
+		imageTagFactory.setErrorImageId(R.drawable.bg_img_notfound);
+		imageTagFactory.setUseOnlyCache(true);
 	}
-
 }

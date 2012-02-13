@@ -4,7 +4,7 @@ import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 
-import com.novoda.imageloader.core.file.FileUtil;
+import com.novoda.imageloader.core.file.util.FileUtil;
 
 public class CacheCleaner extends IntentService {
 

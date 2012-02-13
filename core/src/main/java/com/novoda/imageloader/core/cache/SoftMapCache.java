@@ -3,9 +3,10 @@ package com.novoda.imageloader.core.cache;
 import java.lang.ref.SoftReference;
 import java.util.HashMap;
 
+
 import android.graphics.Bitmap;
 
-public class SoftMapCache implements BitmapCache {
+public class SoftMapCache implements CacheManager {
 
   private HashMap<String, SoftReference<Bitmap>> cache = new HashMap<String, SoftReference<Bitmap>>();
 

@@ -1,4 +1,4 @@
-package com.novoda.imageloader.core.util;
+package com.novoda.imageloader.core.bitmap;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,7 +7,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import com.novoda.imageloader.core.file.FileUtil;
+import com.novoda.imageloader.core.file.util.FileUtil;
 import com.novoda.imageloader.core.model.ImageWrapper;
 
 public class BitmapUtil {

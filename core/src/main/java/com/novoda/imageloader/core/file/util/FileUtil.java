@@ -1,22 +1,17 @@
-package com.novoda.imageloader.core.file;
+package com.novoda.imageloader.core.file.util;
 
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 import android.content.Context;
 import android.util.Log;
 
 import com.novoda.imageloader.core.exception.ImageCopyException;
-import com.novoda.imageloader.core.exception.ImageNotFoundException;
-import com.novoda.imageloader.core.util.Settings;
 
 public class FileUtil {
 
@@ -27,38 +22,6 @@ public class FileUtil {
   private static final int BUFFER_SIZE = 60*1024;
   private static final byte[] BUFFER = new byte[BUFFER_SIZE];
   
-  
-  public void retrieveImage(String url, File f, Settings settings) {
-    InputStream is = null;
-    OutputStream os = null;
-    HttpURLConnection conn = null;
-    applayChangeonSdkVersion(settings.getSdkVersion());
-    try {
-    	conn = (HttpURLConnection)new URL(url).openConnection();
-    	conn.setConnectTimeout(settings.getConnectionTimeout());
-    	conn.setReadTimeout(settings.getReadTimeout());
-      is = conn.getInputStream();
-      os = new FileOutputStream(f);
-      copyStream(is, os);
-    } catch (FileNotFoundException fnfe) {
-      throw new ImageNotFoundException();
-    } catch (Exception ex) {
-      Log.e(TAG, "Unknown Exception while getting the image " + ex.getMessage());
-    } finally {
-    	if(conn != null && settings.getDisconnectOnEveryCall()) {
-    		conn.disconnect();    		
-    	}
-      closeSilently(is);
-      closeSilently(os);
-    }
-  }
-
-  private void applayChangeonSdkVersion(String sdkVersion) {
-  	if (Integer.parseInt(sdkVersion) < 8) {
-      System.setProperty("http.keepAlive", "false");
-    }
-  }
-
 	public void closeSilently(Closeable c) {
     try {
       if (c != null) {
