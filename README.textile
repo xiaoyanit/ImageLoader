@@ -19,14 +19,14 @@ If you are using maven you need to define the repo and then the dependency
 <pre><code><dependency>
   <groupId>com.novoda.imageloader.core</groupId>
   <artifactId>imageloader-core</artifactId>
- <version>1.4.3</version>
+ <version>1.4.6</version>
 </dependency></code></pre>
 
 h3. Direct jar usage
 
 If you don't care about building tool you can just download the jar manually from this link
 
-https://github.com/novoda/public-mvn-repo/raw/master/releases/com/novoda/imageloader/imageloader-core/1.4.1/imageloader-core-1.4.1.jar
+https://github.com/novoda/public-mvn-repo/raw/master/releases/com/novoda/imageloader/imageloader-core/1.4.6/imageloader-core-1.4.6.jar
 
 h2. How to implement
 
@@ -41,13 +41,13 @@ In the application add the folling code the instantiate the image loader:
   @Override
   public void onCreate() {
     super.onCreate();
-    SettingsBuilder builder = new SettingsBuilder();
-    Settings settings = builder.build(this);
-    imageLoader = new SingleThreadedImageLoader(this, settings);
+    LoaderSettings settings = new SettingsBuilder()
+      .withDisconnectOnEveryCall(true).build(this);
+    imageManager = new ImageManager(this, settings);
   }
 
-  public static final ImageManager getImageLoader() {
-    return imageLoader;
+  public static final ImageManager getImageManager() {
+    return imageManager;
   }
 </code></pre>
 
@@ -60,12 +60,9 @@ To avoid that we added a LruCache in the image loader library. This is very  use
 <pre><code>
 private static final int NUMBER_OF_IMAGE_IN_CACHE = 50;
 ...
-thumbnailImageLoader = new SingleThreadedImageLoader(this, settings) {
-  @Override
-	protected BitmapCache createCache() {
-		return new LruBitmapCache(NUMBER_OF_IMAGE_IN_CACHE);
-	}
-};
+settings = new SettingsBuilder()
+  .withCacheManager(new LruBitmapCache(50)).build(this);
+thumbnailImageLoader = new ImageManager(this, settings);
 </code></pre>
 
 h3. Additional settings
@@ -74,11 +71,8 @@ Image loader use UrlConnection to fetch images. There are two important paramete
 
 <pre><code>
 SettingsBuilder builder = new SettingsBuilder();
-Settings settings = builder.build(this);
-//Default value to 15 sec
-settings.setConnectionTimeout(20000);
-//Default value to 90 sec
-settings.setReadTimeout(60000);
+Settings settings = builder.withConnectionTimeout(20000)
+  .withReadTimeout(30000).build(this);
 </code></pre>
 
 The connection timeout is the timeout in making the initial connection. The read timeout is the timeout on waiting to read data.
@@ -90,7 +84,7 @@ h3. Cleaning up sdcard
 If you want the image loader to clean up the sdcard, you can use the following line of code on the create of the application:
 
 <pre><code>
-imageManager.reduceFileCache(this);
+imageManager.getFileManager().clean(this);
 </code></pre>
 
 In the settings you can override the default expiration period that is set to 7 days.
