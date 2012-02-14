@@ -29,13 +29,13 @@
     <dependency>
       <groupId>com.novoda.imageloader</groupId>
       <artifactId>imageloader-demo</artifactId>
-      <version>1.4.6-SNAPSHOT</version>
+      <version>1.4.7-SNAPSHOT</version>
       <type>apk</type>
     </dependency>
     <dependency>
       <groupId>com.novoda.imageloader</groupId>
       <artifactId>imageloader-demo</artifactId>
-      <version>1.4.6-SNAPSHOT</version>
+      <version>1.4.7-SNAPSHOT</version>
       <type>jar</type>
     </dependency>
   </dependencies>
