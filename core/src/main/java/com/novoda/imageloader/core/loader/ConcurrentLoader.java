@@ -1,6 +1,7 @@
 package com.novoda.imageloader.core.loader;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.novoda.imageloader.core.LoaderContext;
@@ -19,6 +20,10 @@ public class ConcurrentLoader implements Loader {
 	@Override
   public void load(ImageView imageView) {
 		ImageWrapper w = new ImageWrapper(imageView);
+		if(w.getUrl() == null) {
+			Log.w("ImageLoader", "You should never call load if you don't set a ImageTag on the view");
+			return;
+		}
 		try {
   		if (loaderContext.getCache().hasBitmap(w.getUrl())) {
   			Bitmap b = loaderContext.getCache().get(w.getUrl());

@@ -1,5 +1,9 @@
 package com.novoda.imageloader.demo.activity;
 
+import android.database.Cursor;
+import android.view.View;
+import android.widget.ImageView;
+
 import com.novoda.imageloader.core.model.ImageTagFactory;
 import com.novoda.imageloader.demo.DemoApplication;
 import com.novoda.imageloader.demo.R;

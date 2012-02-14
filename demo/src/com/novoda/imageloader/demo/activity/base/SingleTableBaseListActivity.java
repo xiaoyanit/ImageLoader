@@ -54,12 +54,17 @@ public abstract class SingleTableBaseListActivity extends BaseListActivity {
 		return new ViewBinder() {
 			@Override
 			public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-				String url = cursor.getString(columnIndex);
-				((ImageView) view).setTag(imageTagFactory.build(url));
-				load(view);
+				setTag(view, cursor, columnIndex);
 				return true;
 			}
+
 		};
+	}
+	
+	protected void setTag(View view, Cursor cursor, int columnIndex) {
+		String url = cursor.getString(columnIndex);
+		((ImageView) view).setTag(imageTagFactory.build(url));
+		load(view);
 	}
 
 	private SimpleCursorAdapter initAdapter() {

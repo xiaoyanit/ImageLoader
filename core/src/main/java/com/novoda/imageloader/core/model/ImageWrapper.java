@@ -20,6 +20,9 @@ public class ImageWrapper {
   public ImageWrapper(ImageView imageView) {
     this.imageView = imageView;
     ImageTag tag = (ImageTag)imageView.getTag();
+    if(tag == null) {
+    	return;
+    }
     this.url = tag.getUrl();
     this.loadingResourceId = tag.getLoadingResourceId();
     this.notFoundResourceId = tag.getNotFoundResourceId();

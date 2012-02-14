@@ -47,7 +47,12 @@ public class BitmapUtil {
       finalHeight = new Float(imageHeight * factor).intValue();
       finalWidth = new Float(imageWidth * factor).intValue();
     }
-    Bitmap scaled = Bitmap.createScaledBitmap(b, finalWidth, finalHeight, true);
+    Bitmap scaled = null;
+    try {
+    	scaled = Bitmap.createScaledBitmap(b, finalWidth, finalHeight, true);
+  	} catch (final Throwable e) {
+    	System.gc();
+  	}
     recycle(b);
     return scaled;
   }
