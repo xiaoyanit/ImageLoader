@@ -1,7 +1,7 @@
 package com.novoda.imageloader.acceptance;
 
 import android.test.ActivityInstrumentationTestCase2;
-import android.test.suitebuilder.annotation.LargeTest;
+import android.test.UiThreadTest;
 import android.widget.ListView;
 
 import com.jayway.android.robotium.solo.Solo;
@@ -10,55 +10,40 @@ import com.novoda.imageloader.demo.activity.ImageLongList;
 public class ImageLoaderDemoActivityTest extends ActivityInstrumentationTestCase2<ImageLongList>{
 
 	private static final int QUICK = 2;
-	private static final int NORMAL = 7;
 	
-	private Solo robotium;
+	private Solo solo;
 	private ListView list;
 
 	public ImageLoaderDemoActivityTest() {
 		super("com.novoda.imageloader.demo", ImageLongList.class);
 	}
 	
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-		robotium = new Solo(getInstrumentation(), getActivity());
+	public void testOpenTheActivity(){
+		solo = new Solo(getInstrumentation(), getActivity());
+		assertNotNull(solo);
+	}
+	
+	//TODO work in progress
+	@UiThreadTest
+	public void IGNORE_testLoadingImage() {
+		solo = new Solo(getInstrumentation(), getActivity());
 		list = getActivity().getListView();
-	}
-	
-	public void testOpenTheApp(){
-		robotium = new Solo(getInstrumentation(), getActivity());
-		assertNotNull(robotium);
-	}
-	
-	public void testScrollingDownToBottomAndBackToTopQuickly(){
-		try{
-			scrollToBottom(QUICK);
-			scrollToTop(QUICK);
-		}catch (OutOfMemoryError e){
-			fail();
+		int i = 0;
+		try {
+			while (true) {
+				list.setSelection(i);
+				i++;
+			}
+		} catch (Exception e) {
+			assertFalse("" + e.getMessage(), i == 0);
 		}
-	}
-	
-	@LargeTest
-	public void ignore_testScrollingDownToBottomAndBackToTopSlowlyToLoadAllImages(){
-		try{
-			scrollToBottom(NORMAL);
-			scrollToTop(NORMAL);
-		}catch (OutOfMemoryError e){
-			fail();
-		}
-	}
-	
-	private void scrollToBottom(int stepCount) {
-		while(!isListAtTheBottom()){
-			robotium.drag(1, 1, 200, 100, stepCount);
-		}
-	}
-	
-	private void scrollToTop(int stepCount){
-		while(!isListAtTheTop()){
-			robotium.drag(1, 1, 100, 200, stepCount);
+		try {
+			while (true) {
+				list.setSelection(i);
+				i--;
+			}
+		} catch (Exception e) {
+			assertTrue("" + e.getMessage(), i > 0);
 		}
 	}
 	
