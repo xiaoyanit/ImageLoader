@@ -29,8 +29,14 @@ public class BitmapUtil {
 
 	public Bitmap scaleResourceBitmap(ImageWrapper iw, int resourceId) {
   	Context c = iw.getContext();
-  	Bitmap i = BitmapFactory.decodeResource(c.getResources(), resourceId);
-    return scaleBitmap(i, iw.getWidth(), iw.getHeight());
+  	Bitmap b = null;
+  	try {
+  		b = BitmapFactory.decodeResource(c.getResources(), resourceId);
+  		return scaleBitmap(b, iw.getWidth(), iw.getHeight());
+  	} catch (final Throwable e) {
+    	System.gc();
+  	}
+  	return null;
   }
 
   public Bitmap scaleBitmap(Bitmap b, int width, int height) {
@@ -70,14 +76,14 @@ public class BitmapUtil {
   }
 	
 	private Bitmap decodeFile(File f, int suggestedSize) {
-    	int scale = evaluateScale(f, suggestedSize);
-      final BitmapFactory.Options options = new BitmapFactory.Options();
-      options.inSampleSize = scale;
-      options.inTempStorage = new byte[BUFFER_SIZE];
-      options.inPurgeable = true;
-      Bitmap bitmap = null;
-      FileInputStream fis = null;
+			Bitmap bitmap = null;
+			FileInputStream fis = null;
       try {
+      	int scale = evaluateScale(f, suggestedSize);
+      	final BitmapFactory.Options options = new BitmapFactory.Options();
+      	options.inSampleSize = scale;
+      	options.inTempStorage = new byte[BUFFER_SIZE];
+      	options.inPurgeable = true;
       	fis  = new FileInputStream(f);
         bitmap = BitmapFactory.decodeStream(fis, null, options);
       } catch (final Throwable e) {
