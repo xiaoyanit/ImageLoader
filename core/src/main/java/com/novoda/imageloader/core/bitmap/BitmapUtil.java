@@ -1,5 +1,6 @@
 package com.novoda.imageloader.core.bitmap;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 
@@ -7,7 +8,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import com.novoda.imageloader.core.file.util.FileUtil;
 import com.novoda.imageloader.core.model.ImageWrapper;
 
 public class BitmapUtil {
@@ -114,8 +114,13 @@ public class BitmapUtil {
 	  }
   }
 
-	private void closeSilently(FileInputStream fis) {
-	  new FileUtil().closeSilently(fis);
+	private void closeSilently(Closeable c) {
+		try {
+      if (c != null) {
+        c.close();
+      }
+    } catch (Exception e) {
+    }
   }
 
 	private int calculateScale(final int requiredSize, int widthTmp, int heightTmp) {

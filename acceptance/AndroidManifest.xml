@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:a="http://schemas.android.com/apk/res/android"
-  package="com.novoda.imageloader.acceptance" a:versionCode="7"
-  a:versionName="1.4.6-SNAPSHOT">
-  <uses-sdk a:minSdkVersion="8" />
-  <uses-sdk a:targetSdkVersion="8" />
-  <instrumentation a:targetPackage="com.novoda.imageloader.demo"
-    a:name="android.test.InstrumentationTestRunner" />
-  <application a:icon="@drawable/icon" a:label="@string/app_name">
-    <uses-library a:name="android.test.runner" />
-  </application>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.novoda.imageloader.acceptance"
+    android:versionCode="7"
+    android:versionName="1.4.6-SNAPSHOT" >
+
+    <uses-sdk
+        android:minSdkVersion="4"
+        android:targetSdkVersion="8" />
+
+    <instrumentation
+        android:name="android.test.InstrumentationTestRunner"
+        android:targetPackage="com.novoda.imageloader.demo" />
+
+    <application
+        android:icon="@drawable/icon"
+        android:label="@string/app_name" >
+        <uses-library android:name="android.test.runner" />
+    </application>
+
 </manifest>

@@ -36,7 +36,7 @@ public class UrlNetworkLoader implements NetworkManager {
       fileUtil.copyStream(is, os);
     } catch (FileNotFoundException fnfe) {
       throw new ImageNotFoundException();
-    } catch (Exception ex) {
+    } catch (Throwable ex) {
     	//TODO
     } finally {
     	if(conn != null && settings.getDisconnectOnEveryCall()) {
