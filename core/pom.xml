@@ -64,7 +64,11 @@
         <groupId>com.mycila.maven-license-plugin</groupId>
         <artifactId>maven-license-plugin</artifactId>
         <configuration>
-          <header>src/main/resources/header.txt</header>
+          <header>src/main/resources/license.txt</header>
+          <strictCheck>true</strictCheck>
+          <excludes>
+            <exclude>src/main/java/com/novoda/imageloader/core/cache/LruCache.java</exclude>
+          </excludes>
         </configuration>
       </plugin>
     </plugins>
