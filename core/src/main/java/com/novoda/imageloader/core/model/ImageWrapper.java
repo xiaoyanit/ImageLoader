@@ -23,80 +23,80 @@ import android.widget.ImageView;
 import com.novoda.imageloader.core.loader.util.BitmapDisplayer;
 
 public class ImageWrapper {
- 
-	private String url;
-	private int loadingResourceId;
-	private int notFoundResourceId;
-	private int width;
-	private int height;
-	private boolean isUseCacheOnly;
-  private ImageView imageView;
 
-  public ImageWrapper(ImageView imageView) {
-    this.imageView = imageView;
-    ImageTag tag = (ImageTag)imageView.getTag();
-    if(tag == null) {
-    	return;
+    private String url;
+    private int loadingResourceId;
+    private int notFoundResourceId;
+    private int width;
+    private int height;
+    private boolean isUseCacheOnly;
+    private ImageView imageView;
+
+    public ImageWrapper(ImageView imageView) {
+        this.imageView = imageView;
+        ImageTag tag = (ImageTag) imageView.getTag();
+        if (tag == null) {
+            return;
+        }
+        this.url = tag.getUrl();
+        this.loadingResourceId = tag.getLoadingResourceId();
+        this.notFoundResourceId = tag.getNotFoundResourceId();
+        this.isUseCacheOnly = tag.isUseOnlyCache();
+        this.height = tag.getHeight();
+        this.width = tag.getWidth();
+        if (notFoundResourceId == 0) {
+            this.notFoundResourceId = tag.getLoadingResourceId();
+        }
     }
-    this.url = tag.getUrl();
-    this.loadingResourceId = tag.getLoadingResourceId();
-    this.notFoundResourceId = tag.getNotFoundResourceId();
-    this.isUseCacheOnly = tag.isUseOnlyCache();
-    this.height = tag.getHeight();
-    this.width = tag.getWidth();
-    if(notFoundResourceId == 0) {
-    	this.notFoundResourceId = tag.getLoadingResourceId();
+
+    public String getCurrentUrl() {
+        ImageTag tag = (ImageTag) imageView.getTag();
+        return tag.getUrl();
     }
-  }
 
-	public String getCurrentUrl() {
-		ImageTag tag = (ImageTag)imageView.getTag();
-	  return tag.getUrl();
-  }
-	
-	public String getUrl() {
-	  return url;
-  }
-	
-	public int getWidth() {
-	  return width;
-  }
-	
-	public int getHeight() {
-	  return height;
-  }
-	
-	public void runOnUiThread(BitmapDisplayer displayer) {
-		Activity a = (Activity) imageView.getContext();
-    a.runOnUiThread(displayer);
-	}
-	
-	public Context getContext() {
-		return (Activity) imageView.getContext();
-	}
+    public String getUrl() {
+        return url;
+    }
 
-	public void setBitmap(Bitmap bitmap) {
-		imageView.setImageBitmap(bitmap);
-  }
+    public int getWidth() {
+        return width;
+    }
 
-	public boolean isCorrectUrl(String url) {
-	  return url.equals(getUrl());
-  }
+    public int getHeight() {
+        return height;
+    }
 
-	public int getLoadingResourceId() {
-	  return loadingResourceId;
-  }
-	
-	public int getNotFoundResourceId() {
-	  return notFoundResourceId;
-  }
+    public void runOnUiThread(BitmapDisplayer displayer) {
+        Activity a = (Activity) imageView.getContext();
+        a.runOnUiThread(displayer);
+    }
 
-	public boolean isUrlChanged() {
-	  return !getUrl().equals(getCurrentUrl());
-  }
+    public Context getContext() {
+        return (Activity) imageView.getContext();
+    }
 
-	public boolean isUseCacheOnly() {
-	  return isUseCacheOnly;
-  }
+    public void setBitmap(Bitmap bitmap) {
+        imageView.setImageBitmap(bitmap);
+    }
+
+    public boolean isCorrectUrl(String url) {
+        return url.equals(getUrl());
+    }
+
+    public int getLoadingResourceId() {
+        return loadingResourceId;
+    }
+
+    public int getNotFoundResourceId() {
+        return notFoundResourceId;
+    }
+
+    public boolean isUrlChanged() {
+        return !getUrl().equals(getCurrentUrl());
+    }
+
+    public boolean isUseCacheOnly() {
+        return isUseCacheOnly;
+    }
 
 }

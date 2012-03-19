@@ -9,65 +9,65 @@ import android.util.Log;
 
 public class ImageLoaderDemoProvider extends ContentProvider {
 
-  private CustomUriMatcher matcher = new CustomUriMatcher();
-  private DatabaseManager databaseManager;
-  private SQLiteDatabase database;
+    private CustomUriMatcher matcher = new CustomUriMatcher();
+    private DatabaseManager databaseManager;
+    private SQLiteDatabase database;
 
-  protected SQLiteDatabase getDataBase() {
-    if (database == null) {
-      databaseManager = new DatabaseManager(getContext());
-      database = databaseManager.getWritableDatabase();
+    protected SQLiteDatabase getDataBase() {
+        if (database == null) {
+            databaseManager = new DatabaseManager(getContext());
+            database = databaseManager.getWritableDatabase();
+        }
+        return database;
     }
-    return database;
-  }
 
-  @Override
-  public String getType(Uri uri) {
-    String type = null;
-    switch (matcher.match(uri)) {
-    case CustomUriMatcher.IMAGE_INCOMING_COLLECTION: {
-      type = CustomUriMatcher.IMAGE_COLLECTION_TYPE;
-      break;
+    @Override
+    public String getType(Uri uri) {
+        String type = null;
+        switch (matcher.match(uri)) {
+            case CustomUriMatcher.IMAGE_INCOMING_COLLECTION: {
+                type = CustomUriMatcher.IMAGE_COLLECTION_TYPE;
+                break;
+            }
+            case CustomUriMatcher.IMAGE_BIGIMAGES_INCOMING_COLLECTION: {
+                type = CustomUriMatcher.IMAGE_BIGIMAGES_COLLECTION_TYPE;
+                break;
+            }
+            case CustomUriMatcher.IMAGE_FROMCACHEONLY_INCOMING_COLLECTION: {
+                type = CustomUriMatcher.IMAGE_FROMCACHEONLY_COLLECTION_TYPE;
+                break;
+            }
+            default: {
+                Log.e("ImageLoader", "Problem with query, not Implemented for : " + uri);
+                throw new RuntimeException("Problem with query, not Implemented for : " + uri);
+            }
+        }
+        return type;
     }
-    case CustomUriMatcher.IMAGE_BIGIMAGES_INCOMING_COLLECTION: {
-      type = CustomUriMatcher.IMAGE_BIGIMAGES_COLLECTION_TYPE;
-      break;
+
+    @Override
+    public boolean onCreate() {
+        return false;
     }
-    case CustomUriMatcher.IMAGE_FROMCACHEONLY_INCOMING_COLLECTION: {
-        type = CustomUriMatcher.IMAGE_FROMCACHEONLY_COLLECTION_TYPE;
-        break;
-      }
-    default: {
-      Log.e("ImageLoader", "Problem with query, not Implemented for : " + uri);
-      throw new RuntimeException("Problem with query, not Implemented for : " + uri);
+
+    @Override
+    public int delete(Uri arg0, String arg1, String[] arg2) {
+        return 0;
     }
+
+    @Override
+    public Uri insert(Uri arg0, ContentValues arg1) {
+        return null;
     }
-    return type;
-  }
 
-  @Override
-  public boolean onCreate() {
-    return false;
-  }
+    @Override
+    public Cursor query(Uri uri, String[] p, String s, String[] args, String o) {
+        String n = uri.getLastPathSegment();
+        return getDataBase().query(n, p, s, args, null, null, o);
+    }
 
-  @Override
-  public int delete(Uri arg0, String arg1, String[] arg2) {
-    return 0;
-  }
-
-  @Override
-  public Uri insert(Uri arg0, ContentValues arg1) {
-    return null;
-  }
-
-  @Override
-  public Cursor query(Uri uri, String[] p, String s, String[] args, String o) {
-	  String n = uri.getLastPathSegment();
-	  return getDataBase().query(n, p, s, args, null, null, o);
-  }
-
-  @Override
-  public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-    return 0;
-  }
+    @Override
+    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        return 0;
+    }
 }

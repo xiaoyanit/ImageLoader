@@ -19,6 +19,6 @@ import android.widget.ImageView;
 
 public interface Loader {
 
-  void load(ImageView imageView);
-  
+    void load(ImageView imageView);
+
 }

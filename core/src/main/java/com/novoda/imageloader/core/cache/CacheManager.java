@@ -19,12 +19,12 @@ import android.graphics.Bitmap;
 
 public interface CacheManager {
 
-	boolean hasBitmap(String url);
+    boolean hasBitmap(String url);
 
-	Bitmap get(String url);
+    Bitmap get(String url);
 
-	void put(String url, Bitmap bmp);
+    void put(String url, Bitmap bmp);
 
-	void clean();
-	
+    void clean();
+
 }

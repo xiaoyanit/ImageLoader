@@ -21,14 +21,14 @@ import android.content.Context;
 
 public interface FileManager {
 
-	void delete(Context context);
+    void delete(Context context);
 
-	void clean(Context context);
+    void clean(Context context);
 
-	String getFilePath(String url);
-	
-	boolean exists(String path);
+    String getFilePath(String url);
 
-	File getFile(String url);
+    boolean exists(String path);
+
+    File getFile(String url);
 
 }

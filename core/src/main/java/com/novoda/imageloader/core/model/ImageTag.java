@@ -17,47 +17,47 @@ package com.novoda.imageloader.core.model;
 
 public class ImageTag {
 
-	private String url;
-	private int loadingResourceId;
-	private int notFoundResourceId;
-	private int height;
-	private int width;
-	private boolean useOnlyCache;
-	
-	public ImageTag(String url, int loadingResourceId, int notFoundResourceId, int width, int height) {
-		this.url = url;
-		this.loadingResourceId = loadingResourceId;
-		this.notFoundResourceId = notFoundResourceId;
-		this.width = width;
-		this.height = height;
-	}
+    private String url;
+    private int loadingResourceId;
+    private int notFoundResourceId;
+    private int height;
+    private int width;
+    private boolean useOnlyCache;
 
-	public String getUrl() {
-	  return url;
-  }
+    public ImageTag(String url, int loadingResourceId, int notFoundResourceId, int width, int height) {
+        this.url = url;
+        this.loadingResourceId = loadingResourceId;
+        this.notFoundResourceId = notFoundResourceId;
+        this.width = width;
+        this.height = height;
+    }
 
-	public int getNotFoundResourceId() {
-	  return notFoundResourceId;
-  }
+    public String getUrl() {
+        return url;
+    }
 
-	public int getLoadingResourceId() {
-	  return loadingResourceId;
-  }
+    public int getNotFoundResourceId() {
+        return notFoundResourceId;
+    }
 
-	public int getHeight() {
-	  return height;
-  }
-	
-	public int getWidth() {
-	  return width;
-  }
+    public int getLoadingResourceId() {
+        return loadingResourceId;
+    }
 
-	public boolean isUseOnlyCache() {
-	  return useOnlyCache;
-  }
+    public int getHeight() {
+        return height;
+    }
 
-	public void setUseOnlyCache(boolean useOnlyCache) {
-	  this.useOnlyCache = useOnlyCache;
-  }
-	
+    public int getWidth() {
+        return width;
+    }
+
+    public boolean isUseOnlyCache() {
+        return useOnlyCache;
+    }
+
+    public void setUseOnlyCache(boolean useOnlyCache) {
+        this.useOnlyCache = useOnlyCache;
+    }
+
 }
