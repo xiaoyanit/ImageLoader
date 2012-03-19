@@ -19,14 +19,14 @@ If you are using maven you need to define the repo and then the dependency
 <pre><code><dependency>
   <groupId>com.novoda.imageloader.core</groupId>
   <artifactId>imageloader-core</artifactId>
- <version>1.4.6</version>
+ <version>1.4.8</version>
 </dependency></code></pre>
 
 h3. Direct jar usage
 
 If you don't care about building tool you can just download the jar manually from this link
 
-https://github.com/novoda/public-mvn-repo/raw/master/releases/com/novoda/imageloader/imageloader-core/1.4.6/imageloader-core-1.4.6.jar
+https://github.com/novoda/public-mvn-repo/raw/master/releases/com/novoda/imageloader/imageloader-core/1.4.8/imageloader-core-1.4.8.jar
 
 h2. How to implement
 
