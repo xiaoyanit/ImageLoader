@@ -17,7 +17,7 @@ If you are using maven you need to define the repo and then the dependency
 </repositories></code></pre>
 
 <pre><code><dependency>
-  <groupId>com.novoda.imageloader.core</groupId>
+  <groupId>com.novoda.imageloader</groupId>
   <artifactId>imageloader-core</artifactId>
  <version>1.4.8</version>
 </dependency></code></pre>
