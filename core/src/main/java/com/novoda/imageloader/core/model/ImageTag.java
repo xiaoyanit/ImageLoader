@@ -23,6 +23,7 @@ public class ImageTag {
     private int height;
     private int width;
     private boolean useOnlyCache;
+    private boolean saveThumbnail;
 
     public ImageTag(String url, int loadingResourceId, int notFoundResourceId, int width, int height) {
         this.url = url;
@@ -58,6 +59,14 @@ public class ImageTag {
 
     public void setUseOnlyCache(boolean useOnlyCache) {
         this.useOnlyCache = useOnlyCache;
+    }
+
+    public boolean isSaveThumbnail() {
+        return saveThumbnail;
+    }
+
+    public void setSaveThumbnail(boolean saveThumbnail) {
+        this.saveThumbnail = saveThumbnail;
     }
 
 }

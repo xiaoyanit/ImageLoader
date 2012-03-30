@@ -22,22 +22,22 @@ import org.junit.Test;
 import com.novoda.imageloader.core.network.UrlUtil;
 
 public class UrlUtilTest {
-
-    private UrlUtil urlUtil = new UrlUtil();
-
-    @Test
-    public void SHOULD_removeQueryFromUrlReturnNul_WHEN_urlIsNull() {
-        assertEquals(null, urlUtil.removeQuery(null));
-    }
-
-    @Test
-    public void SHOULD_removeQueryFromUrlReturnUnmodifiedUrl_WHEN_qeryNotPresent() {
-        assertEquals("http://www.google.com", urlUtil.removeQuery("http://www.google.com"));
-    }
-
-    @Test
-    public void SHOULD_removeQueryFromUrl() {
-        assertEquals("http://www.google.com", urlUtil.removeQuery("http://www.google.com?q=test"));
-    }
+  
+  private UrlUtil urlUtil = new UrlUtil();
+  
+  @Test
+  public void SHOULD_removeQueryFromUrlReturnNul_WHEN_urlIsNull() {
+    assertEquals(null, urlUtil.removeQuery(null));
+  }
+  
+  @Test
+  public void SHOULD_removeQueryFromUrlReturnUnmodifiedUrl_WHEN_qeryNotPresent() {
+    assertEquals("http://www.google.com", urlUtil.removeQuery("http://www.google.com"));
+  }
+  
+  @Test
+  public void SHOULD_removeQueryFromUrl() {
+    assertEquals("http://www.google.com", urlUtil.removeQuery("http://www.google.com?q=test"));
+  }
 
 }

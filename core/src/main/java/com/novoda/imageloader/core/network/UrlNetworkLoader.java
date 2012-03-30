@@ -41,7 +41,7 @@ public class UrlNetworkLoader implements NetworkManager {
         InputStream is = null;
         OutputStream os = null;
         HttpURLConnection conn = null;
-        applayChangeonSdkVersion(settings.getSdkVersion());
+        applyChangeonSdkVersion(settings.getSdkVersion());
         try {
             conn = (HttpURLConnection) new URL(url).openConnection();
             conn.setConnectTimeout(settings.getConnectionTimeout());
@@ -62,7 +62,7 @@ public class UrlNetworkLoader implements NetworkManager {
         }
     }
 
-    private void applayChangeonSdkVersion(String sdkVersion) {
+    private void applyChangeonSdkVersion(String sdkVersion) {
         if (Integer.parseInt(sdkVersion) < 8) {
             System.setProperty("http.keepAlive", "false");
         }

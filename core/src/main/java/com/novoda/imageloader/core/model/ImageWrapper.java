@@ -31,6 +31,7 @@ public class ImageWrapper {
     private int height;
     private boolean isUseCacheOnly;
     private ImageView imageView;
+    private boolean saveThumbnail;
 
     public ImageWrapper(ImageView imageView) {
         this.imageView = imageView;
@@ -44,6 +45,7 @@ public class ImageWrapper {
         this.isUseCacheOnly = tag.isUseOnlyCache();
         this.height = tag.getHeight();
         this.width = tag.getWidth();
+        this.saveThumbnail = tag.isSaveThumbnail();
         if (notFoundResourceId == 0) {
             this.notFoundResourceId = tag.getLoadingResourceId();
         }
@@ -97,6 +99,14 @@ public class ImageWrapper {
 
     public boolean isUseCacheOnly() {
         return isUseCacheOnly;
+    }
+
+    public boolean isSaveThumbnail() {
+        return saveThumbnail;
+    }
+
+    public void setSaveThumbnail(boolean saveThumbnail) {
+        this.saveThumbnail = saveThumbnail;
     }
 
 }

@@ -16,6 +16,7 @@
 package com.novoda.imageloader.core.file;
 
 import java.io.File;
+import java.io.FileOutputStream;
 
 import com.novoda.imageloader.core.LoaderSettings;
 import com.novoda.imageloader.core.network.UrlUtil;
@@ -23,6 +24,7 @@ import com.novoda.imageloader.core.service.CacheCleaner;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 
 public class BasicFileManager implements FileManager {
 
@@ -52,6 +54,16 @@ public class BasicFileManager implements FileManager {
         return null;
     }
 
+    @Override
+    public void saveBitmap(String fileName, Bitmap b, int width, int height) {
+        try {
+            FileOutputStream out = new FileOutputStream(fileName + "-" + width + "x" + height);
+            b.compress(Bitmap.CompressFormat.PNG, 90, out);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void sendCacheCleanUpBroadcast(Context context, long expirationPeriod) {
         String path = settings.getCacheDir().getAbsolutePath();
         Intent i = CacheCleaner.getCleanCacheIntent(path, expirationPeriod);
@@ -69,6 +81,13 @@ public class BasicFileManager implements FileManager {
     public File getFile(String url) {
         url = processUrl(url);
         String filename = String.valueOf(url.hashCode());
+        return new File(settings.getCacheDir(), filename);
+    }
+
+    @Override
+    public File getFile(String url, int width, int height) {
+        url = processUrl(url);
+        String filename = String.valueOf(url.hashCode()) + "-" + width + "x" + height;
         return new File(settings.getCacheDir(), filename);
     }
 

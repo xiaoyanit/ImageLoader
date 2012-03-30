@@ -18,6 +18,7 @@ package com.novoda.imageloader.core.file;
 import java.io.File;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 
 public interface FileManager {
 
@@ -30,5 +31,9 @@ public interface FileManager {
     boolean exists(String path);
 
     File getFile(String url);
+
+    void saveBitmap(String fileName, Bitmap b, int width, int height);
+
+    File getFile(String url, int width, int height);
 
 }

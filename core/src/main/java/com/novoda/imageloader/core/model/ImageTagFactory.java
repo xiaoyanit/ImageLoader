@@ -27,6 +27,7 @@ public class ImageTagFactory {
     private int defaultImageResId;
     private int errorImageResId;
     private boolean useOnlyCache;
+    private boolean saveThumbnail;
 
     public ImageTagFactory(int width, int height, int defaultImageResId) {
         this.width = width;
@@ -53,9 +54,14 @@ public class ImageTagFactory {
         this.useOnlyCache = useOnlyCache;
     }
 
+    public void setSaveThumbnail(boolean saveThumbnail) {
+        this.saveThumbnail = saveThumbnail;
+    }
+
     public ImageTag build(String url) {
         ImageTag it = new ImageTag(url, defaultImageResId, errorImageResId, width, height);
         it.setUseOnlyCache(useOnlyCache);
+        it.setSaveThumbnail(saveThumbnail);
         return it;
     }
 

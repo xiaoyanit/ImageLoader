@@ -42,12 +42,11 @@ public class BitmapUtil {
         return scaleBitmap(unscaledBitmap, width, height);
     }
 
-    public Bitmap scaleResourceBitmap(ImageWrapper iw, int resourceId) {
-        Context c = iw.getContext();
+    public Bitmap scaleResourceBitmap(Context c, int width, int height, int resourceId) {
         Bitmap b = null;
         try {
             b = BitmapFactory.decodeResource(c.getResources(), resourceId);
-            return scaleBitmap(b, iw.getWidth(), iw.getHeight());
+            return scaleBitmap(b, width, height);
         } catch (final Throwable e) {
             System.gc();
         }
@@ -57,6 +56,9 @@ public class BitmapUtil {
     public Bitmap scaleBitmap(Bitmap b, int width, int height) {
         int imageHeight = b.getHeight();
         int imageWidth = b.getWidth();
+        if (imageHeight <= height && imageWidth <= width) {
+            return b;
+        }
         int finalWidth = width;
         int finalHeight = height;
         if (imageHeight > imageWidth) {
@@ -149,6 +151,10 @@ public class BitmapUtil {
             scale *= 2;
         }
         return scale;
+    }
+
+    public Bitmap scaleResourceBitmap(ImageWrapper w, int resId) {
+        return scaleResourceBitmap(w.getContext(), w.getWidth(), w.getHeight(), resId);
     }
 
 }
