@@ -40,14 +40,11 @@ public class ConcurrentLoader implements Loader {
             return;
         }
         try {
-            Log.v("YYY", "checking cache");
             Bitmap b = loaderContext.getCache().get(w.getUrl(), w.getHeight(), w.getWidth());
             if (b != null) {
-                Log.v("YYY", "image not in cache");
                 w.setBitmap(b);
                 return;
             }
-            Log.v("YYY", "using task");
             setResource(w, w.getLoadingResourceId());
             new LoaderTask(imageView, loaderContext).execute();
         } catch (ImageNotFoundException inf) {

@@ -20,7 +20,6 @@ import java.lang.ref.WeakReference;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.novoda.imageloader.core.LoaderContext;
@@ -61,7 +60,6 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
         }
         Bitmap b = loaderContext.getCache().get(url, width, height);
         if (b != null) {
-            Log.v("LoaderTask", "Loading image from cache");
             return b;
         }
         File imageFile = getImageFile(imageWrapper);
@@ -70,7 +68,6 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
                 return null;
             }
             try {
-                Log.v("LoaderTask", "Loading from network");
                 loaderContext.getNetworkManager().retrieveImage(url, imageFile);
             } catch (ImageNotFoundException inf) {
                 return getNotFoundImage(imageWrapper.getContext());
@@ -84,7 +81,6 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
 
     private Bitmap getImageFromFile(File imageFile) {
         Bitmap b = loaderContext.getBitmapUtil().decodeFileAndScale(imageFile, width, height);
-        Log.v("LoaderTask", "image from file");
         if(b == null) {
             return b;
         }
