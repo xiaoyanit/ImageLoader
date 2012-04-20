@@ -30,8 +30,9 @@ import com.novoda.imageloader.core.exception.ImageCopyException;
 
 public class FileUtil {
 
+    private static final String ANDROID_ROOT = "/Android/data/";
     private static final String NOMEDIA_FILE_NAME = ".nomedia";
-    private static final String DEFAULT_IMAGE_FOLDER_NAME = "/imagedata";
+    private static final String DEFAULT_IMAGE_FOLDER_NAME = "/cache/images";
     private static final String TAG = "ImageLoader";
 
     private static final int BUFFER_SIZE = 60 * 1024;
@@ -119,7 +120,7 @@ public class FileUtil {
     }
 
     private File prepareExternalCacheDir(Context context) {
-        String relativepath = context.getPackageName() + DEFAULT_IMAGE_FOLDER_NAME;
+        String relativepath = ANDROID_ROOT + context.getPackageName() + DEFAULT_IMAGE_FOLDER_NAME;
         File file = new File(android.os.Environment.getExternalStorageDirectory(), relativepath);
         if (!file.isDirectory()) {
             file.mkdirs();

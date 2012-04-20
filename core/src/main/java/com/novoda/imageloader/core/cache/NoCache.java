@@ -20,12 +20,7 @@ import android.graphics.Bitmap;
 public class NoCache implements CacheManager {
 
     @Override
-    public boolean hasBitmap(String url) {
-        return false;
-    }
-
-    @Override
-    public Bitmap get(String url) {
+    public Bitmap get(String url, int width, int height) {
         return null;
     }
 

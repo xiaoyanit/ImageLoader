@@ -19,9 +19,7 @@ import android.graphics.Bitmap;
 
 public interface CacheManager {
 
-    boolean hasBitmap(String url);
-
-    Bitmap get(String url);
+    Bitmap get(String url, int width, int height);
 
     void put(String url, Bitmap bmp);
 

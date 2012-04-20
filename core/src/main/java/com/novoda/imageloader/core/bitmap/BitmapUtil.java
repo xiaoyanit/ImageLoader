@@ -79,6 +79,10 @@ public class BitmapUtil {
         recycle(b);
         return scaled;
     }
+    
+    public Bitmap scaleResourceBitmap(ImageWrapper w, int resId) {
+        return scaleResourceBitmap(w.getContext(), w.getWidth(), w.getHeight(), resId);
+    }
 
     private void recycle(Bitmap scaled) {
         try {
@@ -151,10 +155,6 @@ public class BitmapUtil {
             scale *= 2;
         }
         return scale;
-    }
-
-    public Bitmap scaleResourceBitmap(ImageWrapper w, int resId) {
-        return scaleResourceBitmap(w.getContext(), w.getWidth(), w.getHeight(), resId);
     }
 
 }

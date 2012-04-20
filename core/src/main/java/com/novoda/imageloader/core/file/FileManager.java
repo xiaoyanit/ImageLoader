@@ -28,8 +28,6 @@ public interface FileManager {
 
     String getFilePath(String url);
 
-    boolean exists(String path);
-
     File getFile(String url);
 
     void saveBitmap(String fileName, Bitmap b, int width, int height);

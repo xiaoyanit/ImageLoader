@@ -20,6 +20,7 @@ import java.lang.ref.WeakReference;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.novoda.imageloader.core.LoaderContext;
@@ -28,136 +29,138 @@ import com.novoda.imageloader.core.model.ImageWrapper;
 
 public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
 
-	private WeakReference<ImageView> imageViewReference;
-	private LoaderContext loaderContext;
-	private String url;
-	private boolean saveScaledImage;
-	private boolean useCacheOnly;
-	private int width;
-	private int height;
-	private int notFoundResourceId;
-	
-	public LoaderTask(ImageView imageView, LoaderContext loaderContext) {
-		this.imageViewReference = new WeakReference<ImageView>(imageView);
-		this.loaderContext = loaderContext;
-	}
+    private WeakReference<ImageView> imageViewReference;
+    private LoaderContext loaderContext;
+    private String url;
+    private boolean saveScaledImage;
+    private boolean useCacheOnly;
+    private int width;
+    private int height;
+    private int notFoundResourceId;
 
-	@Override
-	protected Bitmap doInBackground(String... arg0) {
-		if (imageViewReference == null) {
-			return null;
-		}
-		ImageView imageView = imageViewReference.get();
-		if (imageView == null) {
-			return null;
-		}
-		ImageWrapper imageWrapper = setAndValidateTagInformation(imageView);
-		if(imageWrapper == null) {
-			return null;
-		}
-		if(hasImageViewUrlChanged(imageView)) {
-			return null;
-		}
-		
-		if (loaderContext.getCache().hasBitmap(url)) {
-			Bitmap b = loaderContext.getCache().get(url);
-			if (b != null) {
-				return b;
-			}
-		}
-		File imageFile = getImageFile(imageWrapper);
-		if (!imageFile.exists()) {
-			if(useCacheOnly) {
-				return null;
-			}
-			try {
-				loaderContext.getNetworkManager().retrieveImage(url, imageFile);
-			} catch (ImageNotFoundException inf) {
-				return getNotFoundImage(imageWrapper.getContext());
-			}
-		}	
-		if(hasImageViewUrlChanged(imageView)) {
-			return null;
-		}
-		return getImageFromFile(imageFile);
-	}
+    public LoaderTask(ImageView imageView, LoaderContext loaderContext) {
+        this.imageViewReference = new WeakReference<ImageView>(imageView);
+        this.loaderContext = loaderContext;
+    }
 
-	private Bitmap getImageFromFile(File imageFile) {
-	  Bitmap b = loaderContext.getBitmapUtil().decodeFileAndScale(imageFile, width, height);
-		if (b != null && saveScaledImage) {
-			saveScaledImage(imageFile, b);
-		}
-		return b;
-  }
+    @Override
+    protected Bitmap doInBackground(String... arg0) {
+        if (imageViewReference == null) {
+            return null;
+        }
+        ImageView imageView = imageViewReference.get();
+        if (imageView == null) {
+            return null;
+        }
+        ImageWrapper imageWrapper = setAndValidateTagInformation(imageView);
+        if (imageWrapper == null) {
+            return null;
+        }
+        if (hasImageViewUrlChanged(imageView)) {
+            return null;
+        }
+        Bitmap b = loaderContext.getCache().get(url, width, height);
+        if (b != null) {
+            Log.v("LoaderTask", "Loading image from cache");
+            return b;
+        }
+        File imageFile = getImageFile(imageWrapper);
+        if (!imageFile.exists()) {
+            if (useCacheOnly) {
+                return null;
+            }
+            try {
+                Log.v("LoaderTask", "Loading from network");
+                loaderContext.getNetworkManager().retrieveImage(url, imageFile);
+            } catch (ImageNotFoundException inf) {
+                return getNotFoundImage(imageWrapper.getContext());
+            }
+        }
+        if (hasImageViewUrlChanged(imageView)) {
+            return null;
+        }
+        return getImageFromFile(imageFile);
+    }
 
-	private ImageWrapper setAndValidateTagInformation(ImageView imageView) {
-	  ImageWrapper imageWrapper = new ImageWrapper(imageView);
-		url = imageWrapper.getUrl();
-		if (url == null || url.length() <= 0) {
-			return null;
-		}
-		width = imageWrapper.getWidth();
-		height = imageWrapper.getHeight();
-		notFoundResourceId = imageWrapper.getNotFoundResourceId();
-		useCacheOnly = imageWrapper.isUseCacheOnly();
-	  return imageWrapper;
-  }
+    private Bitmap getImageFromFile(File imageFile) {
+        Bitmap b = loaderContext.getBitmapUtil().decodeFileAndScale(imageFile, width, height);
+        Log.v("LoaderTask", "image from file");
+        if(b == null) {
+            return b;
+        }
+        if (saveScaledImage) {
+            saveScaledImage(imageFile, b);
+        }
+        loaderContext.getCache().put(url, b);
+        return b;
+    }
 
-	private void saveScaledImage(File imageFile, Bitmap b) {
-	  loaderContext.getFileManager().saveBitmap(imageFile.getAbsolutePath(), b, width, height);
-  }
+    private ImageWrapper setAndValidateTagInformation(ImageView imageView) {
+        ImageWrapper imageWrapper = new ImageWrapper(imageView);
+        url = imageWrapper.getUrl();
+        if (url == null || url.length() <= 0) {
+            return null;
+        }
+        width = imageWrapper.getWidth();
+        height = imageWrapper.getHeight();
+        notFoundResourceId = imageWrapper.getNotFoundResourceId();
+        useCacheOnly = imageWrapper.isUseCacheOnly();
+        return imageWrapper;
+    }
 
-	private File getImageFile(ImageWrapper imageWrapper) {
-		File imageFile = null;
-	  if(imageWrapper.isSaveThumbnail()) {
-			imageFile = loaderContext.getFileManager().getFile(url, width, height);
-		}
-		if (imageFile == null || !imageFile.exists()) {
-			imageFile = loaderContext.getFileManager().getFile(url);			
-			if(imageWrapper.isSaveThumbnail()) {
-				saveScaledImage = true;
-			}
-		}
-	  return imageFile;
-  }
+    private void saveScaledImage(File imageFile, Bitmap b) {
+        loaderContext.getFileManager().saveBitmap(imageFile.getAbsolutePath(), b, width, height);
+    }
 
-	private boolean hasImageViewUrlChanged(ImageView imageView) {
-	  return !url.equals(new ImageWrapper(imageView).getCurrentUrl());
-  }
+    private File getImageFile(ImageWrapper imageWrapper) {
+        File imageFile = null;
+        if (imageWrapper.isSaveThumbnail()) {
+            imageFile = loaderContext.getFileManager().getFile(url, width, height);
+        }
+        if (imageFile == null || !imageFile.exists()) {
+            imageFile = loaderContext.getFileManager().getFile(url);
+            if (imageWrapper.isSaveThumbnail()) {
+                saveScaledImage = true;
+            }
+        }
+        return imageFile;
+    }
 
-	@Override
-	protected void onPostExecute(Bitmap bitmap) {
-		if(bitmap == null) {
-			return;
-		}
-		if (isCancelled()) {
-			bitmap = null;
-			return;
-		}
-		if (imageViewReference == null) {
-			return;
-		}
-		ImageView imageView = imageViewReference.get();
-		if (imageView == null) {
-			return;
-		}
-		if(hasImageViewUrlChanged(imageView)) {
-			return;
-		}
-		imageView.setImageBitmap(bitmap);
-	}
+    private boolean hasImageViewUrlChanged(ImageView imageView) {
+        return !url.equals(new ImageWrapper(imageView).getCurrentUrl());
+    }
 
-	private Bitmap getNotFoundImage(Context c) {
-		String key = "resource" + notFoundResourceId + width + height;
-		if(loaderContext.getResBitmapCache().hasBitmap(key)) {
-			Bitmap b = loaderContext.getResBitmapCache().get(key);
-			if(b != null) {
-				return b;
-			}
-		}
-		Bitmap b = loaderContext.getBitmapUtil().scaleResourceBitmap(c, width, height, notFoundResourceId);
-		loaderContext.getResBitmapCache().put(key, b);
-		return b;
-  }
-	
+    @Override
+    protected void onPostExecute(Bitmap bitmap) {
+        if (bitmap == null) {
+            return;
+        }
+        if (isCancelled()) {
+            bitmap = null;
+            return;
+        }
+        if (imageViewReference == null) {
+            return;
+        }
+        ImageView imageView = imageViewReference.get();
+        if (imageView == null) {
+            return;
+        }
+        if (hasImageViewUrlChanged(imageView)) {
+            return;
+        }
+        imageView.setImageBitmap(bitmap);
+    }
+
+    private Bitmap getNotFoundImage(Context c) {
+        String key = "resource" + notFoundResourceId + width + height;
+        Bitmap b = loaderContext.getResBitmapCache().get(key, width, height);
+        if (b != null) {
+            return b;
+        }
+        b = loaderContext.getBitmapUtil().scaleResourceBitmap(c, width, height, notFoundResourceId);
+        loaderContext.getResBitmapCache().put(key, b);
+        return b;
+    }
+
 }

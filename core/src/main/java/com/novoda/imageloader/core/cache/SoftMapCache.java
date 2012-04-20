@@ -25,18 +25,7 @@ public class SoftMapCache implements CacheManager {
     private HashMap<String, SoftReference<Bitmap>> cache = new HashMap<String, SoftReference<Bitmap>>();
 
     @Override
-    public boolean hasBitmap(String url) {
-        if (!cache.containsKey(url)) {
-            return false;
-        }
-        if (cache.get(url) == null) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public Bitmap get(String url) {
+    public Bitmap get(String url, int width, int height) {
         SoftReference<Bitmap> bmpr = cache.get(url);
         if (bmpr == null) {
             return null;

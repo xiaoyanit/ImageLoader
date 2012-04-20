@@ -24,12 +24,7 @@ public class MapCache implements CacheManager {
     private HashMap<String, Bitmap> cache = new HashMap<String, Bitmap>();
 
     @Override
-    public boolean hasBitmap(String url) {
-        return cache.containsKey(url);
-    }
-
-    @Override
-    public Bitmap get(String url) {
+    public Bitmap get(String url, int width, int height) {
         return cache.get(url);
     }
 

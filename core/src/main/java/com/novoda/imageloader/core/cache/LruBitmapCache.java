@@ -15,34 +15,67 @@
  */
 package com.novoda.imageloader.core.cache;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.graphics.Bitmap;
 
 public class LruBitmapCache implements CacheManager {
 
+    public static final int DEFAULT_MEMORY_CACHE_PERCENTAGE = 25;
     private LruCache<String, Bitmap> cache;
+    private int capacity;
 
-    public LruBitmapCache(int capacity) {
-        cache = new LruCache<String, Bitmap>(capacity);
+    /**
+     * @param context
+     * @param percentageOfMemoryForCache 0-80
+     */
+    public LruBitmapCache(Context context, int percentageOfMemoryForCache) {
+        final int memClass = ((ActivityManager) context.getSystemService(
+                Context.ACTIVITY_SERVICE)).getMemoryClass();
+        if(percentageOfMemoryForCache < 0) {
+            percentageOfMemoryForCache = 0;
+        }
+        if(percentageOfMemoryForCache > 81) {
+            percentageOfMemoryForCache = 80;
+        }
+        this.capacity = (1024 * 1024 * ((memClass * percentageOfMemoryForCache)/100));
+        reset();
+    }
+    
+    public LruBitmapCache(Context context) {
+        this(context, DEFAULT_MEMORY_CACHE_PERCENTAGE);
+    }
+
+    private void reset() {
+        cache = new LruCache<String, Bitmap>(capacity) {
+            @Override
+            protected int sizeOf(String key, Bitmap bitmap) {
+                return bitmap.getRowBytes()*bitmap.getHeight();
+            }
+        };
     }
 
     @Override
-    public boolean hasBitmap(String url) {
-        return cache.hasKey(url);
-    }
-
-    @Override
-    public Bitmap get(String url) {
-        return cache.get(url);
+    public Bitmap get(String url, int width, int height) {
+        int i = width;
+        if(width < height) {
+            i = height;
+        }
+        return cache.get(url + i);
     }
 
     @Override
     public void put(String url, Bitmap bmp) {
-        cache.put(url, bmp);
+        int i = bmp.getWidth();
+        if(bmp.getWidth() < bmp.getHeight()) {
+            i = bmp.getHeight();
+        }
+        cache.put(url + i, bmp);
     }
 
     @Override
     public void clean() {
-        cache.clear();
+        reset();
     }
 
 }

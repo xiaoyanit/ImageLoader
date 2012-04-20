@@ -33,6 +33,7 @@ public class ImageManager {
 
     private LoaderContext loaderContext;
     private Loader loader;
+    private CacheManager cacheManager;
 
     public ImageManager(Context context, LoaderSettings settings) {
         this.loaderContext = new LoaderContext();
@@ -40,7 +41,7 @@ public class ImageManager {
         loaderContext.setFileManager(new BasicFileManager(settings));
         loaderContext.setNetworkManager(new UrlNetworkLoader(settings));
         loaderContext.setResBitmapCache(new SoftMapCache());
-        CacheManager cacheManager = settings.getCacheManager();
+        cacheManager = settings.getCacheManager();
         if (cacheManager == null) {
             cacheManager = new SoftMapCache();
         }
@@ -63,6 +64,14 @@ public class ImageManager {
 
     public NetworkManager getNetworkManager() {
         return loaderContext.getNetworkManager();
+    }
+    
+    public CacheManager getCacheManager() {
+        return cacheManager;
+    }
+
+    public void setCacheManager(CacheManager cacheManager) {
+        this.cacheManager = cacheManager;
     }
 
     private void verifyPermissions(Context context) {

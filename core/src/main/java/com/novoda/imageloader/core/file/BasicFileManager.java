@@ -72,12 +72,6 @@ public class BasicFileManager implements FileManager {
     }
 
     @Override
-    public boolean exists(String path) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
     public File getFile(String url) {
         url = processUrl(url);
         String filename = String.valueOf(url.hashCode());

@@ -21,7 +21,7 @@ public class DemoApplication extends Application {
         imageManager = new ImageManager(this, settings);
 
         settings = new SettingsBuilder().withDisconnectOnEveryCall(true).withAsyncTasks(false)
-                .withCacheManager(new LruBitmapCache(50)).build(this);
+                .withCacheManager(new LruBitmapCache(this)).build(this);
         thumbnailImageLoader = new ImageManager(this, settings);
         //
     }
