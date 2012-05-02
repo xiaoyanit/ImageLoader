@@ -45,7 +45,18 @@ public class ConcurrentLoader implements Loader {
                 w.setBitmap(b);
                 return;
             }
-            setResource(w, w.getLoadingResourceId());
+            String thumbUrl = w.getThumbUrl();
+            if(thumbUrl != null) {
+                b = loaderContext.getCache().get(thumbUrl, w.getThumbHeight(), w.getThumbWidth());
+                if (b != null) {
+                    w.setBitmap(b);
+                }
+            } else {
+                setResource(w, w.getLoadingResourceId());
+            }
+            if (w.isUseCacheOnly()) {
+                return;
+            }
             new LoaderTask(imageView, loaderContext).execute();
         } catch (ImageNotFoundException inf) {
             setResource(w, w.getNotFoundResourceId());

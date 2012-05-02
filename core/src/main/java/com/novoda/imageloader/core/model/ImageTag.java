@@ -18,10 +18,13 @@ package com.novoda.imageloader.core.model;
 public class ImageTag {
 
     private String url;
+    private String thumbUrl;
     private int loadingResourceId;
     private int notFoundResourceId;
     private int height;
     private int width;
+    private int thumbHeight;
+    private int thumbWidth;
     private boolean useOnlyCache;
     private boolean saveThumbnail;
 
@@ -31,6 +34,7 @@ public class ImageTag {
         this.notFoundResourceId = notFoundResourceId;
         this.width = width;
         this.height = height;
+        this.setThumbUrl(thumbUrl);
     }
 
     public String getUrl() {
@@ -67,6 +71,30 @@ public class ImageTag {
 
     public void setSaveThumbnail(boolean saveThumbnail) {
         this.saveThumbnail = saveThumbnail;
+    }
+
+    public String getThumbUrl() {
+        return thumbUrl;
+    }
+
+    public void setThumbUrl(String thumbUrl) {
+        this.thumbUrl = thumbUrl;
+    }
+
+    public int getThumbWidth() {
+        return thumbWidth;
+    }
+
+    public void setThumbWidth(int thumbWidth) {
+        this.thumbWidth = thumbWidth;
+    }
+
+    public int getThumbHeight() {
+        return thumbHeight;
+    }
+
+    public void setThumbHeight(int thumbHeight) {
+        this.thumbHeight = thumbHeight;
     }
 
 }

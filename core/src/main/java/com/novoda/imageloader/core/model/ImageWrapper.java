@@ -25,10 +25,13 @@ import com.novoda.imageloader.core.loader.util.BitmapDisplayer;
 public class ImageWrapper {
 
     private String url;
-    private int loadingResourceId;
-    private int notFoundResourceId;
+    private String thumbUrl;
     private int width;
     private int height;
+    private int thumbWidth;
+    private int thumbHeight;
+    private int loadingResourceId;
+    private int notFoundResourceId;
     private boolean isUseCacheOnly;
     private ImageView imageView;
     private boolean saveThumbnail;
@@ -45,10 +48,13 @@ public class ImageWrapper {
         this.isUseCacheOnly = tag.isUseOnlyCache();
         this.height = tag.getHeight();
         this.width = tag.getWidth();
+        this.thumbWidth = tag.getThumbHeight();
+        this.thumbWidth = tag.getThumbWidth();
         this.saveThumbnail = tag.isSaveThumbnail();
         if (notFoundResourceId == 0) {
             this.notFoundResourceId = tag.getLoadingResourceId();
         }
+        this.thumbUrl = tag.getThumbUrl();
     }
 
     public String getCurrentUrl() {
@@ -107,6 +113,18 @@ public class ImageWrapper {
 
     public void setSaveThumbnail(boolean saveThumbnail) {
         this.saveThumbnail = saveThumbnail;
+    }
+
+    public String getThumbUrl() {
+        return thumbUrl;
+    }
+
+    public int getThumbWidth() {
+        return thumbWidth;
+    }
+
+    public int getThumbHeight() {
+        return thumbHeight;
     }
 
 }
