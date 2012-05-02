@@ -3,6 +3,16 @@ h1. ImageLoader
 Image loader is a simple library that give you the ability to decouple the logic to fetch, load and cache images.
 It does that away from the ui thread, and by caching images with two levels in memory or in the sdcard if awailable.
 
+h2. Recent changes
+
+h3. 1.5.2
+
+In this release we added support to load a small image as a preview for a bigger image.
+
+h3. 1.5.1
+
+Improve cuncurrent loader, change sdcard image position to respect Android SDK guide lines.
+
 h2. How to use the library
 
 h3. Using maven
@@ -26,7 +36,7 @@ h3. Direct jar usage
 
 If you don't care about building tool you can just download the jar manually from this link
 
-https://github.com/novoda/public-mvn-repo/raw/master/releases/com/novoda/imageloader/imageloader-core/1.4.8/imageloader-core-1.4.8.jar
+https://github.com/novoda/public-mvn-repo/raw/master/releases/com/novoda/imageloader/imageloader-core/1.5.2/imageloader-core-1.5.2.jar
 
 h2. How to implement
 
@@ -74,6 +84,35 @@ Settings settings = builder.withConnectionTimeout(20000)
 
 The connection timeout is the timeout in making the initial connection. The read timeout is the timeout on waiting to read data.
 
+h3. Preview image
+
+This work well when you have a list of items with small images chaced and then you go to the details to show a big image. 
+In fact image loader will take the small picture in the cache (only from the cache) and load in place of the big image before loading the real image.
+To do that you have two ways : change image tag before calling the load method or change the ImageTagFactory.
+
+<pre><code>
+//Image Tag after normal settings... add this: 
+imageTag.setPreviewHeight(100);
+imageTag.setPreviewHeight(100);
+imageTag.setPreviewUrl(previewUrl);
+imageView.setTag(imageTag);
+getImageManager().getLoader().load(imageView);
+</code></pre>
+
+<pre><code>
+//If the small image use as preview is the same
+// you can use the image tag factory
+imageTagFactory = new ImageTagFactory(this, R.drawable.loading);
+imageTagFactory.setErrorImageId(R.drawable.image_not_found);
+imageTagFactory.usePreviewImage(THUMB_IMAGE_SIZE, THUMB_IMAGE_SIZE, true);
+//keep the instance of the tag factory somewhere
+
+//on the bind 
+ImageView imageView = (ImageView) view;
+String url = cursor.getString(columnIndex);
+imageView.setTag(imageTagFactory.build(url));
+ImgSearch.getImageManager().getLoader().load(imageView);
+</code></pre>
 
 
 h3. Cleaning up sdcard
