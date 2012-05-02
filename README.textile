@@ -11,7 +11,7 @@ In this release we added support to load a small image as a preview for a bigger
 
 h3. 1.5.1
 
-Improve cuncurrent loader, change sdcard image position to respect Android SDK guide lines.
+Improve cuncurrent loader, change sdcard image position to respect Android SDK guide lines and improved LruBitmapCache.
 
 h2. How to use the library
 
@@ -66,10 +66,19 @@ The normal image loader works with softreferences. With a system with low memory
 
 To avoid that we added a LruCache in the image loader library. This is very  useful when you have lots of small images.
 
-<pre><code>private static final int NUMBER_OF_IMAGE_IN_CACHE = 50;
+<pre><code>
 ...
 settings = new SettingsBuilder()
-  .withCacheManager(new LruBitmapCache(NUMBER_OF_IMAGE_IN_CACHE)).build(this);
+  .withCacheManager(new LruBitmapCache(this)).build(this);
+thumbnailImageLoader = new ImageManager(this, settings);
+</code></pre>
+
+By default the LruBitmapCache will take 25% of the free memory available for the cache. You can change that by using a different constructur:
+
+<pre><code>
+int PERCENTAGE_OF_CACHE = 50;
+settings = new SettingsBuilder()
+  .withCacheManager(new LruBitmapCache(this, PERCENTAGE_OF_CACHE)).build(this);
 thumbnailImageLoader = new ImageManager(this, settings);
 </code></pre>
 
