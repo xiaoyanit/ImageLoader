@@ -22,15 +22,15 @@ import android.view.WindowManager;
 
 public class ImageTagFactory {
 
-    private int thumbWidth;
-    private int thumbHeight;
+    private int previewImageWidth;
+    private int previewImageHeight;
     private int width;
     private int height;
     private int defaultImageResId;
     private int errorImageResId;
     private boolean useOnlyCache;
     private boolean saveThumbnail;
-    private boolean useSameUrlForThumbnail;
+    private boolean useSameUrlForPreviewImage;
 
     public ImageTagFactory(int width, int height, int defaultImageResId) {
         this.width = width;
@@ -49,10 +49,10 @@ public class ImageTagFactory {
         this.errorImageResId = defaultImageResId;
     }
     
-    public void useThumbnailOnPreload(int thumbWidth, int thumbHeight, boolean useSameUrl) {
-        this.thumbWidth = thumbWidth;
-        this.thumbHeight = thumbHeight;
-        this.useSameUrlForThumbnail = useSameUrl;
+    public void usePreviewImage(int previewImageWidth, int previewImageHeight, boolean useSameUrlForPreviewImage) {
+        this.previewImageWidth = previewImageWidth;
+        this.previewImageHeight = previewImageHeight;
+        this.useSameUrlForPreviewImage = useSameUrlForPreviewImage;
     }
 
     public void setErrorImageId(int errorImageResId) {
@@ -71,11 +71,11 @@ public class ImageTagFactory {
         ImageTag it = new ImageTag(url, defaultImageResId, errorImageResId, width, height);
         it.setUseOnlyCache(useOnlyCache);
         it.setSaveThumbnail(saveThumbnail);
-        if(useSameUrlForThumbnail) {
-            it.setThumbUrl(url);
+        if(useSameUrlForPreviewImage) {
+            it.setPreviewUrl(url);
         }
-        it.setThumbHeight(thumbHeight);
-        it.setThumbWidth(thumbWidth);
+        it.setPreviewHeight(previewImageHeight);
+        it.setPreviewWidth(previewImageWidth);
         return it;
     }
 

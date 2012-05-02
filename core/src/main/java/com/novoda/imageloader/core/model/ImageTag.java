@@ -18,13 +18,13 @@ package com.novoda.imageloader.core.model;
 public class ImageTag {
 
     private String url;
-    private String thumbUrl;
+    private String previewUrl;
     private int loadingResourceId;
     private int notFoundResourceId;
     private int height;
     private int width;
-    private int thumbHeight;
-    private int thumbWidth;
+    private int previewHeight;
+    private int previewWidth;
     private boolean useOnlyCache;
     private boolean saveThumbnail;
 
@@ -34,7 +34,7 @@ public class ImageTag {
         this.notFoundResourceId = notFoundResourceId;
         this.width = width;
         this.height = height;
-        this.setThumbUrl(thumbUrl);
+        this.setPreviewUrl(previewUrl);
     }
 
     public String getUrl() {
@@ -73,28 +73,28 @@ public class ImageTag {
         this.saveThumbnail = saveThumbnail;
     }
 
-    public String getThumbUrl() {
-        return thumbUrl;
+    public String getPreviewUrl() {
+        return previewUrl;
     }
 
-    public void setThumbUrl(String thumbUrl) {
-        this.thumbUrl = thumbUrl;
+    public void setPreviewUrl(String previewUrl) {
+        this.previewUrl = previewUrl;
     }
 
-    public int getThumbWidth() {
-        return thumbWidth;
+    public int getPreviewWidth() {
+        return previewWidth;
     }
 
-    public void setThumbWidth(int thumbWidth) {
-        this.thumbWidth = thumbWidth;
+    public void setPreviewWidth(int previewWidth) {
+        this.previewWidth = previewWidth;
     }
 
-    public int getThumbHeight() {
-        return thumbHeight;
+    public int getPreviewHeight() {
+        return previewHeight;
     }
 
-    public void setThumbHeight(int thumbHeight) {
-        this.thumbHeight = thumbHeight;
+    public void setPreviewHeight(int previewHeight) {
+        this.previewHeight = previewHeight;
     }
 
 }

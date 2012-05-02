@@ -25,11 +25,11 @@ import com.novoda.imageloader.core.loader.util.BitmapDisplayer;
 public class ImageWrapper {
 
     private String url;
-    private String thumbUrl;
+    private String previewUrl;
     private int width;
     private int height;
-    private int thumbWidth;
-    private int thumbHeight;
+    private int previewWidth;
+    private int previewHeight;
     private int loadingResourceId;
     private int notFoundResourceId;
     private boolean isUseCacheOnly;
@@ -48,13 +48,13 @@ public class ImageWrapper {
         this.isUseCacheOnly = tag.isUseOnlyCache();
         this.height = tag.getHeight();
         this.width = tag.getWidth();
-        this.thumbWidth = tag.getThumbHeight();
-        this.thumbWidth = tag.getThumbWidth();
+        this.previewHeight = tag.getPreviewHeight();
+        this.previewWidth = tag.getPreviewWidth();
         this.saveThumbnail = tag.isSaveThumbnail();
         if (notFoundResourceId == 0) {
             this.notFoundResourceId = tag.getLoadingResourceId();
         }
-        this.thumbUrl = tag.getThumbUrl();
+        this.previewUrl = tag.getPreviewUrl();
     }
 
     public String getCurrentUrl() {
@@ -115,16 +115,16 @@ public class ImageWrapper {
         this.saveThumbnail = saveThumbnail;
     }
 
-    public String getThumbUrl() {
-        return thumbUrl;
+    public String getPreviewUrl() {
+        return previewUrl;
     }
 
-    public int getThumbWidth() {
-        return thumbWidth;
+    public int getPreviewWidth() {
+        return previewWidth;
     }
 
-    public int getThumbHeight() {
-        return thumbHeight;
+    public int getPreviewHeight() {
+        return previewHeight;
     }
 
 }
