@@ -95,7 +95,7 @@ The connection timeout is the timeout in making the initial connection. The read
 
 h3. Preview image
 
-This work well when you have a list of items with small images chaced and then you go to the details to show a big image. 
+Previe image works well when you have a list of items with small images chaced and then you go to the details to show a big image. 
 In fact image loader will take the small picture in the cache (only from the cache) and load in place of the big image before loading the real image.
 To do that you have two ways : change image tag before calling the load method or change the ImageTagFactory.
 
@@ -109,7 +109,7 @@ getImageManager().getLoader().load(imageView);
 </code></pre>
 
 <pre><code>
-//If the small image use as preview is the same
+//If the small image used as preview has the same url of the big image
 // you can use the image tag factory
 imageTagFactory = new ImageTagFactory(this, R.drawable.loading);
 imageTagFactory.setErrorImageId(R.drawable.image_not_found);
