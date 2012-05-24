@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:a="http://schemas.android.com/apk/res/android" 
+	a:orientation="vertical" style="@style/Fill">
+	<ImageView
+    	 a:id="@+id/direct_image"
+    	 a:smoothScrollbar="true"
+     	 style="@style/Fill" />
+</LinearLayout>

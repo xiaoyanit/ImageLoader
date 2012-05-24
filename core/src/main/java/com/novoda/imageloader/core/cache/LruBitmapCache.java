@@ -15,6 +15,8 @@
  */
 package com.novoda.imageloader.core.cache;
 
+import java.lang.reflect.Method;
+
 import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -22,23 +24,33 @@ import android.graphics.Bitmap;
 public class LruBitmapCache implements CacheManager {
 
     public static final int DEFAULT_MEMORY_CACHE_PERCENTAGE = 25;
+    private static final int DEFAULT_MEMORY_CAPACITY_FOR_DEVICES_OLDER_THAN_API_LEVEL_4 = 12;
     private LruCache<String, Bitmap> cache;
     private int capacity;
 
     /**
      * @param context
-     * @param percentageOfMemoryForCache 0-80
+     * @param percentageOfMemoryForCache 1-80
      */
     public LruBitmapCache(Context context, int percentageOfMemoryForCache) {
-        final int memClass = ((ActivityManager) context.getSystemService(
-                Context.ACTIVITY_SERVICE)).getMemoryClass();
+        int memClass = 0;
+        ActivityManager am = ((ActivityManager) context.getSystemService(
+                Context.ACTIVITY_SERVICE));
+        try {
+            Method m = ActivityManager.class.getMethod("getMemoryClass");
+            memClass = (Integer)m.invoke(am);
+        } catch (Exception e) {
+        }
+        if(memClass == 0) {
+            memClass = DEFAULT_MEMORY_CAPACITY_FOR_DEVICES_OLDER_THAN_API_LEVEL_4;
+        }
         if(percentageOfMemoryForCache < 0) {
             percentageOfMemoryForCache = 0;
         }
         if(percentageOfMemoryForCache > 81) {
             percentageOfMemoryForCache = 80;
         }
-        this.capacity = (1024 * 1024 * ((memClass * percentageOfMemoryForCache)/100));
+        this.capacity = (1024 *1024*(memClass * percentageOfMemoryForCache))/100;
         reset();
     }
     

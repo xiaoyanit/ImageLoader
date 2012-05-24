@@ -2,23 +2,25 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.novoda.imageloader.demo" android:versionCode="7" android:versionName="1.4.6-SNAPSHOT">
   
-  <uses-sdk android:minSdkVersion="4" />
+  <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="15"/>
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.INTERNET" />
 
   <application android:icon="@drawable/icon" android:label="@string/app_name" android:name=".DemoApplication">
       
-    <activity android:name=".activity.Dashboard" android:label="Image Loader demo">  
+    <activity android:name=".activity.Dashboard" android:label="Image Loader demo" >
         <intent-filter >
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
-    </activity>
+    </activity> 
     <activity android:name=".activity.ImageLongList" android:theme="@android:style/Theme.NoTitleBar"/>
     <activity android:name=".activity.LongSmallImageList" android:theme="@android:style/Theme.NoTitleBar" />
     <activity android:name=".activity.BigImages" android:theme="@android:style/Theme.NoTitleBar" />
     <activity android:name=".activity.FromCacheOnly" android:theme="@android:style/Theme.NoTitleBar" />
-    
+    <activity android:name=".activity.DirectLoadingDemo" android:theme="@android:style/Theme.NoTitleBar" />
     <provider android:name=".provider.ImageLoaderDemoProvider" android:authorities="com.novoda.imageloader.demo" />
-    <service android:name="com.novoda.imageloader.core.service.CacheCleaner" android:exported="true">
+    <service android:name="com.novoda.imageloader.core.service.CacheCleaner" android:exported="false" android:enabled="true">
       <intent-filter>
         <action android:name="com.novoda.imageloader.core.action.REDUCE_CACHE" />
       </intent-filter>
@@ -28,6 +30,4 @@
     </service>
   </application>
 
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-  <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

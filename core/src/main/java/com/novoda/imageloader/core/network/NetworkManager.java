@@ -16,9 +16,12 @@
 package com.novoda.imageloader.core.network;
 
 import java.io.File;
+import java.io.InputStream;
 
 public interface NetworkManager {
 
     void retrieveImage(String url, File f);
+
+    InputStream retrieveInputStream(String url);
 
 }

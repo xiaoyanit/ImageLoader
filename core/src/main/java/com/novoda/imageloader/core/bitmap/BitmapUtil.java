@@ -18,6 +18,7 @@ package com.novoda.imageloader.core.bitmap;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -82,6 +83,18 @@ public class BitmapUtil {
     
     public Bitmap scaleResourceBitmap(ImageWrapper w, int resId) {
         return scaleResourceBitmap(w.getContext(), w.getWidth(), w.getHeight(), resId);
+    }
+    
+    public Bitmap decodeInputStream(InputStream is) {
+        Bitmap bitmap = null;
+        try {
+            bitmap = BitmapFactory.decodeStream(is, null, null);
+        } catch (final Throwable e) {
+            System.gc();
+        } finally {
+            closeSilently(is);
+        }
+        return bitmap;
     }
 
     private void recycle(Bitmap scaled) {

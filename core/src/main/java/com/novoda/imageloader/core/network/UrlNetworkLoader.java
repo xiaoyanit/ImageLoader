@@ -61,6 +61,22 @@ public class UrlNetworkLoader implements NetworkManager {
             fileUtil.closeSilently(os);
         }
     }
+    
+    @Override
+    public InputStream retrieveInputStream(String url) {
+        HttpURLConnection conn = null;
+        try {
+            conn = (HttpURLConnection) new URL(url).openConnection();
+            conn.setConnectTimeout(settings.getConnectionTimeout());
+            conn.setReadTimeout(settings.getReadTimeout());
+            return conn.getInputStream();
+        } catch (FileNotFoundException fnfe) {
+            throw new ImageNotFoundException();
+        } catch (Throwable ex) {
+            //
+            return null;
+        }
+    }
 
     private void applyChangeonSdkVersion(String sdkVersion) {
         if (Integer.parseInt(sdkVersion) < 8) {
