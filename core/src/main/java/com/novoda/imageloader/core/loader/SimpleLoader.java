@@ -61,6 +61,8 @@ public class SimpleLoader implements Loader {
                 b = loaderContext.getCache().get(thumbUrl, w.getPreviewHeight(), w.getPreviewWidth());
                 if (b != null) {
                     w.setBitmap(b);
+                } else {
+                    setResource(w, w.getLoadingResourceId());
                 }
             } else {
                 setResource(w, w.getLoadingResourceId());

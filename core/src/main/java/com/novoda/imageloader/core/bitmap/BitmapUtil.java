@@ -53,6 +53,10 @@ public class BitmapUtil {
         }
         return null;
     }
+    
+    public Bitmap scaleResourceBitmap(ImageWrapper w, int resId) {
+        return scaleResourceBitmap(w.getContext(), w.getWidth(), w.getHeight(), resId);
+    }
 
     public Bitmap scaleBitmap(Bitmap b, int width, int height) {
         int imageHeight = b.getHeight();
@@ -79,10 +83,6 @@ public class BitmapUtil {
         }
         recycle(b);
         return scaled;
-    }
-    
-    public Bitmap scaleResourceBitmap(ImageWrapper w, int resId) {
-        return scaleResourceBitmap(w.getContext(), w.getWidth(), w.getHeight(), resId);
     }
     
     public Bitmap decodeInputStream(InputStream is) {
