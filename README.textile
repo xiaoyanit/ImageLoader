@@ -5,6 +5,10 @@ It does that away from the ui thread, and by caching images with two levels in m
 
 h2. Recent changes
 
+h3. 1.5.5
+
+Few bug fixes, new DirectLoader utility class to directly download images (do not use it in the main thread).
+
 h3. 1.5.2
 
 In this release we added support to load a small image as a preview for a bigger image.
@@ -29,14 +33,14 @@ If you are using maven you need to define the repo and then the dependency
 <pre><code><dependency>
   <groupId>com.novoda.imageloader</groupId>
   <artifactId>imageloader-core</artifactId>
- <version>1.4.8</version>
+ <version>1.5.5</version>
 </dependency></code></pre>
 
 h3. Direct jar usage
 
 If you don't care about building tool you can just download the jar manually from this link
 
-https://github.com/novoda/public-mvn-repo/raw/master/releases/com/novoda/imageloader/imageloader-core/1.5.2/imageloader-core-1.5.2.jar
+https://github.com/novoda/public-mvn-repo/raw/master/releases/com/novoda/imageloader/imageloader-core/1.5.5/imageloader-core-1.5.5.jar
 
 h2. How to implement
 
