@@ -166,9 +166,9 @@ h3. In the manifest
 
 There are two things you need to add : Permissions and the service to clean up the files.
 
-<pre><code><uses-permission a:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-<uses-permission a:name="android.permission.INTERNET" />
-<uses-permission a:name="android.permission.ACCESS_NETWORK_STATE" />
+<pre><code><uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 </pre></code>
 
 <pre><code><service android:name="com.novoda.imageloader.core.service.CacheCleaner" android:exported="true">
