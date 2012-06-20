@@ -1,0 +1,74 @@
+<!DOCTYPE html> 
+<html lang="en">
+  <head>
+    <title>ImageLoader</title>
+    <meta charset="utf-8" /> 
+	<meta http-equiv="content-type" content="text/html;charset=UTF-8" /> 
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+	<link rel="stylesheet" href="./1120.css" type="text/css" media="screen" /> 
+	<link rel="stylesheet" href="./styles.css" type="text/css" media="screen" /> 
+    <script type="text/javascript" src="./css3-mediaqueries.js"></script> 
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script> 
+	<script type="text/javascript" src="http://apis.google.com/js/plusone.js"></script> 
+	<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script> 
+	<script type="text/javascript" src="./jquery.cross-slide.min.js"></script>
+	<script type="text/javascript"> 
+			$(function() {
+				$('#feature-images').crossSlide({
+					sleep: 3,
+					fade: 1,
+				}, [
+					{ src: 'f1.jpg' },
+					{ src: 'f3.jpg' },
+				]).css('height', '400px');
+			});
+		</script> 
+  </head>
+  <body id="home"> 
+	<div class="container"> 
+  	  <div class="row">
+		<div class="half" id="feature">
+		  <p id="header"><img src="logo.png" /></p> 
+		  <p class="lead">Image loader is a simple library that give you the ability to decouple the logic to fetch, load and cache images.</p>
+		  <p class="lead">It does that away from the ui thread, and by caching images with two level in memory or in the sdcard if available.</p>
+		</div>
+        <div id="feature-images" class="half last"> 
+		  <img src="f1.png"/> 
+	    </div>
+	  </div>
+	</div>
+	 
+	<div class="row" id="features"> 
+	  <div class="fourth feature"> 
+		<h1>Usage</h1>
+		<p>The library is just a jar and can be easily included in every android project. You can even use maven.</p>
+		<p>Figure out more at the <a href="https://github.com/novoda/ImageLoader">github page</a>.</p>
+	  </div>
+	  <div class="fourth feature"> 
+		<h1>Caching</h1>
+		<p>The library implement 2 levels caching for you.</p>
+	  </div>
+	  <div class="fourth feature"> 
+		<h1>Concurrency</h1>
+		<p>The library is fetching images with a thread running outside the ui thread.</p>
+	  </div>
+	  <div class="fourth last feature"> 
+		<h1>Proven</h1>
+		<p>The library is tested as it is used on read application on the market. (For example <a href="https://market.android.com/details?id=com.giago.imgsearch">imgsearch</a>.)</p>
+	  </div>
+	</div>
+	  
+    <div class="row" id="apps">   
+	  <div class="row" id="footer"> 
+		<div class="half"> 
+		  <p>&copy; 2011 Novoda &mdash; <a href="http://www.novoda.com">http://www.novoda.com</a></p> 
+		</div> 
+		<div class="half last social"> 
+		  <g:plusone size="medium" href="http://novoda.github.com/ImageLoader/"></g:plusone> 
+		  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://novoda.github.com/ImageLoader/" data-text="ImageLoader for android" data-count="horizontal" data-via="Novoda">Tweet</a>  
+		  <a id="github" href="https://github.com/novoda/ImageLoader"><img style="position: absolute; top: 0; right: 0; border: 0;" src="ribbon.png" alt="Fork me on GitHub"></a> 
+		</div> 
+	  </div>
+    <div>
+  </body>
+</html> 
