@@ -15,12 +15,14 @@
 	<script type="text/javascript"> 
 			$(function() {
 				$('#feature-images').crossSlide({
-					sleep: 3,
-					fade: 1,
+					sleep: 4,
+					fade: 0.01,
 				}, [
-					{ src: 'f1.jpg' },
-					{ src: 'f3.jpg' },
-				]).css('height', '400px');
+					{ src: 'songkick.png' },
+					{ src: 'podio.png' },
+					{ src: 'image-search.png' },
+					{ src: 'secretdj.png' },
+				]).css('height', '600px');
 			});
 		</script> 
   </head>
@@ -29,32 +31,35 @@
   	  <div class="row">
 		<div class="half" id="feature">
 		  <p id="header"><img src="logo.png" /></p> 
-		  <p class="lead">Image loader is a simple library that give you the ability to decouple the logic to fetch, load and cache images.</p>
-		  <p class="lead">It does that away from the ui thread, and by caching images with two level in memory or in the sdcard if available.</p>
+		  <p class="lead">ImageLoader is a simple library for fetching, loading and caching images in your Android apps.</p>
+		  <p>The library is a single .jar file, which you can download manually or include as a dependency with Maven.</p>
 		</div>
         <div id="feature-images" class="half last"> 
-		  <img src="f1.png"/> 
+		  <img src="songkick.png"/> 
 	    </div>
 	  </div>
 	</div>
 	 
 	<div class="row" id="features"> 
 	  <div class="fourth feature"> 
-		<h1>Usage</h1>
-		<p>The library is just a jar and can be easily included in every android project. You can even use maven.</p>
-		<p>Figure out more at the <a href="https://github.com/novoda/ImageLoader">github page</a>.</p>
-	  </div>
-	  <div class="fourth feature"> 
 		<h1>Caching</h1>
-		<p>The library implement 2 levels caching for you.</p>
+		<p>Images are cached transparently with a two level - in-memory and SD card - caching system.</p>
+		<p>Soft-reference and (optional) LRU in-memory caches are supported.</p>
 	  </div>
 	  <div class="fourth feature"> 
 		<h1>Concurrency</h1>
-		<p>The library is fetching images with a thread running outside the ui thread.</p>
+		<p>Images are fetched in a background thread, leaving your UI responsive.</p>
+		<p>Several image requests can be in flight simultaneously.</p>
+	  </div>
+	  <div class="fourth feature"> 
+		<h1>Open Source</h1>
+		<p>ImageLoader uses the Apache License, Version 2.0.</p>
+		<p>The project is developed in the open on <a href="https://github.com/novoda/ImageLoader">GitHub</a>. You can fork the code, file bugs and submit pull requests.</p>
 	  </div>
 	  <div class="fourth last feature"> 
-		<h1>Proven</h1>
-		<p>The library is tested as it is used on read application on the market. (For example <a href="https://market.android.com/details?id=com.giago.imgsearch">imgsearch</a>.)</p>
+		<h1>Reliability</h1>
+		<p>ImageLoader is used in commercial projects with hundreds of thousands of users.</p>
+		<p><a href="https://play.google.com/store/apps/details?id=com.songkick">Songkick</a>, <a href="https://play.google.com/store/apps/details?id=com.podio">Podio</a>, <a href="https://play.google.com/store/apps/details?id=com.secretdj">SecretDJ</a> and <a href="https://play.google.com/store/apps/details?id=com.giago.imgsearch">Image Search</a> are just a few of the apps using ImageLoader.</p>
 	  </div>
 	</div>
 	  
