@@ -154,11 +154,11 @@ ImgSearch.getImageManager().getLoader().load(imageView);
 
 h3. DirectLoader (utility)
 
-ImageLoader contains a utility class for directly downloading a Bitmap from a URL. This is useful downloading an image to display in a notifications. This does not handle threading for you. You should do the download inside an AsyncTask or Thread.
+ImageLoader contains a utility class for directly downloading a Bitmap from a URL. This is useful for downloading an image to display in a notification. This does NOT handle threading for you. You should do the download inside an AsyncTask or Thread.
 
 <pre><code>Bitmap myImage = new DirectLoader().download(url);</code></pre>
 
-This will throw an ImageNotFoundException if there is no image on the other end of your URL.
+This method will throw an ImageNotFoundException if there is no image on the other end of your URL.
 
 h2. Getting the library
 
