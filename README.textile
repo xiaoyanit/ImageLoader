@@ -200,7 +200,11 @@ h3. ImageLoader projects
 
 Building the projects:
 
-* Run: <code>mvn clean install -Peclipse</code>
+Run: <code>mvn clean install</code>
+
+OR
+
+Copy dependencies to libs folder for using Android projects in Eclipse: <code>mvn clean install -Peclipse</code>
 
 h3. Parent project and core
 
