@@ -24,7 +24,7 @@ h2. Using the library
 
 The demo project is a good place to start. Import it in Eclipse and check the task list to see the TODO list.
 
-If you are lazy these are the steps :
+If you're lazy, here are the steps :
 
 h3. Overview
 
