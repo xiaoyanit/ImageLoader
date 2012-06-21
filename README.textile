@@ -47,11 +47,9 @@ public static final ImageManager getImageManager() {
 }
 </code></pre>
 
-This sets up the image loader with size of the images that are taken from the display and the background image use while the image loader is fetching the real image.
-
 h5. LRU cache option
 
-The default cache uses soft references. On a memory-constrained system like Android, the system can reclaim space too often. This limits the performance of the cache. To avoid this problem we added an LruCache implementation. This is really useful when you have lots of small images.
+The default cache uses soft references. On a memory-constrained system like Android, space can be reclaimed too often. This limits the performance of the cache. To avoid this problem we added an LruCache implementation. This is really useful when you have lots of small images.
 
 <pre><code>settings = new SettingsBuilder()
   .withCacheManager(new LruBitmapCache(this)).build(this);
@@ -100,7 +98,7 @@ private ViewBinder getViewBinder() {
 }
 </code></pre>
 
-The image loader will fetch the image from the cache (if available), from the SD card, or from the network as a last resort.
+The ImageTagFactory sets up the image loader with the size of the images to display and the loading image to be displayed whilst the real image is fetched. The image loader will fetch the image from the cache (if available), from the SD card, or from the network as a last resort.
 
 h3. Cleaning the SD card cache
 
