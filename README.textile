@@ -177,15 +177,15 @@ h3. As a .jar
 
 You can also simply include the "latest version":https://github.com/novoda/public-mvn-repo/raw/master/releases/com/novoda/imageloader/imageloader-core/1.5.5/imageloader-core-1.5.5.jar of the .jar file (v 1.5.5) in you project.
 
-h1. Helping out
+h2. Helping out
 
 Novoda <3 open source.
 
-h2. Report issues
+h3. Report issues
 
 If you have a problem with the library or want to suggest new features, let us know by creating an issue in GitHub.
 
-h2. ImageLoader projects
+h3. ImageLoader projects
 
 * core: Java project
 * demo: Android project to test ImageLoader
@@ -205,7 +205,7 @@ h3. Demo and acceptance
 * Create a new Android project in Eclipse
 * Add the necessary jars from the libs folder
 
-h2. Requirements
+h3. Requirements
 
 * Maven 3.0.3+
 
