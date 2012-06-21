@@ -102,7 +102,7 @@ private ViewBinder getViewBinder() {
 
 The image loader will fetch the image from the cache (if available), from the SD card, or from the network as a last resort.
 
-h3. Cleaning up SD card
+h3. Cleaning the SD card cache
 
 If you want ImageLoader to clean up the SD card, you can use the following code in the onCreate of the Application class:
 
