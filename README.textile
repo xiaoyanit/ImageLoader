@@ -1,7 +1,6 @@
 h1. ImageLoader
 
-Image loader is a simple library that helps you fetch, load and cache images in Android apps.
-ImageLoader downloads images off the UI thread and caches with a two-level in-memory/SD card cache.
+ImageLoader is a simple library that helps you fetch, load and cache images in Android apps. It downloads images away from the UI thread and caches with a two-level in-memory/SD card cache.
 
 h2. Recent changes
 
@@ -22,12 +21,13 @@ h3. 1.5.1
 
 h2. Using the library
 
-The demo project is a good way to start. Import it in eclipse and check the task list to see where are all the TODO list.
+The demo project is a good place to start. Import it in Eclipse and check the task list to see the TODO.
+
 If you are lazy these are the steps :
 
 h3. Application
 
-In the application add the following code that instantiates the image loader:
+In the application add the following code that initialises the image loader:
 
 <pre><code>@Override
 public void onCreate() {
@@ -42,7 +42,7 @@ public static final ImageManager getImageManager() {
 }
 </code></pre>
 
-This is setting up the image loader with size of the images that are taken from the display and the background image use while the image loader is fetching the real image.
+This sets up the image loader with size of the images that are taken from the display and the background image use while the image loader is fetching the real image.
 
 The normal image loader works with softreferences. With a system with low memory as android, the system reclaims space to often. This limits the performance of the cache.
 
