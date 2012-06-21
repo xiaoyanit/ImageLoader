@@ -26,6 +26,10 @@ The demo project is a good place to start. Import it in Eclipse and check the ta
 
 If you are lazy these are the steps :
 
+h3. Overview
+
+![Overview](https://github.com/novoda/ImageLoader/raw/master/src/main/resources/documentationImage1.png)
+
 h3. In the Application class
 
 Add the following code that initialises the image loader:
