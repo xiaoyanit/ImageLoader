@@ -176,38 +176,37 @@ h3. As a .jar
 
 You can also simply include the "latest version":https://github.com/novoda/public-mvn-repo/raw/master/releases/com/novoda/imageloader/imageloader-core/1.5.5/imageloader-core-1.5.5.jar of the .jar file (v 1.5.5) in you project.
 
-h1. Helping out with the project
+h1. Helping out
 
 h2. Report issues
 
-If you have any problem with the library or new functionality you need to add, let us know and we will do something about it.
-Send us a message or create an issue with github.
+If you have a problem with the library or want to suggest new features, let us know by creating an issue in GitHub.
 
 h2. ImageLoader projects
 
-* core contains a java maven based project
-* demo mvn android based project to test imageLoader
-* acceptance mvn android based project with robotium test
-* monkey some example that take a snapshot using monkey runner (deprecated)
+* core: Java project
+* demo: Android project to test ImageLoader
+* acceptance: Android project for Robotium instrumentation tests
+* monkey: Example takes snapshots with monkeyrunner (deprecated)
 
-To build the projects :
+Building the projects:
 
-* run : <code>mvn clean install -Peclipse</code>
+* Run: <code>mvn clean install -Peclipse</code>
 
 h3. Parent project and core
 
-Importing the projects with maven, should be easy and painless. 
+Importing the projects with maven should be simple and painless. 
 
-h3. For demo and acceptance
+h3. Demo and acceptance
 
-* create a new android project in eclipse
-* add the necessary jars from the libs folder
+* Create a new Android project in Eclipse
+* Add the necessary jars from the libs folder
 
 h2. Requirements
 
-* maven 3.0.3+
+* Maven 3.0.3+
 
 h2. License
 
-Copyright (c) 2012 Novoda ltd
-Licensed under Apache 2.0
+Copyright (c) 2012 Novoda Ltd.
+Released under the Apache License, Version 2.0
