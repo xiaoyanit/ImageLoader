@@ -184,6 +184,8 @@ You can also simply include the "latest version":https://github.com/novoda/publi
 
 h1. Helping out
 
+Novoda <3 open source.
+
 h2. Report issues
 
 If you have a problem with the library or want to suggest new features, let us know by creating an issue in GitHub.
