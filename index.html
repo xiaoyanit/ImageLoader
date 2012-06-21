@@ -32,15 +32,31 @@
 		<div class="half" id="feature">
 		  <p id="header"><img src="logo.png" /></p> 
 		  <p class="lead">ImageLoader is a simple library to help you download, display and cache images in your Android apps.</p>
-		  <p>The library comes as a .jar file, which you can download manually or include as a dependency with Maven.</p>
-		  <p>Check out the project <a href="https://github.com/novoda/ImageLoader/blob/master/README.textile">README</a> for instructions on integrating the library into your own apps. There is also an <a href="https://github.com/novoda/ImageLoader/issues">issue tracker</a> if you find any bugs or want to suggest new features.</p>
+		  <p>Download the <a href="https://github.com/novoda/public-mvn-repo/raw/master/releases/com/novoda/imageloader/imageloader-core/1.5.5/imageloader-core-1.5.5.jar">latest jar</a> (v 1.5.5) or include the dependency in your Maven configuration:</p>
+<pre><code>
+&lt;repositories&gt;
+  &lt;repository&gt;
+    &lt;id&gt;public-mvn-repo-releases&lt;/id&gt;
+    &lt;url&gt;https://github.com/novoda/public-mvn-repo/raw/master/releases&lt;/url&gt;
+  &lt;/repository&gt;
+&lt;/repositories&gt;
+</code></pre>
+
+<pre><code>
+&lt;dependency&gt;
+  &lt;groupId&gt;com.novoda.imageloader&lt;/groupId&gt;
+  &lt;artifactId&gt;imageloader-core&lt;/artifactId&gt;
+  &lt;version>1.5.5&lt;/version&gt;
+&lt;/dependency&gt;
+<br />
+</code></pre>
+		  <p>Check out the project <a href="https://github.com/novoda/ImageLoader/blob/master/README.textile">documentation</a> to learn how to use the library in your apps. There is also an <a href="https://github.com/novoda/ImageLoader/issues">issue tracker</a> if you find any bugs or want to suggest new features.</p>
 		</div>
         <div id="feature-images" class="half last"> 
 		  <img src="songkick.png"/> 
 	    </div>
 	  </div>
 	</div>
-	 
 	<div class="row" id="features"> 
 	  <div class="fourth feature"> 
 		<h1>Caching</h1>
