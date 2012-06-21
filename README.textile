@@ -199,7 +199,9 @@ h3. ImageLoader projects
 h3. Building the projects
 
 Maven: <code>mvn clean install</code>
-Maven, using Eclipse Android projects: <code>mvn clean install -Peclipse</code>. The demo and acceptance projects should be configured as Android projects.
+
+Maven (using Eclipse Android projects): <code>mvn clean install -Peclipse</code>. This command copies the dependencies to libs for working in Eclipse. The demo and acceptance projects should be configured as Android projects.
+
 IntelliJ: Import as a Maven project from the project root.
 
 h3. Requirements
