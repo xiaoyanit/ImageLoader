@@ -52,7 +52,6 @@ This sets up the image loader with size of the images that are taken from the di
 The default cache uses soft references. On a memory-constrained system like Android, the system can reclaim space too often. This limits the performance of the cache. To avoid this problem we added an LruCache implementation. This is really useful when you have lots of small images.
 
 <pre><code>
-...
 settings = new SettingsBuilder()
   .withCacheManager(new LruBitmapCache(this)).build(this);
 thumbnailImageLoader = new ImageManager(this, settings);
@@ -85,7 +84,7 @@ ImageLoader will take the small picture in the cache (if available) and load it 
 This can be implemented in two ways: changing the image tag before calling the load method or changing the ImageTagFactory.
 
 <pre><code>
-//Image Tag after normal settings... add this: 
+// Image tag after normal settings 
 imageTag.setPreviewHeight(100);
 imageTag.setPreviewHeight(100);
 imageTag.setPreviewUrl(previewUrl);
