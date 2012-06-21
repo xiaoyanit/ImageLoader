@@ -1,7 +1,7 @@
 h1. ImageLoader
 
 Image loader is a simple library that give you the ability to decouple the logic to fetch, load and cache images.
-It does that away from the ui thread, and by caching images with two levels in memory or in the sdcard if awailable.
+It does that away from the ui thread, and by caching images with two levels in memory or in the sdcard if available.
 
 h2. Recent changes
 
@@ -15,7 +15,7 @@ In this release we added support to load a small image as a preview for a bigger
 
 h3. 1.5.1
 
-Improve cuncurrent loader, change sdcard image position to respect Android SDK guide lines and improved LruBitmapCache.
+Improve concurrent loader, change sdcard image position to respect Android SDK guide lines and improved LruBitmapCache.
 
 h2. How to use the library
 
@@ -45,11 +45,11 @@ https://github.com/novoda/public-mvn-repo/raw/master/releases/com/novoda/imagelo
 h2. How to implement
 
 The demo project is a good way to start. Import it in eclipse and check the task list to see where are all the TODO list.
-If you are lazy this are the steps :
+If you are lazy these are the steps :
 
 h3. Application
 
-In the application add the folling code the instantiate the image loader:
+In the application add the following code that instantiates the image loader:
 
 <pre><code>@Override
 public void onCreate() {
@@ -66,9 +66,9 @@ public static final ImageManager getImageManager() {
 
 This is setting up the image loader with size of the images that are taken from the display and the background image use while the image loader is fetching the real image.
 
-The normal image loader works with softreferences. With a system with low memory as android, the system reclaim space to often. This limit the performance of the cache.
+The normal image loader works with softreferences. With a system with low memory as android, the system reclaims space to often. This limits the performance of the cache.
 
-To avoid that we added a LruCache in the image loader library. This is very  useful when you have lots of small images.
+To avoid that we added a LruCache in the image loader library. This is very useful when you have lots of small images.
 
 <pre><code>
 ...
@@ -77,7 +77,7 @@ settings = new SettingsBuilder()
 thumbnailImageLoader = new ImageManager(this, settings);
 </code></pre>
 
-By default the LruBitmapCache will take 25% of the free memory available for the cache. You can change that by using a different constructur:
+By default the LruBitmapCache will take 25% of the free memory available for the cache. You can change that by using a different constructor:
 
 <pre><code>
 int PERCENTAGE_OF_CACHE = 50;
@@ -88,7 +88,7 @@ thumbnailImageLoader = new ImageManager(this, settings);
 
 h3. Additional settings
 
-Image loader use UrlConnection to fetch images. There are two important parameters that UrlConnection uses connectionTimeout and readTimeout.
+Image loader uses UrlConnection to fetch images. There are two important parameters that UrlConnection uses, connectionTimeout and readTimeout.
 
 <pre><code>SettingsBuilder builder = new SettingsBuilder();
 Settings settings = builder.withConnectionTimeout(20000)
@@ -99,7 +99,7 @@ The connection timeout is the timeout in making the initial connection. The read
 
 h3. Preview image
 
-Previe image works well when you have a list of items with small images chaced and then you go to the details to show a big image. 
+Preview image works well when you have a list of items with small images chaced and then you go to the details to show a big image. 
 In fact image loader will take the small picture in the cache (only from the cache) and load in place of the big image before loading the real image.
 To do that you have two ways : change image tag before calling the load method or change the ImageTagFactory.
 
@@ -114,7 +114,7 @@ getImageManager().getLoader().load(imageView);
 
 <pre><code>
 //If the small image used as preview has the same url of the big image
-// you can use the image tag factory
+//you can use the image tag factory
 imageTagFactory = new ImageTagFactory(this, R.drawable.loading);
 imageTagFactory.setErrorImageId(R.drawable.image_not_found);
 imageTagFactory.usePreviewImage(THUMB_IMAGE_SIZE, THUMB_IMAGE_SIZE, true);
@@ -160,7 +160,7 @@ private ViewBinder getViewBinder() {
 }
 </code></pre>
 
-The image loader will fetch the image from the cache if is still there or from the sdcard or will fetch the resource from the network in the worse scenario.
+The image loader will fetch the image from the cache if is still there or from the sdcard or will fetch the resource from the network in the worst case scenario.
 
 h3. In the manifest
 
@@ -200,7 +200,7 @@ To build the projects :
 
 h3. Parent project and core
 
-Import the projects with maven, should be easy and painless. 
+Importing the projects with maven, should be easy and painless. 
 
 h3. For demo and acceptance
 
