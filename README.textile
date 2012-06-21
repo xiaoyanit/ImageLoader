@@ -108,7 +108,7 @@ If you want ImageLoader to clean up the SD card, you can use the following code 
 
 <pre><code>imageManager.getFileManager().clean(this);</code></pre>
 
-In the settings you can override the default expiration period that is set to 7 days.
+In the settings you can edit the expiration period (it defaults to 7 days).
 
 h3. In the AndroidManifest.xml
 
