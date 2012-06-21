@@ -17,31 +17,6 @@ h3. 1.5.1
 
 Improve concurrent loader, change sdcard image position to respect Android SDK guide lines and improved LruBitmapCache.
 
-h2. How to use the library
-
-h3. Using maven
-
-If you are using maven you need to define the repo and then the dependency
-
-<pre><code><repositories>
-  <repository>
-    <id>public-mvn-repo-releases</id>
-    <url>https://github.com/novoda/public-mvn-repo/raw/master/releases</url>
-  </repository>
-</repositories></code></pre>
-
-<pre><code><dependency>
-  <groupId>com.novoda.imageloader</groupId>
-  <artifactId>imageloader-core</artifactId>
- <version>1.5.5</version>
-</dependency></code></pre>
-
-h3. Direct jar usage
-
-If you don't care about building tool you can just download the jar manually from this link
-
-https://github.com/novoda/public-mvn-repo/raw/master/releases/com/novoda/imageloader/imageloader-core/1.5.5/imageloader-core-1.5.5.jar
-
 h2. How to implement
 
 The demo project is a good way to start. Import it in eclipse and check the task list to see where are all the TODO list.
@@ -178,7 +153,28 @@ There are two things you need to add : Permissions and the service to clean up t
 </service>
 </code></pre>
 
+h2. Getting the library
 
+h3. Using Maven
+
+If you are using Maven you need to define the repo and dependency in your POM:
+
+<pre><code><repositories>
+  <repository>
+    <id>public-mvn-repo-releases</id>
+    <url>https://github.com/novoda/public-mvn-repo/raw/master/releases</url>
+  </repository>
+</repositories></code></pre>
+
+<pre><code><dependency>
+  <groupId>com.novoda.imageloader</groupId>
+  <artifactId>imageloader-core</artifactId>
+ <version>1.5.5</version>
+</dependency></code></pre>
+
+h3. As a .jar
+
+You can also simply include the "latest version":https://github.com/novoda/public-mvn-repo/raw/master/releases/com/novoda/imageloader/imageloader-core/1.5.5/imageloader-core-1.5.5.jar of the .jar file (v 1.5.5) in you project.
 
 h1. Helping out with the project
 
