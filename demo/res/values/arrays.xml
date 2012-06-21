@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+  <string-array name="demo_array">
+    <item>@string/long_list</item>
+    <item>@string/long_small_list</item>
+    <item>@string/large_list</item>
+    <item>@string/cache_only</item>
+    <item>@string/direct_loader</item>
+  </string-array>
+</resources> 
