@@ -1,23 +1,26 @@
 h1. ImageLoader
 
-Image loader is a simple library that give you the ability to decouple the logic to fetch, load and cache images.
-It does that away from the ui thread, and by caching images with two levels in memory or in the sdcard if available.
+Image loader is a simple library that helps you fetch, load and cache images in Android apps.
+ImageLoader downloads images off the UI thread and caches with a two-level in-memory/SD card cache.
 
 h2. Recent changes
 
 h3. 1.5.5
 
-Few bug fixes, new DirectLoader utility class to directly download images (do not use it in the main thread).
+* Bug fixes
+* New DirectLoader utility to directly download images (do not use on main thread)
 
 h3. 1.5.2
 
-In this release we added support to load a small image as a preview for a bigger image.
+* Added support to load a cached small image as the preview for a larger image
 
 h3. 1.5.1
 
-Improve concurrent loader, change sdcard image position to respect Android SDK guide lines and improved LruBitmapCache.
+* Improved concurrent loader
+* Change SD card cache directory to respect Android SDK guidelines
+* Improved LruBitmapCache
 
-h2. How to implement
+h2. Using the library
 
 The demo project is a good way to start. Import it in eclipse and check the task list to see where are all the TODO list.
 If you are lazy these are the steps :
