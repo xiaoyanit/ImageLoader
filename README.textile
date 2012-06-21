@@ -196,22 +196,15 @@ h3. ImageLoader projects
 * acceptance: Android project for Robotium instrumentation tests
 * monkey: Example takes snapshots with monkeyrunner (deprecated)
 
-Building the projects:
+h3. Building the projects
 
-Run: <code>mvn clean install</code>
+With Maven: <code>mvn clean install</code>
+With Maven, using Eclipse Android projects: <code>mvn clean install -Peclipse</code>
+With IntelliJ: Import as a Maven project from the project root.
 
-OR
+h4. Demo and acceptance projects
 
-Copy dependencies to libs folder for using Android projects in Eclipse: <code>mvn clean install -Peclipse</code>
-
-h3. Parent project and core
-
-Importing the projects with maven should be simple and painless. 
-
-h3. Demo and acceptance
-
-* Create a new Android project in Eclipse
-* Add the necessary jars from the libs folder
+With Eclipse, these should be configured as Android projects.
 
 h3. Requirements
 
