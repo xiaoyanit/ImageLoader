@@ -1,6 +1,7 @@
 h1. ImageLoader
 
-ImageLoader is a simple library that helps you fetch, load and cache images in Android apps. It downloads images away from the UI thread and caches with a two-level in-memory/SD card cache.
+ImageLoader is a simple library that helps you fetch, load and cache images in Android apps. 
+It downloads images away from the UI thread and caches with a two-level in-memory/SD card cache.
 
 h2. Recent changes
 
@@ -25,9 +26,9 @@ The demo project is a good place to start. Import it in Eclipse and check the ta
 
 If you are lazy these are the steps :
 
-h3. Application
+h3. In the Application class
 
-In the application add the following code that initialises the image loader:
+Add the following code that initialises the image loader:
 
 <pre><code>@Override
 public void onCreate() {
@@ -44,9 +45,7 @@ public static final ImageManager getImageManager() {
 
 This sets up the image loader with size of the images that are taken from the display and the background image use while the image loader is fetching the real image.
 
-The normal image loader works with softreferences. With a system with low memory as android, the system reclaims space to often. This limits the performance of the cache.
-
-To avoid that we added a LruCache in the image loader library. This is very useful when you have lots of small images.
+The default cache uses soft references. On a memory-constrained system like Android, the system can reclaim space too often. This limits the performance of the cache. To avoid this problem we added an LruCache implementation. This is really useful when you have lots of small images.
 
 <pre><code>
 ...
@@ -55,7 +54,7 @@ settings = new SettingsBuilder()
 thumbnailImageLoader = new ImageManager(this, settings);
 </code></pre>
 
-By default the LruBitmapCache will take 25% of the free memory available for the cache. You can change that by using a different constructor:
+The LruBitmapCache will take 25% of the free memory available for the cache by default. You can change this by using an alternative constructor:
 
 <pre><code>
 int PERCENTAGE_OF_CACHE = 50;
@@ -66,7 +65,7 @@ thumbnailImageLoader = new ImageManager(this, settings);
 
 h3. Additional settings
 
-Image loader uses UrlConnection to fetch images. There are two important parameters that UrlConnection uses, connectionTimeout and readTimeout.
+Image loader uses UrlConnection to fetch images. There are two important parameters that UrlConnection uses: connectionTimeout and readTimeout.
 
 <pre><code>SettingsBuilder builder = new SettingsBuilder();
 Settings settings = builder.withConnectionTimeout(20000)
@@ -77,9 +76,9 @@ The connection timeout is the timeout in making the initial connection. The read
 
 h3. Preview image
 
-Preview image works well when you have a list of items with small images chaced and then you go to the details to show a big image. 
-In fact image loader will take the small picture in the cache (only from the cache) and load in place of the big image before loading the real image.
-To do that you have two ways : change image tag before calling the load method or change the ImageTagFactory.
+Preview image works well when you have a list of items with small images and you display a larger version of the same image when you click through. 
+ImageLoader will take the small picture in the cache (if available) and load it in place of the large image whilst loading the real image.
+This can be implemented in two ways: changing the image tag before calling the load method or changing the ImageTagFactory.
 
 <pre><code>
 //Image Tag after normal settings... add this: 
@@ -98,7 +97,7 @@ imageTagFactory.setErrorImageId(R.drawable.image_not_found);
 imageTagFactory.usePreviewImage(THUMB_IMAGE_SIZE, THUMB_IMAGE_SIZE, true);
 //keep the instance of the tag factory somewhere
 
-//on the bind 
+//on bind 
 ImageView imageView = (ImageView) view;
 String url = cursor.getString(columnIndex);
 imageView.setTag(imageTagFactory.build(url));
@@ -106,18 +105,18 @@ ImgSearch.getImageManager().getLoader().load(imageView);
 </code></pre>
 
 
-h3. Cleaning up sdcard
+h3. Cleaning up SD card
 
-If you want the image loader to clean up the sdcard, you can use the following line of code on the create of the application:
+If you want ImageLoader to clean up the SD card, you can use the following code in the onCreate of the Application class:
 
 <pre><code>imageManager.getFileManager().clean(this);</code></pre>
 
 In the settings you can override the default expiration period that is set to 7 days.
 
-h3. In the activity
+h3. In the Activity
 
-When you need to load the image in a view object you just need to get the imageLoader from the application and call load.
-This is an example of a list view with the binder setting the url in the imageView as a tag.
+When you need to load the image in a view object you just need to get the image loader from the Application class and call load.
+This is an example of a ListView with the binder setting the url in the ImageView as a tag:
 
 <pre><code>ImageTagFactory imageTagFactory = new ImageTagFactory(this, R.drawable.bg_img_loading);
 imageTagFactory.setErrorImageId(R.drawable.bg_img_notfound);
@@ -138,11 +137,11 @@ private ViewBinder getViewBinder() {
 }
 </code></pre>
 
-The image loader will fetch the image from the cache if is still there or from the sdcard or will fetch the resource from the network in the worst case scenario.
+The image loader will fetch the image from the cache (if available), from the SD card, or from the network as a last resort.
 
-h3. In the manifest
+h3. In the AndroidManifest.xml
 
-There are two things you need to add : Permissions and the service to clean up the files.
+There are two things you need to add: Permissions and the Service to clean up the files.
 
 <pre><code><uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 <uses-permission android:name="android.permission.INTERNET" />
