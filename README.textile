@@ -140,12 +140,10 @@ imageView.setTag(imageTag);
 getImageManager().getLoader().load(imageView);
 </code></pre>
 
-<pre><code>// If the small image used as preview has the same url of the big image
-// you can use the image tag factory
+<pre><code>// If small preview image has same url as large image, use ImageTagFactory
 imageTagFactory = new ImageTagFactory(this, R.drawable.loading);
 imageTagFactory.setErrorImageId(R.drawable.image_not_found);
 imageTagFactory.usePreviewImage(THUMB_IMAGE_SIZE, THUMB_IMAGE_SIZE, true);
-// Keep the instance of the tag factory somewhere
 
 // On bind 
 ImageView imageView = (ImageView) view;
@@ -153,6 +151,14 @@ String url = cursor.getString(columnIndex);
 imageView.setTag(imageTagFactory.build(url));
 ImgSearch.getImageManager().getLoader().load(imageView);
 </code></pre>
+
+h3. DirectLoader (utility)
+
+ImageLoader contains a utility class for directly downloading a Bitmap from a URL. This is useful downloading an image to display in a notifications. This does not handle threading for you. You should do the download inside an AsyncTask or Thread.
+
+<pre><code>Bitmap myImage = new DirectLoader().download(url);</code></pre>
+
+This will throw an ImageNotFoundException if there is no image on the other end of your URL.
 
 h2. Getting the library
 
