@@ -51,16 +51,14 @@ This sets up the image loader with size of the images that are taken from the di
 
 The default cache uses soft references. On a memory-constrained system like Android, the system can reclaim space too often. This limits the performance of the cache. To avoid this problem we added an LruCache implementation. This is really useful when you have lots of small images.
 
-<pre><code>
-settings = new SettingsBuilder()
+<pre><code>settings = new SettingsBuilder()
   .withCacheManager(new LruBitmapCache(this)).build(this);
 thumbnailImageLoader = new ImageManager(this, settings);
 </code></pre>
 
 The LruBitmapCache will take 25% of the free memory available for the cache by default. You can change this by using an alternative constructor:
 
-<pre><code>
-int PERCENTAGE_OF_CACHE = 50;
+<pre><code>int PERCENTAGE_OF_CACHE = 50;
 settings = new SettingsBuilder()
   .withCacheManager(new LruBitmapCache(this, PERCENTAGE_OF_CACHE)).build(this);
 thumbnailImageLoader = new ImageManager(this, settings);
@@ -83,8 +81,7 @@ Preview image works well when you have a list of items with small images and you
 ImageLoader will take the small picture in the cache (if available) and load it in place of the large image whilst loading the real image.
 This can be implemented in two ways: changing the image tag before calling the load method or changing the ImageTagFactory.
 
-<pre><code>
-// Image tag after normal settings 
+<pre><code>// Image tag after normal settings 
 imageTag.setPreviewHeight(100);
 imageTag.setPreviewHeight(100);
 imageTag.setPreviewUrl(previewUrl);
@@ -92,8 +89,7 @@ imageView.setTag(imageTag);
 getImageManager().getLoader().load(imageView);
 </code></pre>
 
-<pre><code>
-// If the small image used as preview has the same url of the big image
+<pre><code>// If the small image used as preview has the same url of the big image
 // you can use the image tag factory
 imageTagFactory = new ImageTagFactory(this, R.drawable.loading);
 imageTagFactory.setErrorImageId(R.drawable.image_not_found);
