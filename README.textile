@@ -49,6 +49,8 @@ public static final ImageManager getImageManager() {
 
 This sets up the image loader with size of the images that are taken from the display and the background image use while the image loader is fetching the real image.
 
+h3. LRU cache option
+
 The default cache uses soft references. On a memory-constrained system like Android, the system can reclaim space too often. This limits the performance of the cache. To avoid this problem we added an LruCache implementation. This is really useful when you have lots of small images.
 
 <pre><code>settings = new SettingsBuilder()
