@@ -16,6 +16,7 @@ public class LongSmallImageList extends SingleTableBaseListActivity {
 
     @Override
     protected void prepareLoader() {
+        // TODO Setup image tag factory parameters.
         imageManager = DemoApplication.getThumbnailImageLoader();
         imageTagFactory = new ImageTagFactory(SIZE, SIZE, R.drawable.bg_img_loading);
         imageTagFactory.setErrorImageId(R.drawable.bg_img_notfound);

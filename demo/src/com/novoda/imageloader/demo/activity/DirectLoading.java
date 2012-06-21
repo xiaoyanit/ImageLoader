@@ -22,7 +22,11 @@ public class DirectLoading extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Don't use it like this in real life...
+        /*
+         * TODO Don't use the direct loader like this.
+         * It's useful for downloading a Bitmap to display in a notification.
+         * You need to handle the threading yourself.
+         */
         new Thread() {
             public void run() {
                 DirectLoader dl = new DirectLoader();

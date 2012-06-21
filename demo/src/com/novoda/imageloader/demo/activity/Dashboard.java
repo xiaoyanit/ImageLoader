@@ -41,8 +41,6 @@ public class Dashboard extends Activity implements OnClickListener {
         case R.id.direct_loader:
             startActivity(new Intent(Dashboard.this, DirectLoading.class));
             break;
-		default:
-			break;
 		}
 	}
 	

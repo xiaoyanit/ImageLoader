@@ -10,6 +10,7 @@ public class ImageLongList extends SingleTableBaseListActivity {
     private static final int SIZE = 400;
 
     protected void prepareLoader() {
+        // TODO Setup image tag factory parameters.
         imageManager = DemoApplication.getImageLoader();
         imageTagFactory = new ImageTagFactory(SIZE, SIZE, R.drawable.bg_img_loading);
         imageTagFactory.setErrorImageId(R.drawable.bg_img_notfound);

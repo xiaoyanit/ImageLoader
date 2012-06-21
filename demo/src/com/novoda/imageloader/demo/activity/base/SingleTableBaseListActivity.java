@@ -1,5 +1,6 @@
 package com.novoda.imageloader.demo.activity.base;
 
+import android.app.ListActivity;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,7 +15,7 @@ import com.novoda.imageloader.core.model.ImageTagFactory;
 import com.novoda.imageloader.demo.DemoApplication;
 import com.novoda.imageloader.demo.R;
 
-public abstract class SingleTableBaseListActivity extends BaseListActivity {
+public abstract class SingleTableBaseListActivity extends ListActivity {
 
     private static final String[] FROM = new String[] { "url" };
     private static final int[] TO = new int[] { R.id.list_item_image };

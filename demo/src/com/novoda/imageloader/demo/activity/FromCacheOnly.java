@@ -13,6 +13,7 @@ public class FromCacheOnly extends SingleTableBaseListActivity {
     }
 
     protected void prepareLoader() {
+        // TODO You can tell the the image manager to load from cache only in the tag factory.
         imageManager = DemoApplication.getImageLoader();
         imageTagFactory = new ImageTagFactory(this, R.drawable.bg_img_loading);
         imageTagFactory.setErrorImageId(R.drawable.bg_img_notfound);
