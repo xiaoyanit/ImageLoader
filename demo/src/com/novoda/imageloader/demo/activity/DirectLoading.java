@@ -1,30 +1,28 @@
 package com.novoda.imageloader.demo.activity;
 
-import com.novoda.imageloader.core.util.DirectLoader;
-import com.novoda.imageloader.demo.R;
-
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
 
-public class DirectLoadingDemo extends Activity {
-    
+import com.novoda.imageloader.core.util.DirectLoader;
+import com.novoda.imageloader.demo.R;
+
+public class DirectLoading extends Activity {
+
     private ImageView imageView;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.direct_loading);
-        imageView = (ImageView)findViewById(R.id.direct_image);
+        imageView = (ImageView) findViewById(R.id.direct_image);
     }
-    
+
     @Override
     protected void onResume() {
         super.onResume();
-        
-        //Don't use this way this is just for testing
+        // Don't use it like this in real life...
         new Thread() {
             public void run() {
                 DirectLoader dl = new DirectLoader();
@@ -33,7 +31,7 @@ public class DirectLoadingDemo extends Activity {
             };
         }.start();
     }
-    
+
     public void setImageView(final Bitmap bitmap) {
         runOnUiThread(new Runnable() {
             @Override

@@ -23,7 +23,6 @@ public class DemoApplication extends Application {
         settings = new SettingsBuilder().withDisconnectOnEveryCall(true).withAsyncTasks(false)
                 .withCacheManager(new LruBitmapCache(this)).build(this);
         thumbnailImageLoader = new ImageManager(this, settings);
-        //
     }
 
     // TODO add this to your class

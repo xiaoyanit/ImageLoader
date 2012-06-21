@@ -22,7 +22,6 @@ public abstract class SingleTableBaseListActivity extends BaseListActivity {
     // TODO add this to your class
     protected ImageManager imageManager;
     protected ImageTagFactory imageTagFactory;
-
     //
 
     @Override

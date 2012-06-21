@@ -25,22 +25,22 @@ public class ImageLoaderDemoProvider extends ContentProvider {
     public String getType(Uri uri) {
         String type = null;
         switch (matcher.match(uri)) {
-            case CustomUriMatcher.IMAGE_INCOMING_COLLECTION: {
-                type = CustomUriMatcher.IMAGE_COLLECTION_TYPE;
-                break;
-            }
-            case CustomUriMatcher.IMAGE_BIGIMAGES_INCOMING_COLLECTION: {
-                type = CustomUriMatcher.IMAGE_BIGIMAGES_COLLECTION_TYPE;
-                break;
-            }
-            case CustomUriMatcher.IMAGE_FROMCACHEONLY_INCOMING_COLLECTION: {
-                type = CustomUriMatcher.IMAGE_FROMCACHEONLY_COLLECTION_TYPE;
-                break;
-            }
-            default: {
-                Log.e("ImageLoader", "Problem with query, not Implemented for : " + uri);
-                throw new RuntimeException("Problem with query, not Implemented for : " + uri);
-            }
+        case CustomUriMatcher.IMAGE_INCOMING_COLLECTION: {
+            type = CustomUriMatcher.IMAGE_COLLECTION_TYPE;
+            break;
+        }
+        case CustomUriMatcher.IMAGE_BIGIMAGES_INCOMING_COLLECTION: {
+            type = CustomUriMatcher.IMAGE_BIGIMAGES_COLLECTION_TYPE;
+            break;
+        }
+        case CustomUriMatcher.IMAGE_FROMCACHEONLY_INCOMING_COLLECTION: {
+            type = CustomUriMatcher.IMAGE_FROMCACHEONLY_COLLECTION_TYPE;
+            break;
+        }
+        default: {
+            Log.e("ImageLoader", "Problem with query, not Implemented for : " + uri);
+            throw new RuntimeException("Problem with query, not Implemented for : " + uri);
+        }
         }
         return type;
     }

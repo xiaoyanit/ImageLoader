@@ -18,69 +18,67 @@ import android.util.Log;
 
 public class DatabaseManager extends SQLiteOpenHelper {
 
-	private Context context;
+    private Context context;
 
-	public DatabaseManager(Context context) {
-		super(context, "com.novoda.imageloader.demo", null, 20);
-		this.context = context;
-	}
+    public DatabaseManager(Context context) {
+        super(context, "com.novoda.imageloader.demo", null, 20);
+        this.context = context;
+    }
 
-	@Override
-	public void onCreate(SQLiteDatabase db) {
-		create(db);
-	}
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        create(db);
+    }
 
-	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		drop(db);
-		onCreate(db);
-	}
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        drop(db);
+        onCreate(db);
+    }
 
-	private void create(SQLiteDatabase db) {
-		List<String> stms = new ArrayList<String>();
-		addCreateStm(stms, ImageLongList.class);
-		addCreateStm(stms, BigImages.class);
-		addCreateStm(stms, FromCacheOnly.class);
-		addCreateStm(stms, LongSmallImageList.class);
-		AssetManager mngr = context.getAssets();
-		try {
-			stms.addAll(SqlFile.statementsFrom(new InputStreamReader(mngr
-					.open("contents/images.sql"))));
-		} catch (Exception e) {
-			Log.e("Exception", "Error while Inserting editions", e);
-		}
-		exec(db, stms);
-	}
+    private void create(SQLiteDatabase db) {
+        List<String> stms = new ArrayList<String>();
+        addCreateStm(stms, ImageLongList.class);
+        addCreateStm(stms, BigImages.class);
+        addCreateStm(stms, FromCacheOnly.class);
+        addCreateStm(stms, LongSmallImageList.class);
+        AssetManager mngr = context.getAssets();
+        try {
+            stms.addAll(SqlFile.statementsFrom(new InputStreamReader(mngr.open("contents/images.sql"))));
+        } catch (Exception e) {
+            Log.e("Exception", "Error while Inserting editions", e);
+        }
+        exec(db, stms);
+    }
 
-	private void addCreateStm(List<String> stms, Class<? extends SingleTableBaseListActivity> clazz) {
-		String name = clazz.getSimpleName().toLowerCase();
-		stms.add("create table if not exists " + name + "(_id integer primary key autoincrement, " +
-			"url text);");
-	}
-	
-	private void addDropStm(List<String> stms, Class<? extends SingleTableBaseListActivity> clazz) {
-		String name = clazz.getSimpleName().toLowerCase();
-		stms.add("drop table if exists " + name + ";");
-	}
+    private void addCreateStm(List<String> stms, Class<? extends SingleTableBaseListActivity> clazz) {
+        String name = clazz.getSimpleName().toLowerCase();
+        stms.add("create table if not exists " + name + "(_id integer primary key autoincrement, " + "url text);");
+    }
 
-	private void drop(SQLiteDatabase db) {
-		List<String> stms = new ArrayList<String>();
-		addDropStm(stms, ImageLongList.class);
-		addDropStm(stms, BigImages.class);
-		addDropStm(stms, FromCacheOnly.class);
-		addDropStm(stms, LongSmallImageList.class);
-		exec(db, stms);
-	}
+    private void addDropStm(List<String> stms, Class<? extends SingleTableBaseListActivity> clazz) {
+        String name = clazz.getSimpleName().toLowerCase();
+        stms.add("drop table if exists " + name + ";");
+    }
 
-	private static final void exec(SQLiteDatabase db, List<String> staments) {
-		for (String stm : staments) {
-			Log.v("exec", stm);
-			try {
-				db.execSQL(stm);
-			} catch (RuntimeException re) {
-				Log.e("exec", "RuntimeException", re);
-			}
-		}
-	}
+    private void drop(SQLiteDatabase db) {
+        List<String> stms = new ArrayList<String>();
+        addDropStm(stms, ImageLongList.class);
+        addDropStm(stms, BigImages.class);
+        addDropStm(stms, FromCacheOnly.class);
+        addDropStm(stms, LongSmallImageList.class);
+        exec(db, stms);
+    }
+
+    private static final void exec(SQLiteDatabase db, List<String> staments) {
+        for (String stm : staments) {
+            Log.v("exec", stm);
+            try {
+                db.execSQL(stm);
+            } catch (RuntimeException re) {
+                Log.e("exec", "RuntimeException", re);
+            }
+        }
+    }
 
 }

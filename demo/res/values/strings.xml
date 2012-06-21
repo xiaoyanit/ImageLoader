@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <resources>
-    <string name="app_name">ImageLoaderTester</string>
-    <string name="btn_activity">activity</string>
-    <string name="btn_clear_cache">clear cache</string>
-    <string name="btn_clear_sd">clear sd</string>
-    <string name="btn_reduce_sd">reduce sd</string>
+  <string name="app_name">ImageLoader Demo</string>
+  <string name="long_list">Long list</string>
+  <string name="long_small_list">Long small list</string>
+  <string name="cache_only">Cached only</string>
+  <string name="large_list">Large images</string>
+  <string name="direct_loader">Direct loader</string>
 </resources>
