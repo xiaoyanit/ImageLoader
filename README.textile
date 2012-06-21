@@ -75,7 +75,56 @@ Settings settings = builder.withConnectionTimeout(20000)
 
 The connection timeout is the timeout in making the initial connection. The read timeout is the timeout on waiting to read data.
 
-h3. Preview image
+h3. In the Activity, Fragment or Adapter
+
+When you need to load the image in a view object you just need to get the image loader from the Application class and call load.
+This is an example of a ListView with the binder setting the url in the ImageView as a tag:
+
+<pre><code>ImageTagFactory imageTagFactory = new ImageTagFactory(this, R.drawable.bg_img_loading);
+imageTagFactory.setErrorImageId(R.drawable.bg_img_notfound);
+...
+
+private ViewBinder getViewBinder() {
+  return new ViewBinder() {
+    @Override
+    public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+      // TODO add this to your class
+      ImageTag tag = imageTagFactory.build(cursor.getString(columnIndex))
+      ((ImageView) view).setTag(tag);
+      imageLoader.load(view);
+      return true;
+    }
+  };
+}
+</code></pre>
+
+The image loader will fetch the image from the cache (if available), from the SD card, or from the network as a last resort.
+
+h3. Cleaning up SD card
+
+If you want ImageLoader to clean up the SD card, you can use the following code in the onCreate of the Application class:
+
+<pre><code>imageManager.getFileManager().clean(this);</code></pre>
+
+In the settings you can override the default expiration period that is set to 7 days.
+
+h3. In the AndroidManifest.xml
+
+There are two things you need to add: Permissions and the Service to clean up the files.
+
+<pre><code><uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+</pre></code>
+
+<pre><code><service android:name="com.novoda.imageloader.core.service.CacheCleaner" android:exported="true">
+  <intent-filter>
+    <action android:name="com.novoda.imageloader.core.action.CLEAN_CACHE" />
+  </intent-filter>
+</service>
+</code></pre>
+
+h3. Cached preview images (optional)
 
 Preview image works well when you have a list of items with small images and you display a larger version of the same image when you click through. 
 ImageLoader will take the small picture in the cache (if available) and load it in place of the large image whilst loading the real image.
@@ -101,56 +150,6 @@ ImageView imageView = (ImageView) view;
 String url = cursor.getString(columnIndex);
 imageView.setTag(imageTagFactory.build(url));
 ImgSearch.getImageManager().getLoader().load(imageView);
-</code></pre>
-
-
-h3. Cleaning up SD card
-
-If you want ImageLoader to clean up the SD card, you can use the following code in the onCreate of the Application class:
-
-<pre><code>imageManager.getFileManager().clean(this);</code></pre>
-
-In the settings you can override the default expiration period that is set to 7 days.
-
-h3. In the Activity
-
-When you need to load the image in a view object you just need to get the image loader from the Application class and call load.
-This is an example of a ListView with the binder setting the url in the ImageView as a tag:
-
-<pre><code>ImageTagFactory imageTagFactory = new ImageTagFactory(this, R.drawable.bg_img_loading);
-imageTagFactory.setErrorImageId(R.drawable.bg_img_notfound);
-...
-
-private ViewBinder getViewBinder() {
-  return new ViewBinder() {
-    @Override
-    public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-      // TODO add this to your class
-      ImageTag tag = imageTagFactory.build(cursor.getString(columnIndex))
-      ((ImageView) view).setTag(tag);
-      imageLoader.load(view);
-      return true;
-    }
-  };
-}
-</code></pre>
-
-The image loader will fetch the image from the cache (if available), from the SD card, or from the network as a last resort.
-
-h3. In the AndroidManifest.xml
-
-There are two things you need to add: Permissions and the Service to clean up the files.
-
-<pre><code><uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-<uses-permission android:name="android.permission.INTERNET" />
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-</pre></code>
-
-<pre><code><service android:name="com.novoda.imageloader.core.service.CacheCleaner" android:exported="true">
-  <intent-filter>
-    <action android:name="com.novoda.imageloader.core.action.CLEAN_CACHE" />
-  </intent-filter>
-</service>
 </code></pre>
 
 h2. Getting the library
