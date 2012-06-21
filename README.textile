@@ -1,6 +1,6 @@
 h1. ImageLoader
 
-ImageLoader is a simple library that helps you fetch, load and cache images in Android apps. 
+ImageLoader is a simple library that helps you to fetch, load and cache images in Android apps. 
 It downloads images away from the UI thread and caches with a two-level in-memory/SD card cache.
 
 h2. Recent changes
@@ -49,7 +49,7 @@ public static final ImageManager getImageManager() {
 
 This sets up the image loader with size of the images that are taken from the display and the background image use while the image loader is fetching the real image.
 
-h4. LRU cache option
+h5. LRU cache option
 
 The default cache uses soft references. On a memory-constrained system like Android, the system can reclaim space too often. This limits the performance of the cache. To avoid this problem we added an LruCache implementation. This is really useful when you have lots of small images.
 
@@ -66,7 +66,7 @@ settings = new SettingsBuilder()
 thumbnailImageLoader = new ImageManager(this, settings);
 </code></pre>
 
-h4. Additional settings
+h5. Additional settings
 
 Image loader uses UrlConnection to fetch images. There are two important parameters that UrlConnection uses: connectionTimeout and readTimeout.
 
