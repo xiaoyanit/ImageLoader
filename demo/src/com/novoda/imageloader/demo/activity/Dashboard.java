@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+import com.novoda.imageloader.core.util.DirectLoader;
 import com.novoda.imageloader.demo.R;
 
 public class Dashboard extends Activity implements OnClickListener {
@@ -19,6 +20,7 @@ public class Dashboard extends Activity implements OnClickListener {
         ((Button)findViewById(R.id.long_small_image_list)).setOnClickListener(this);
         ((Button)findViewById(R.id.from_cache_only)).setOnClickListener(this);
         ((Button)findViewById(R.id.big_images)).setOnClickListener(this);
+        ((Button)findViewById(R.id.direct_loader)).setOnClickListener(this);
 	}
 
 	@Override
@@ -37,6 +39,9 @@ public class Dashboard extends Activity implements OnClickListener {
 		case R.id.big_images:
 			startActivity(new Intent(Dashboard.this, BigImages.class));			
 			break;
+        case R.id.direct_loader:
+            startActivity(new Intent(Dashboard.this, DirectLoadingDemo.class));
+            break;
 		default:
 			break;
 		}

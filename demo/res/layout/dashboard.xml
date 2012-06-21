@@ -32,4 +32,10 @@
         android:layout_height="wrap_content"
         android:text="Big images" />
 
+    <Button
+        android:id="@+id/direct_loader"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Direct loader" />
+
 </LinearLayout>

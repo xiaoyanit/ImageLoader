@@ -19,6 +19,7 @@
     <activity android:name=".activity.BigImages" android:theme="@android:style/Theme.NoTitleBar" />
     <activity android:name=".activity.FromCacheOnly" android:theme="@android:style/Theme.NoTitleBar" />
     <activity android:name=".activity.DirectLoadingDemo" android:theme="@android:style/Theme.NoTitleBar" />
+
     <provider android:name=".provider.ImageLoaderDemoProvider" android:authorities="com.novoda.imageloader.demo" />
     <service android:name="com.novoda.imageloader.core.service.CacheCleaner" android:exported="false" android:enabled="true">
       <intent-filter>

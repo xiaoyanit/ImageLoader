@@ -1,55 +1,38 @@
 h1. ImageLoader
 
-Image loader is a simple library that give you the ability to decouple the logic to fetch, load and cache images.
-It does that away from the ui thread, and by caching images with two levels in memory or in the sdcard if awailable.
+ImageLoader is a simple library that helps you to fetch, load and cache images in Android apps. 
+It downloads images away from the UI thread and caches with a two-level in-memory/SD card cache.
 
 h2. Recent changes
 
 h3. 1.5.5
 
-Few bug fixes, new DirectLoader utility class to directly download images (do not use it in the main thread).
+* Bug fixes
+* New DirectLoader utility to directly download images (do not use on main thread)
 
 h3. 1.5.2
 
-In this release we added support to load a small image as a preview for a bigger image.
+* Added support to load a cached small image as the preview for a larger image
 
 h3. 1.5.1
 
-Improve cuncurrent loader, change sdcard image position to respect Android SDK guide lines and improved LruBitmapCache.
+* Improved concurrent loader
+* Change SD card cache directory to respect Android SDK guidelines
+* Improved LruBitmapCache
 
-h2. How to use the library
+h2. Using the library
 
-h3. Using maven
+The demo project is a good place to start. Import it in Eclipse and check the task list to see the TODO list.
 
-If you are using maven you need to define the repo and then the dependency
+If you're lazy, here are the steps :
 
-<pre><code><repositories>
-  <repository>
-    <id>public-mvn-repo-releases</id>
-    <url>https://github.com/novoda/public-mvn-repo/raw/master/releases</url>
-  </repository>
-</repositories></code></pre>
+h3. Overview
 
-<pre><code><dependency>
-  <groupId>com.novoda.imageloader</groupId>
-  <artifactId>imageloader-core</artifactId>
- <version>1.5.5</version>
-</dependency></code></pre>
+!https://github.com/novoda/ImageLoader/raw/master/core/src/main/resources/documentationImage1.png(General overview)!
 
-h3. Direct jar usage
+h3. In the Application class
 
-If you don't care about building tool you can just download the jar manually from this link
-
-https://github.com/novoda/public-mvn-repo/raw/master/releases/com/novoda/imageloader/imageloader-core/1.5.5/imageloader-core-1.5.5.jar
-
-h2. How to implement
-
-The demo project is a good way to start. Import it in eclipse and check the task list to see where are all the TODO list.
-If you are lazy this are the steps :
-
-h3. Application
-
-In the application add the folling code the instantiate the image loader:
+Add the following code that initialises the image loader:
 
 <pre><code>@Override
 public void onCreate() {
@@ -64,31 +47,26 @@ public static final ImageManager getImageManager() {
 }
 </code></pre>
 
-This is setting up the image loader with size of the images that are taken from the display and the background image use while the image loader is fetching the real image.
+h5. LRU cache option
 
-The normal image loader works with softreferences. With a system with low memory as android, the system reclaim space to often. This limit the performance of the cache.
+The default cache uses soft references. On a memory-constrained system like Android, space can be reclaimed too often. This limits the performance of the cache. To avoid this problem we added an LruCache implementation. This is really useful when you have lots of small images.
 
-To avoid that we added a LruCache in the image loader library. This is very  useful when you have lots of small images.
-
-<pre><code>
-...
-settings = new SettingsBuilder()
+<pre><code>settings = new SettingsBuilder()
   .withCacheManager(new LruBitmapCache(this)).build(this);
 thumbnailImageLoader = new ImageManager(this, settings);
 </code></pre>
 
-By default the LruBitmapCache will take 25% of the free memory available for the cache. You can change that by using a different constructur:
+The LruBitmapCache will take 25% of the free memory available for the cache by default. You can change this by using an alternative constructor:
 
-<pre><code>
-int PERCENTAGE_OF_CACHE = 50;
+<pre><code>int PERCENTAGE_OF_CACHE = 50;
 settings = new SettingsBuilder()
   .withCacheManager(new LruBitmapCache(this, PERCENTAGE_OF_CACHE)).build(this);
 thumbnailImageLoader = new ImageManager(this, settings);
 </code></pre>
 
-h3. Additional settings
+h5. Additional settings
 
-Image loader use UrlConnection to fetch images. There are two important parameters that UrlConnection uses connectionTimeout and readTimeout.
+Image loader uses UrlConnection to fetch images. There are two important parameters that UrlConnection uses: connectionTimeout and readTimeout.
 
 <pre><code>SettingsBuilder builder = new SettingsBuilder();
 Settings settings = builder.withConnectionTimeout(20000)
@@ -97,49 +75,10 @@ Settings settings = builder.withConnectionTimeout(20000)
 
 The connection timeout is the timeout in making the initial connection. The read timeout is the timeout on waiting to read data.
 
-h3. Preview image
+h3. In the Activity, Fragment or Adapter
 
-Previe image works well when you have a list of items with small images chaced and then you go to the details to show a big image. 
-In fact image loader will take the small picture in the cache (only from the cache) and load in place of the big image before loading the real image.
-To do that you have two ways : change image tag before calling the load method or change the ImageTagFactory.
-
-<pre><code>
-//Image Tag after normal settings... add this: 
-imageTag.setPreviewHeight(100);
-imageTag.setPreviewHeight(100);
-imageTag.setPreviewUrl(previewUrl);
-imageView.setTag(imageTag);
-getImageManager().getLoader().load(imageView);
-</code></pre>
-
-<pre><code>
-//If the small image used as preview has the same url of the big image
-// you can use the image tag factory
-imageTagFactory = new ImageTagFactory(this, R.drawable.loading);
-imageTagFactory.setErrorImageId(R.drawable.image_not_found);
-imageTagFactory.usePreviewImage(THUMB_IMAGE_SIZE, THUMB_IMAGE_SIZE, true);
-//keep the instance of the tag factory somewhere
-
-//on the bind 
-ImageView imageView = (ImageView) view;
-String url = cursor.getString(columnIndex);
-imageView.setTag(imageTagFactory.build(url));
-ImgSearch.getImageManager().getLoader().load(imageView);
-</code></pre>
-
-
-h3. Cleaning up sdcard
-
-If you want the image loader to clean up the sdcard, you can use the following line of code on the create of the application:
-
-<pre><code>imageManager.getFileManager().clean(this);</code></pre>
-
-In the settings you can override the default expiration period that is set to 7 days.
-
-h3. In the activity
-
-When you need to load the image in a view object you just need to get the imageLoader from the application and call load.
-This is an example of a list view with the binder setting the url in the imageView as a tag.
+When you need to load the image in a view object you just need to get the image loader from the Application class and call load.
+This is an example of a ListView with the binder setting the url in the ImageView as a tag:
 
 <pre><code>ImageTagFactory imageTagFactory = new ImageTagFactory(this, R.drawable.bg_img_loading);
 imageTagFactory.setErrorImageId(R.drawable.bg_img_notfound);
@@ -153,18 +92,25 @@ private ViewBinder getViewBinder() {
       ImageTag tag = imageTagFactory.build(cursor.getString(columnIndex))
       ((ImageView) view).setTag(tag);
       imageLoader.load(view);
-      //
       return true;
     }
   };
 }
 </code></pre>
 
-The image loader will fetch the image from the cache if is still there or from the sdcard or will fetch the resource from the network in the worse scenario.
+The ImageTagFactory sets up the image loader with the size of the images to display and the loading image to be displayed whilst the real image is fetched. The image loader will fetch the image from the cache (if available), from the SD card, or from the network as a last resort.
 
-h3. In the manifest
+h3. Cleaning the SD card cache
 
-There are two things you need to add : Permissions and the service to clean up the files.
+If you want ImageLoader to clean up the SD card, you can use the following code in the onCreate of the Application class:
+
+<pre><code>imageManager.getFileManager().clean(this);</code></pre>
+
+In the settings you can edit the expiration period (it defaults to 7 days).
+
+h3. In the AndroidManifest.xml
+
+There are two things you need to add: Permissions and the Service to clean up the files.
 
 <pre><code><uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 <uses-permission android:name="android.permission.INTERNET" />
@@ -178,40 +124,91 @@ There are two things you need to add : Permissions and the service to clean up t
 </service>
 </code></pre>
 
+h3. Cached preview images (optional)
 
+Preview image works well when you have a list of items with small images and you display a larger version of the same image when you click through. 
+ImageLoader will take the small picture in the cache (if available) and load it in place of the large image whilst loading the real image.
+This can be implemented in two ways: changing the image tag before calling the load method or changing the ImageTagFactory.
 
-h1. Helping out with the project
+<pre><code>// Image tag after normal settings 
+imageTag.setPreviewHeight(100);
+imageTag.setPreviewHeight(100);
+imageTag.setPreviewUrl(previewUrl);
+imageView.setTag(imageTag);
+getImageManager().getLoader().load(imageView);
+</code></pre>
 
-h2. Report issues
+<pre><code>// If small preview image has same url as large image, use ImageTagFactory
+imageTagFactory = new ImageTagFactory(this, R.drawable.loading);
+imageTagFactory.setErrorImageId(R.drawable.image_not_found);
+imageTagFactory.usePreviewImage(THUMB_IMAGE_SIZE, THUMB_IMAGE_SIZE, true);
 
-If you have any problem with the library or new functionality you need to add, let us know and we will do something about it.
-Send us a message or create an issue with github.
+// On bind 
+ImageView imageView = (ImageView) view;
+String url = cursor.getString(columnIndex);
+imageView.setTag(imageTagFactory.build(url));
+ImgSearch.getImageManager().getLoader().load(imageView);
+</code></pre>
 
-h2. ImageLoader projects
+h3. DirectLoader (utility)
 
-* core contains a java maven based project
-* demo mvn android based project to test imageLoader
-* acceptance mvn android based project with robotium test
-* monkey some example that take a snapshot using monkey runner (deprecated)
+ImageLoader contains a utility class for directly downloading a Bitmap from a URL. This is useful for downloading an image to display in a notification. This does NOT handle threading for you. You should do the download inside an AsyncTask or Thread.
 
-To build the projects :
+<pre><code>Bitmap myImage = new DirectLoader().download(url);</code></pre>
 
-* run : <code>mvn clean install -Peclipse</code>
+This method will throw an ImageNotFoundException if there is no image on the other end of your URL.
 
-h3. Parent project and core
+h2. Getting the library
 
-Import the projects with maven, should be easy and painless. 
+h3. Using Maven
 
-h3. For demo and acceptance
+If you are using Maven you need to define the repo and dependency in your POM:
 
-* create a new android project in eclipse
-* add the necessary jars from the libs folder
+<pre><code><repositories>
+  <repository>
+    <id>public-mvn-repo-releases</id>
+    <url>https://github.com/novoda/public-mvn-repo/raw/master/releases</url>
+  </repository>
+</repositories></code></pre>
 
-h2. Requirements
+<pre><code><dependency>
+  <groupId>com.novoda.imageloader</groupId>
+  <artifactId>imageloader-core</artifactId>
+ <version>1.5.5</version>
+</dependency></code></pre>
 
-* maven 3.0.3+
+h3. As a .jar
+
+You can also simply include the "latest version":https://github.com/novoda/public-mvn-repo/raw/master/releases/com/novoda/imageloader/imageloader-core/1.5.5/imageloader-core-1.5.5.jar of the .jar file (v 1.5.5) in you project.
+
+h2. Helping out
+
+Novoda <3 open source.
+
+h3. Report issues
+
+If you have a problem with the library or want to suggest new features, let us know by creating an issue in GitHub.
+
+h3. ImageLoader projects
+
+* core: Java project
+* demo: Android project to test ImageLoader
+* acceptance: Android project for Robotium instrumentation tests
+* monkey: Example takes snapshots with monkeyrunner (deprecated)
+
+h3. Building the projects
+
+Maven: <code>mvn clean install</code>
+
+Maven (using Eclipse Android projects): <code>mvn clean install -Peclipse</code>. This command copies the dependencies to libs for working in Eclipse. The demo and acceptance projects should be configured as Android projects.
+
+IntelliJ: Import as a Maven project from the project root.
+
+h3. Requirements
+
+* Maven 3.0.3+
 
 h2. License
 
-Copyright (c) 2012 Novoda ltd
-Licensed under Apache 2.0
+Copyright (c) 2012 Novoda Ltd.
+Released under the Apache License, Version 2.0

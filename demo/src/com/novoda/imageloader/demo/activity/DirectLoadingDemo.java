@@ -28,10 +28,7 @@ public class DirectLoadingDemo extends Activity {
         new Thread() {
             public void run() {
                 DirectLoader dl = new DirectLoader();
-                Log.v("XXXX" , "directLoader resumed");
                 Bitmap b = dl.download("http://www.asianweek.com/wp-content/uploads/2012/03/microsoft_logo11.jpg");
-                Log.v("XXXX" , "bitmap created and isNull? " + (b == null));
-                Log.v("XXXX" , "image setted");
                 setImageView(b);
             };
         }.start();

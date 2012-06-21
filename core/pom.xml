@@ -11,20 +11,6 @@
   <name>imageloader-core</name>
   <packaging>jar</packaging>
   
-  <pluginRepositories>
-    <pluginRepository>
-      <id>mc-release</id>
-      <name>Local Maven repository of releases</name>
-      <url>http://mc-repo.googlecode.com/svn/maven2/releases</url>
-      <snapshots>
-          <enabled>false</enabled>
-      </snapshots>
-      <releases>
-          <enabled>true</enabled>
-      </releases>
-    </pluginRepository>
-  </pluginRepositories>
-  
   <dependencies>
     <dependency>
       <groupId>com.google.android</groupId>
@@ -63,6 +49,7 @@
       <plugin>
         <groupId>com.mycila.maven-license-plugin</groupId>
         <artifactId>maven-license-plugin</artifactId>
+        <version>1.9.0</version>
         <configuration>
           <header>src/main/resources/license.txt</header>
           <strictCheck>true</strictCheck>
