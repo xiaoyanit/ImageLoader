@@ -11,3 +11,6 @@ release.properties
 project.properties
 **/project.properties
 target
+out
+.idea
+*.iml
