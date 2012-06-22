@@ -51,17 +51,5 @@
       android:name=".provider.ImageLoaderDemoProvider"
       android:authorities="com.novoda.imageloader.demo" />
 
-    <service
-      android:name="com.novoda.imageloader.core.service.CacheCleaner"
-      android:exported="false"
-      android:enabled="true">
-      <intent-filter>
-        <action android:name="com.novoda.imageloader.core.action.REDUCE_CACHE" />
-      </intent-filter>
-      <intent-filter>
-        <action android:name="com.novoda.imageloader.core.action.CLEAN_CACHE" />
-      </intent-filter>
-    </service>
-
   </application>
 </manifest>

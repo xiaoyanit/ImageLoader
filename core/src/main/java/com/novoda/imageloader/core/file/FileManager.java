@@ -17,14 +17,13 @@ package com.novoda.imageloader.core.file;
 
 import java.io.File;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 
 public interface FileManager {
 
-    void delete(Context context);
+    void clean();
 
-    void clean(Context context);
+    void cleanOldFiles();
 
     String getFilePath(String url);
 
