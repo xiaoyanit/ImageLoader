@@ -26,7 +26,6 @@ insert into imagelonglist(url) values ("http://tigerspike.mobi/img/TigerSpike-46
 insert into imagelonglist(url) values ("http://www.computersciencegames.com/images/tigerspike.jpg");
 insert into imagelonglist(url) values ("http://pdfguides.com/images/uploads/TigerSpike-500x498.jpg");
 insert into imagelonglist(url) values ("http://www.mobiadnews.com/wp-content/uploads/2010/04/luke-closeup.jpg");
-insert into imagelonglist(url) values ("http://www.terrapinn.com/TRes/Contact/People/P83779.jpg");
 insert into imagelonglist(url) values ("http://decaturite.files.wordpress.com/2009/04/java-monkey-fence1.jpg");
 insert into imagelonglist(url) values ("http://4.bp.blogspot.com/_YJvZnVgEuYc/Rfyfm2rKWJI/AAAAAAAAAPA/9ek85dUQO7w/s400/Java-Monkey-Final-white.jpg");
 insert into imagelonglist(url) values ("http://thumb16.webshots.net/s/thumb2/9/75/66/15397566WBYLXhsQlK_th.jpg");
