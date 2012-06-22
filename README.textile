@@ -189,20 +189,34 @@ h3. Report issues
 
 If you have a problem with the library or want to suggest new features, let us know by creating an issue in GitHub.
 
-h3. ImageLoader projects
+h3. Get involved
 
-* core: Java project
+If you don't want to wait for us to fix a bug or implement a new feature, you can contribute to the project. To do that fork the repo and when the change is done raise a pull request.
+
+"Find out more about pull requests":https://help.github.com/articles/using-pull-requests
+
+h3. Project structure
+
+* core: simple maven java project
 * demo: Android project to test ImageLoader
 * acceptance: Android project for Robotium instrumentation tests
-* monkey: Example takes snapshots with monkeyrunner (deprecated)
 
-h3. Building the projects
+h3. Building the projects with maven
 
 Maven: <code>mvn clean install</code>
 
-Maven (using Eclipse Android projects): <code>mvn clean install -Peclipse</code>. This command copies the dependencies to libs for working in Eclipse. The demo and acceptance projects should be configured as Android projects.
+h3. Eclipse
 
-IntelliJ: Import as a Maven project from the project root.
+An easy way to set up the project for eclipse is the following: 
+
+* run <code>mvn clean install -Peclipse</code>. This command copies the dependencies to libs for working in Eclipse. The demo and acceptance projects should be configured as Android projects.
+* import the core project as maven project
+* create new android project from sources and target the demo folder
+* create new android project from sources and target the acceptance folder
+
+h3. IntelliJ
+
+Import as a Maven project from the project root.
 
 h3. Requirements
 
