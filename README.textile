@@ -5,6 +5,10 @@ It downloads images away from the UI thread and caches with a two-level in-memor
 
 h2. Recent changes
 
+h3. 1.5.6-SNAPSHOT
+
+* Removed necessity to set a service in the manifest for the clean up, everything is done in the BasicFileManager with a background thread.
+
 h3. 1.5.5
 
 * Bug fixes
