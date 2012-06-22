@@ -18,31 +18,49 @@ package com.novoda.imageloader.core.file;
 import java.io.File;
 import java.io.FileOutputStream;
 
-import com.novoda.imageloader.core.LoaderSettings;
-import com.novoda.imageloader.core.network.UrlUtil;
-import com.novoda.imageloader.core.service.CacheCleaner;
-
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 
+import com.novoda.imageloader.core.LoaderSettings;
+import com.novoda.imageloader.core.file.util.FileUtil;
+import com.novoda.imageloader.core.network.UrlUtil;
+
+/**
+ * This is a basic implementation for the file manager.
+ * On Startup it is running a cleanup of all the files in the cache, and removing
+ * old images based on the expirationPeriod.
+ */
 public class BasicFileManager implements FileManager {
 
     private LoaderSettings settings;
 
     public BasicFileManager(LoaderSettings settings) {
         this.settings = settings;
+        cleanOldFiles();
     }
 
     @Override
-    public void delete(Context context) {
-        sendCacheCleanUpBroadcast(context, 0);
+    public void clean() {
+        deleteOldFiles(-1);
     }
 
     @Override
-    public void clean(Context context) {
-        long expirationPeriod = settings.getExpirationPeriod();
-        sendCacheCleanUpBroadcast(context, expirationPeriod);
+    public void cleanOldFiles() {
+        deleteOldFiles(settings.getExpirationPeriod());
+    }
+
+    private void deleteOldFiles(final long expirationPeriod) {
+        final String cacheDir = settings.getCacheDir().getAbsolutePath();
+        Thread cleaner = new Thread(new Runnable() {
+            public void run() {
+                try {
+                    new FileUtil().reduceFileCache(cacheDir, expirationPeriod);
+                } catch (Throwable t) {
+                    // Don't have to fail in case there
+                }
+            }
+          });
+        cleaner.setPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+        cleaner.start();
     }
 
     @Override
@@ -62,13 +80,6 @@ public class BasicFileManager implements FileManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private void sendCacheCleanUpBroadcast(Context context, long expirationPeriod) {
-        String path = settings.getCacheDir().getAbsolutePath();
-        Intent i = CacheCleaner.getCleanCacheIntent(path, expirationPeriod);
-        i.setPackage(context.getPackageName());
-        context.startService(i);
     }
 
     @Override
