@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout
-   xmlns:a="http://schemas.android.com/apk/res/android"
-   style="@style/FillHorizontaly.VerticalOrientation"
-   a:padding="1dp"
-   a:id="@+id/list_item">
+   xmlns:android="http://schemas.android.com/apk/res/android"
+   android:id="@+id/list_item"
+   android:layout_width="match_parent"
+   android:layout_height="wrap_content">
+   
    <ImageView
-      a:id="@+id/list_item_image"
-      style="@style/Wrap"
-      a:textStyle="bold"
-      a:focusable="false"
-      a:minHeight="80dp"
-      a:layout_gravity="center"
-      a:focusableInTouchMode="false" />
+      android:id="@+id/list_item_image"
+      android:layout_width="40dp"
+      android:layout_height="40dp"
+      android:layout_margin="10dp"
+      android:scaleType="centerCrop" />
+   
 </LinearLayout>
