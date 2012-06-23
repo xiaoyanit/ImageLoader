@@ -1,13 +1,12 @@
 h1. ImageLoader
 
-ImageLoader is a simple library that helps you to fetch, load and cache images in Android apps. 
-It downloads images away from the UI thread and caches with a two-level in-memory/SD card cache.
+ImageLoader is a simple library that makes it easy to download, display and cache remote images in Android apps. Download happens away from the UI thread and the images are cached with a two-level in-memory/SD card cache.
 
 h2. Recent changes
 
 h3. 1.5.6-SNAPSHOT
 
-* Removed necessity to set a service in the manifest for the clean up, everything is done in the BasicFileManager with a background thread.
+* Removed necessity to set a service in the manifest for the clean up. Everything is done in the BasicFileManager with a background thread.
 
 h3. 1.5.5
 
@@ -26,9 +25,9 @@ h3. 1.5.1
 
 h2. Using the library
 
-The demo project is a good place to start. Import it in Eclipse and check the task list to see the TODO list.
+The demo project is a good place to start. Check the TODO comments to see where the important stuff happens.
 
-If you're lazy, here are the steps :
+If that sounds like too much trouble, here are the steps:
 
 h3. Overview
 
@@ -36,7 +35,7 @@ h3. Overview
 
 h3. In the Application class
 
-Add the following code that initialises the image loader:
+Add the following code to initialise and provide access to the image loader. The settings builder gives you some control over the caching and network connections.
 
 <pre><code>@Override
 public void onCreate() {
@@ -53,14 +52,14 @@ public static final ImageManager getImageManager() {
 
 h5. LRU cache option
 
-The default cache uses soft references. On a memory-constrained system like Android, space can be reclaimed too often. This limits the performance of the cache. To avoid this problem we added an LruCache implementation. This is really useful when you have lots of small images.
+The default cache uses soft references. With a memory-constrained system like Android, space can be reclaimed too often, limiting the performance of the cache. The LRU cache is intended to solve this problem. It's particularly useful if your app displays many small images.
 
 <pre><code>settings = new SettingsBuilder()
   .withCacheManager(new LruBitmapCache(this)).build(this);
 thumbnailImageLoader = new ImageManager(this, settings);
 </code></pre>
 
-The LruBitmapCache will take 25% of the free memory available for the cache by default. You can change this by using an alternative constructor:
+The LruBitmapCache will take 25% of the free memory available for the cache by default. You can customise this with an alternative constructor:
 
 <pre><code>int PERCENTAGE_OF_CACHE = 50;
 settings = new SettingsBuilder()
@@ -70,30 +69,29 @@ thumbnailImageLoader = new ImageManager(this, settings);
 
 h5. Additional settings
 
-Image loader uses UrlConnection to fetch images. There are two important parameters that UrlConnection uses: connectionTimeout and readTimeout.
+ImageLoader uses UrlConnection to fetch images. There are two important UrlConnection parameters that you might want to change: connectionTimeout & readTimeout.
 
 <pre><code>SettingsBuilder builder = new SettingsBuilder();
 Settings settings = builder.withConnectionTimeout(20000)
   .withReadTimeout(30000).build(this);
 </code></pre>
 
-The connection timeout is the timeout in making the initial connection. The read timeout is the timeout on waiting to read data.
+The connection timeout is the timeout for the initial connection. The read timeout is the timeout waiting for data.
 
 h3. In the Activity, Fragment or Adapter
 
-When you need to load the image in a view object you just need to get the image loader from the Application class and call load.
-This is an example of a ListView with the binder setting the url in the ImageView as a tag:
+When you want to load an image into an ImageView, you just get the image loader from the Application class and call the load method.
+Here is how you could use it in a ListView with the binder setting the image URL in the ImageView as a tag:
 
 <pre><code>ImageTagFactory imageTagFactory = new ImageTagFactory(this, R.drawable.bg_img_loading);
 imageTagFactory.setErrorImageId(R.drawable.bg_img_notfound);
-...
 
 private ViewBinder getViewBinder() {
   return new ViewBinder() {
     @Override
     public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-      // TODO add this to your class
-      ImageTag tag = imageTagFactory.build(cursor.getString(columnIndex))
+      // Build image tag with remote image URL
+      ImageTag tag = imageTagFactory.build(cursor.getString(columnIndex));
       ((ImageView) view).setTag(tag);
       imageLoader.load(view);
       return true;
@@ -102,19 +100,19 @@ private ViewBinder getViewBinder() {
 }
 </code></pre>
 
-The ImageTagFactory sets up the image loader with the size of the images to display and the loading image to be displayed whilst the real image is fetched. The image loader will fetch the image from the cache (if available), from the SD card, or from the network as a last resort.
+The ImageTagFactory configures image loader with the size of the images to display and the loading image to be displayed whilst the real image is being fetched. The image loader will fetch the image from the in-memory cache (if available), from the SD card (if available), or from the network as a last resort.
 
 h3. Cleaning the SD card cache
 
-If you want ImageLoader to clean up the SD card, you can use the following code in the onCreate of the Application class:
+If you want ImageLoader to clean up the SD card, add the following code in the onCreate of the Application class:
 
 <pre><code>imageManager.getFileManager().clean(this);</code></pre>
 
-In the settings you can edit the expiration period (it defaults to 7 days).
+In the settings builder you can configure the expiration period (it's set to 7 days by default).
 
 h3. In the AndroidManifest.xml
 
-There are two things you need to add: Permissions and the Service to clean up the files.
+There are two things you need to add: Permissions and the Service to clean up the SD cache.
 
 <pre><code><uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 <uses-permission android:name="android.permission.INTERNET" />
@@ -130,9 +128,9 @@ There are two things you need to add: Permissions and the Service to clean up th
 
 h3. Cached preview images (optional)
 
-Preview image works well when you have a list of items with small images and you display a larger version of the same image when you click through. 
-ImageLoader will take the small picture in the cache (if available) and load it in place of the large image whilst loading the real image.
-This can be implemented in two ways: changing the image tag before calling the load method or changing the ImageTagFactory.
+Cached preview images is a feature designed for when you have a list of items with thumbnail images and you subsequently display a larger version of the same image on some user action. 
+ImageLoader can take the small image from the cache (if available) and use it as the preview image whilst the large image loads.
+There are two options for implementing this: configuring the image tag before calling the load method or configuring the ImageTagFactory.
 
 <pre><code>// Image tag after normal settings 
 imageTag.setPreviewHeight(100);
@@ -142,7 +140,7 @@ imageView.setTag(imageTag);
 getImageManager().getLoader().load(imageView);
 </code></pre>
 
-<pre><code>// If small preview image has same url as large image, use ImageTagFactory
+<pre><code>// If small and large image have same URL, configure with the ImageTagFactory
 imageTagFactory = new ImageTagFactory(this, R.drawable.loading);
 imageTagFactory.setErrorImageId(R.drawable.image_not_found);
 imageTagFactory.usePreviewImage(THUMB_IMAGE_SIZE, THUMB_IMAGE_SIZE, true);
@@ -151,7 +149,7 @@ imageTagFactory.usePreviewImage(THUMB_IMAGE_SIZE, THUMB_IMAGE_SIZE, true);
 ImageView imageView = (ImageView) view;
 String url = cursor.getString(columnIndex);
 imageView.setTag(imageTagFactory.build(url));
-ImgSearch.getImageManager().getLoader().load(imageView);
+MyApplication.getImageManager().getLoader().load(imageView);
 </code></pre>
 
 h3. DirectLoader (utility)
@@ -166,7 +164,7 @@ h2. Getting the library
 
 h3. Using Maven
 
-If you are using Maven you need to define the repo and dependency in your POM:
+If you are using Maven you can define the repo and dependency in your POM:
 
 <pre><code><repositories>
   <repository>
@@ -195,28 +193,28 @@ If you have a problem with the library or want to suggest new features, let us k
 
 h3. Get involved
 
-If you don't want to wait for us to fix a bug or implement a new feature, you can contribute to the project. To do that fork the repo and when the change is done raise a pull request.
+If you don't want to wait for us to fix a bug or implement a new feature, you can contribute to the project. Fork the repo and submit a pull request with your changes.
 
 "Find out more about pull requests":https://help.github.com/articles/using-pull-requests
 
 h3. Project structure
 
-* core: simple maven java project
+* core: simple Maven Java project
 * demo: Android project to test ImageLoader
 * acceptance: Android project for Robotium instrumentation tests
 
 h3. Building the projects with maven
 
-Maven: <code>mvn clean install</code>
+<code>mvn clean install</code>
 
 h3. Eclipse
 
-An easy way to set up the project for eclipse is the following: 
+An easy way to set up the project for eclipse is like so: 
 
-* run <code>mvn clean install -Peclipse</code>. This command copies the dependencies to libs for working in Eclipse. The demo and acceptance projects should be configured as Android projects.
-* import the core project as maven project
-* create new android project from sources and target the demo folder
-* create new android project from sources and target the acceptance folder
+* Run <code>mvn clean install -Peclipse</code>. This command copies the dependencies to libs for working in Eclipse. The demo and acceptance projects should be configured as Android projects.
+* Import the core project as a Maven project
+* Create a new Android project from source and target the demo directory.
+* Create new Android project from source and target the acceptance directory.
 
 h3. IntelliJ
 
