@@ -1,6 +1,7 @@
 h1. ImageLoader
 
-ImageLoader is a simple library that makes it easy to download, display and cache remote images in Android apps. Download happens away from the UI thread and the images are cached with a two-level in-memory/SD card cache.
+ImageLoader is a simple library that makes it easy to download, display and cache remote images in Android apps. 
+Download happens away from the UI thread and the images are cached with a two-level in-memory/SD card cache.
 
 h2. Recent changes
 
@@ -100,11 +101,11 @@ private ViewBinder getViewBinder() {
 }
 </code></pre>
 
-The ImageTagFactory configures image loader with the size of the images to display and the loading image to be displayed whilst the real image is being fetched. The image loader will fetch the image from the in-memory cache (if available), from the SD card (if available), or from the network as a last resort.
+The ImageTagFactory configures image loader with the size of the images to display and the loading image to be displayed whilst the real image is being fetched. The image loader will fetch the image from the in-memory cache (if available), from the SD card (if available) or from the network as a last resort.
 
 h3. Cleaning the SD card cache
 
-If you want ImageLoader to clean up the SD card, add the following code in the onCreate of the Application class:
+If you want ImageLoader to clean up the SD card cache, add the following code in the onCreate of the Application class:
 
 <pre><code>imageManager.getFileManager().clean(this);</code></pre>
 
@@ -128,9 +129,9 @@ There are two things you need to add: Permissions and the Service to clean up th
 
 h3. Cached preview images (optional)
 
-Cached preview images is a feature designed for when you have a list of items with thumbnail images and you subsequently display a larger version of the same image on some user action. 
-ImageLoader can take the small image from the cache (if available) and use it as the preview image whilst the large image loads.
-There are two options for implementing this: configuring the image tag before calling the load method or configuring the ImageTagFactory.
+Cached preview images is a feature designed for when you have a list of items with thumbnail images and you subsequently display a larger version of the same image on some user action. ImageLoader can take the small image from the cache (if available) and use it as the preview image whilst the large image loads.
+
+There are two options for implementing cached preview images: configure the image tag before calling load or configure the ImageTagFactory.
 
 <pre><code>// Image tag after normal settings 
 imageTag.setPreviewHeight(100);
@@ -193,9 +194,7 @@ If you have a problem with the library or want to suggest new features, let us k
 
 h3. Get involved
 
-If you don't want to wait for us to fix a bug or implement a new feature, you can contribute to the project. Fork the repo and submit a pull request with your changes.
-
-"Find out more about pull requests":https://help.github.com/articles/using-pull-requests
+If you don't want to wait for us to fix a bug or implement a new feature, you can contribute to the project. Fork the repo and submit a pull request with your changes. "Find out more about pull requests.":https://help.github.com/articles/using-pull-requests
 
 h3. Project structure
 
