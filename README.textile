@@ -209,6 +209,8 @@ h3. Building the projects with maven
 
 Maven: <code>mvn clean install</code>
 
+Note : By default we run instrumentation tests, if you don't attach a device the build will fail at the end.
+
 h3. Eclipse
 
 An easy way to set up the project for eclipse is the following: 
