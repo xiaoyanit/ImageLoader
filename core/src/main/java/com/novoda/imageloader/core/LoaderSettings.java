@@ -23,6 +23,11 @@ import android.os.Build;
 import com.novoda.imageloader.core.cache.CacheManager;
 import com.novoda.imageloader.core.file.util.FileUtil;
 
+/**
+ * LoaderSettings is the main class used to customize the behavior of the imageLoader.
+ * To provide a more user friendly way to set different parameters it is possible to use
+ * a builder : SettingsBuilder. 
+ */
 public class LoaderSettings {
 
     private static final long DEFAULT_EXPIRATION_PERIOD = 7l * 24l * 3600l * 1000l;
@@ -123,6 +128,9 @@ public class LoaderSettings {
         this.useAsyncTasks = useAsyncTasks;
     }
 
+    /**
+     * Builder for the LoaderSettings.
+     */
     public static class SettingsBuilder {
 
         private LoaderSettings settings;
@@ -158,6 +166,11 @@ public class LoaderSettings {
 
         public SettingsBuilder withAsyncTasks(boolean useAsyncTasks) {
             settings.setUseAsyncTasks(useAsyncTasks);
+            return this;
+        }
+        
+        public SettingsBuilder withCacheDir(File file) {
+            settings.setCacheDir(file);
             return this;
         }
 

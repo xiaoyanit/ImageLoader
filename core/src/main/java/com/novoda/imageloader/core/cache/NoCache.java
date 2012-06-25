@@ -17,6 +17,10 @@ package com.novoda.imageloader.core.cache;
 
 import android.graphics.Bitmap;
 
+/**
+ * This cache manager do not keep image in memory.
+ * Can be useful in some scenario.
+ */
 public class NoCache implements CacheManager {
 
     @Override

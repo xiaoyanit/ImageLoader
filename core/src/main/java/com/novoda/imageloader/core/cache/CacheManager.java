@@ -17,6 +17,11 @@ package com.novoda.imageloader.core.cache;
 
 import android.graphics.Bitmap;
 
+/**
+ * Interface for all the in memory cache managers.
+ * There are three main type of memory cache managers : 
+ * NoChace, SoftMapCache, and LruBitmapCache
+ */
 public interface CacheManager {
 
     Bitmap get(String url, int width, int height);

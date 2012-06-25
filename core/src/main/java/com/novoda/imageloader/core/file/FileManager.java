@@ -19,6 +19,9 @@ import java.io.File;
 
 import android.graphics.Bitmap;
 
+/**
+ * FileManager is an interface marking all the implementation of file cache managers.
+ */
 public interface FileManager {
 
     void clean();

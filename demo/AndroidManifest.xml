@@ -40,10 +40,6 @@
       android:label="@string/large_list" />
 
     <activity
-      android:name=".activity.FromCacheOnly"
-      android:label="@string/cache_only" />
-
-    <activity
       android:name=".activity.DirectLoading"
       android:label="@string/direct_loader" />
 

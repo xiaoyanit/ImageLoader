@@ -5,7 +5,6 @@
     <item>@string/long_list</item>
     <item>@string/long_small_list</item>
     <item>@string/large_list</item>
-    <item>@string/cache_only</item>
     <item>@string/direct_loader</item>
   </string-array>
 </resources> 

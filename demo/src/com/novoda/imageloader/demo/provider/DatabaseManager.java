@@ -4,17 +4,16 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.novoda.imageloader.demo.activity.BigImages;
-import com.novoda.imageloader.demo.activity.FromCacheOnly;
-import com.novoda.imageloader.demo.activity.ImageLongList;
-import com.novoda.imageloader.demo.activity.LongSmallImageList;
-import com.novoda.imageloader.demo.activity.base.SingleTableBaseListActivity;
-
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import com.novoda.imageloader.demo.activity.BigImages;
+import com.novoda.imageloader.demo.activity.ImageLongList;
+import com.novoda.imageloader.demo.activity.LongSmallImageList;
+import com.novoda.imageloader.demo.activity.base.SingleTableBaseListActivity;
 
 public class DatabaseManager extends SQLiteOpenHelper {
 
@@ -40,7 +39,6 @@ public class DatabaseManager extends SQLiteOpenHelper {
         List<String> stms = new ArrayList<String>();
         addCreateStm(stms, ImageLongList.class);
         addCreateStm(stms, BigImages.class);
-        addCreateStm(stms, FromCacheOnly.class);
         addCreateStm(stms, LongSmallImageList.class);
         AssetManager mngr = context.getAssets();
         try {
@@ -65,7 +63,6 @@ public class DatabaseManager extends SQLiteOpenHelper {
         List<String> stms = new ArrayList<String>();
         addDropStm(stms, ImageLongList.class);
         addDropStm(stms, BigImages.class);
-        addDropStm(stms, FromCacheOnly.class);
         addDropStm(stms, LongSmallImageList.class);
         exec(db, stms);
     }

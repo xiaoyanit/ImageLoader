@@ -1,5 +1,7 @@
 package com.novoda.imageloader.demo;
 
+import java.io.File;
+
 import android.app.Application;
 
 import com.novoda.imageloader.core.ImageManager;
@@ -9,32 +11,56 @@ import com.novoda.imageloader.core.cache.LruBitmapCache;
 
 public class DemoApplication extends Application {
 
-    /*
-     * TODO Initialise the image manager in your application.
-     * You can have more than one if you need different settings.
+    /**
+     * It is possible to keep a static reference across the 
+     * application of the image loader.
      */
     private static ImageManager imageManager;
-    private static ImageManager thumbnailImageLoader;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        // TODO Initialise your image manager settings.
-        LoaderSettings settings = new SettingsBuilder().withDisconnectOnEveryCall(true).build(this);
-        imageManager = new ImageManager(this, settings);
-
-        settings = new SettingsBuilder().withDisconnectOnEveryCall(true).withAsyncTasks(false)
-                .withCacheManager(new LruBitmapCache(this)).build(this);
-        thumbnailImageLoader = new ImageManager(this, settings);
+        
+        normalImageManagerSettings();
     }
 
-    // TODO Create a method to access your image manager.
+    /**
+     * Normal image manager settings
+     */
+    private void normalImageManagerSettings() {
+        imageManager = new ImageManager(this, new SettingsBuilder()
+            .withCacheManager(new LruBitmapCache(this)).build(this));
+    }
+
+    /**
+     * There are different settings that you can use to customize
+     * the usage of the image loader for your application.
+     */
+    @SuppressWarnings("unused")
+    private void verboseImageManagerSettings() {
+        SettingsBuilder settingsBuilder = new SettingsBuilder();
+        //You can force the urlConnection to disconnect after every call.
+        settingsBuilder.withDisconnectOnEveryCall(true);
+        //We have different types of cache, check cache package for more info
+        settingsBuilder.withCacheManager(new LruBitmapCache(this));
+        //You can set a specific read timeout
+        settingsBuilder.withReadTimeout(30000);
+        //You can set a specific connection timeout
+        settingsBuilder.withConnectionTimeout(30000);
+        //You can disable the multi-threading ability to download image 
+        settingsBuilder.withAsyncTasks(false);
+        //You can set a specific directory for caching files on the sdcard
+        settingsBuilder.withCacheDir(new File("/something"));
+        
+        LoaderSettings loaderSettings = settingsBuilder.build(this);
+        imageManager = new ImageManager(this, loaderSettings);
+    }
+
+    /**
+     * Convenient method of access the imageLoader
+     */
     public static ImageManager getImageLoader() {
         return imageManager;
-    }
-
-    public static ImageManager getThumbnailImageLoader() {
-        return thumbnailImageLoader;
     }
 
 }
