@@ -10,6 +10,9 @@ import android.widget.ListView;
 
 import com.novoda.imageloader.demo.R;
 
+/**
+ * Nothing really interesting here just a dashboard.
+ */
 public class Demos extends Activity implements OnItemClickListener {
 
     @Override
@@ -33,9 +36,6 @@ public class Demos extends Activity implements OnItemClickListener {
             startActivity(new Intent(Demos.this, BigImages.class));
             break;
         case 3:
-            startActivity(new Intent(Demos.this, FromCacheOnly.class));
-            break;
-        case 4:
             startActivity(new Intent(Demos.this, DirectLoading.class));
         }
     }

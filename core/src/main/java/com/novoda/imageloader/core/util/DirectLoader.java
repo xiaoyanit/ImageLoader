@@ -9,6 +9,10 @@ import com.novoda.imageloader.core.bitmap.BitmapUtil;
 import com.novoda.imageloader.core.network.NetworkManager;
 import com.novoda.imageloader.core.network.UrlNetworkLoader;
 
+/**
+ * Direct loader make use of the NetworkManager and the BitmapUtil
+ * to provide a direct way to get a Bitmap given a http url.
+ */
 public class DirectLoader {
 
     private NetworkManager networkManager;

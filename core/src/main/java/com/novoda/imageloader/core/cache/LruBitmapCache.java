@@ -17,10 +17,18 @@ package com.novoda.imageloader.core.cache;
 
 import java.lang.reflect.Method;
 
+import com.novoda.imageloader.core.cache.util.LruCache;
+
 import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 
+/**
+ * LruBitmapCache overcome the issue with soft reference cache.
+ * It is in fact keeping all the certain amount of images in memory.
+ * The size of the memory used for cache depends on the memory that the android
+ * SDK provide to the application and the percentage specified (by default is 25MB).
+ */
 public class LruBitmapCache implements CacheManager {
 
     public static final int DEFAULT_MEMORY_CACHE_PERCENTAGE = 25;
@@ -29,6 +37,7 @@ public class LruBitmapCache implements CacheManager {
     private int capacity;
 
     /**
+     * It is possible to set a specific percentage of memory to be used only for images.
      * @param context
      * @param percentageOfMemoryForCache 1-80
      */
@@ -57,6 +66,11 @@ public class LruBitmapCache implements CacheManager {
         reset();
     }
     
+    /**
+     * Setting the default memory size to 25% percent of the total memory 
+     * available of the application.
+     * @param context
+     */
     public LruBitmapCache(Context context) {
         this(context, DEFAULT_MEMORY_CACHE_PERCENTAGE);
     }

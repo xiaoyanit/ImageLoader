@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.novoda.imageloader.core.cache;
+package com.novoda.imageloader.core.cache.util;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

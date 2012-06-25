@@ -29,6 +29,16 @@ import com.novoda.imageloader.core.loader.SimpleLoader;
 import com.novoda.imageloader.core.network.NetworkManager;
 import com.novoda.imageloader.core.network.UrlNetworkLoader;
 
+/**
+ * ImageManager has the responsibility to provide a
+ * simple and easy interface to access three fundamental part of the imageLoader
+ * library : the FileManager, the NetworkManager, and the CacheManager.
+ * An ImageManager instance can be instantiated at the application level and used 
+ * statically across the application.
+ * 
+ * Manifest.permission.WRITE_EXTERNAL_STORAGE and Manifest.permission.INTERNET are 
+ * currently necessary for the imageLoader library to work properly. 
+ */
 public class ImageManager {
 
     private LoaderContext loaderContext;

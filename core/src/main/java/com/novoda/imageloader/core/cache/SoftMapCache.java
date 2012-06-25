@@ -20,6 +20,11 @@ import java.util.HashMap;
 
 import android.graphics.Bitmap;
 
+/**
+ * Very simple version of memory cache using soft reference.
+ * Soft Reference do not provide the best solution for memory cache in android.
+ * This because the garbage collector is removing very quickly soft referenced objects.
+ */
 public class SoftMapCache implements CacheManager {
 
     private HashMap<String, SoftReference<Bitmap>> cache = new HashMap<String, SoftReference<Bitmap>>();

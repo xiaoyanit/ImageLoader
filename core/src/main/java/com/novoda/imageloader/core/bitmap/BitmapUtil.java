@@ -26,6 +26,10 @@ import android.graphics.BitmapFactory;
 
 import com.novoda.imageloader.core.model.ImageWrapper;
 
+/**
+ * Utility class abstract the usage of the BitmapFactory.
+ * It is shielding the users of this class from bugs and OutOfMemory exceptions. 
+ */
 public class BitmapUtil {
 
     private static final int BUFFER_SIZE = 64 * 1024;

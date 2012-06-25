@@ -8,6 +8,9 @@ import android.widget.ImageView;
 import com.novoda.imageloader.core.util.DirectLoader;
 import com.novoda.imageloader.demo.R;
 
+/**
+ * Direct loading example.
+ */
 public class DirectLoading extends Activity {
 
     private ImageView imageView;
@@ -22,7 +25,7 @@ public class DirectLoading extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        /*
+        /**
          * TODO Don't use the direct loader like this.
          * It's useful for downloading a Bitmap to display in a notification.
          * You need to handle the threading yourself.

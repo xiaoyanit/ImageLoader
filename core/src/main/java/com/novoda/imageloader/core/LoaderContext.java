@@ -20,6 +20,13 @@ import com.novoda.imageloader.core.cache.CacheManager;
 import com.novoda.imageloader.core.file.FileManager;
 import com.novoda.imageloader.core.network.NetworkManager;
 
+/**
+ * LoaderContext provides a generic context for the imageLoader
+ * where different objects can access different levels of caching, 
+ * the BitmapUtil, and all the customized settings.
+ * 
+ * This class is supposed to be used internally.
+ */
 public class LoaderContext {
     private FileManager fileManager;
     private NetworkManager networkManager;
