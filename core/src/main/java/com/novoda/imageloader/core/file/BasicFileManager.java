@@ -38,29 +38,21 @@ public class BasicFileManager implements FileManager {
         cleanOldFiles();
     }
 
+    /**
+     * Clean is removing all the files in the cache directory.
+     */
     @Override
     public void clean() {
         deleteOldFiles(-1);
     }
 
+    /**
+     * CleanOldFile is removing all the files in the cache directory where the 
+     * timestamp is older then the expiration time.
+     */
     @Override
     public void cleanOldFiles() {
         deleteOldFiles(settings.getExpirationPeriod());
-    }
-
-    private void deleteOldFiles(final long expirationPeriod) {
-        final String cacheDir = settings.getCacheDir().getAbsolutePath();
-        Thread cleaner = new Thread(new Runnable() {
-            public void run() {
-                try {
-                    new FileUtil().reduceFileCache(cacheDir, expirationPeriod);
-                } catch (Throwable t) {
-                    // Don't have to fail in case there
-                }
-            }
-          });
-        cleaner.setPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
-        cleaner.start();
     }
 
     @Override
@@ -97,10 +89,26 @@ public class BasicFileManager implements FileManager {
     }
 
     private String processUrl(String url) {
-        if (!settings.isQueryIncludedInHash()) {
+        if (settings.isQueryIncludedInHash()) {
             return url;
         }
         return new UrlUtil().removeQuery(url);
+    }
+    
+    private void deleteOldFiles(final long expirationPeriod) {
+        final String cacheDir = settings.getCacheDir().getAbsolutePath();
+        Thread cleaner = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    new FileUtil().reduceFileCache(cacheDir, expirationPeriod);
+                } catch (Throwable t) {
+                    // Don't have to fail in case there
+                }
+            }
+          });
+        cleaner.setPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+        cleaner.start();
     }
 
 }

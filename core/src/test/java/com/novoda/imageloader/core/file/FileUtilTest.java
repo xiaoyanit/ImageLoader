@@ -37,20 +37,15 @@ public class FileUtilTest {
 	private File cacheDir;
 	
 	@Before 
-	public void before() {
+	public void beforeEachTest() {
 		cacheDir = new File(Util.FOLDER_FOR_TEST_TMP_FILES);
 		cacheDir.mkdirs();
 	}
 	
 	@After 
-	public void after() throws IOException {
+	public void afterEachTest() throws IOException {
 		FileUtils.deleteDirectory(cacheDir);
 	} 
-	
-	@Test 
-	public void shouldPrepareTheCacheDir() {
-		
-	}
 	
 	@Test 
 	public void shouldDeleteAllFiles() throws IOException {
