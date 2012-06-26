@@ -7,7 +7,7 @@ import android.graphics.Bitmap;
 import com.novoda.imageloader.core.LoaderSettings;
 import com.novoda.imageloader.core.bitmap.BitmapUtil;
 import com.novoda.imageloader.core.network.NetworkManager;
-import com.novoda.imageloader.core.network.UrlNetworkLoader;
+import com.novoda.imageloader.core.network.UrlNetworkManager;
 
 /**
  * Direct loader make use of the NetworkManager and the BitmapUtil
@@ -19,8 +19,12 @@ public class DirectLoader {
     private BitmapUtil bitmapUtil;
     
     public DirectLoader() {
-        networkManager = new UrlNetworkLoader(new LoaderSettings());
-        bitmapUtil = new BitmapUtil();
+        this(new UrlNetworkManager(new LoaderSettings()), new BitmapUtil());
+    }
+    
+    public DirectLoader(NetworkManager networkManager, BitmapUtil bitmapUtil) {
+        this.networkManager = networkManager;
+        this.bitmapUtil = bitmapUtil;
     }
     
     public Bitmap download(String url) {

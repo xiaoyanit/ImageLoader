@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.novoda.imageloader.core.util;
+package com.novoda.imageloader.core.network;
 
 import static org.junit.Assert.assertEquals;
 
