@@ -18,6 +18,12 @@ package com.novoda.imageloader.core.network;
 import java.io.File;
 import java.io.InputStream;
 
+/**
+ * A network manager is responsible of downloading images 
+ * given an http resource of url string.
+ * At the moment requested resources can be retrieved as InputStream
+ * or saved directly to a file.
+ */
 public interface NetworkManager {
 
     void retrieveImage(String url, File f);
