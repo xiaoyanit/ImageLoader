@@ -6,21 +6,22 @@ import static org.junit.Assert.assertNull;
 import java.io.InputStream;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.modules.junit4.rule.PowerMockRule;
 
 import android.graphics.Bitmap;
 
 import com.novoda.imageloader.core.bitmap.BitmapUtil;
 import com.novoda.imageloader.core.network.NetworkManager;
 
-//@RunWith(PowerMockRunner.class)
-//@PrepareForTest({ Bitmap.class })
+@PrepareForTest({ Bitmap.class })
 public class DirectLoaderTest {
+    
+    @Rule public PowerMockRule rule = new PowerMockRule();
     
     private DirectLoader directLoader;
     private NetworkManager networkManager;
@@ -50,15 +51,15 @@ public class DirectLoaderTest {
         assertNull(directLoader.download(url));
     }
     
-//    @Test
-//    public void shouldReturnBitmapFromHttpResource() {
-//        String url = "http://www.google.com";
-//        InputStream is = Mockito.mock(InputStream.class);
-//        Mockito.when(networkManager.retrieveInputStream(url)).thenReturn(is);
-//        Bitmap expectedBitmap = PowerMockito.mock(Bitmap.class);
-//        PowerMockito.when(bitmapUtil.decodeInputStream(is)).thenReturn(expectedBitmap);        
-//        Bitmap actualBitmap = directLoader.download(url);
-//        assertEquals(expectedBitmap, actualBitmap);
-//    }
+    @Test
+    public void shouldReturnBitmapFromHttpResource() {
+        String url = "http://www.google.com";
+        InputStream is = Mockito.mock(InputStream.class);
+        Mockito.when(networkManager.retrieveInputStream(url)).thenReturn(is);
+        Bitmap expectedBitmap = PowerMockito.mock(Bitmap.class);
+        PowerMockito.when(bitmapUtil.decodeInputStream(is)).thenReturn(expectedBitmap);        
+        Bitmap actualBitmap = directLoader.download(url);
+        assertEquals(expectedBitmap, actualBitmap);
+    }
 
 }
