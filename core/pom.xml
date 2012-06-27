@@ -80,7 +80,12 @@
             <plugin>
                 <groupId>org.sonatype.maven.plugin</groupId>
                 <artifactId>emma-maven-plugin</artifactId>
-                <version>1.2</version>
+                <version>1.3-20120627</version>
+                <configuration>
+                  <report>
+                    <formats>html,xml,txt</formats>
+                  </report>
+                </configuration>
             </plugin>
         </plugins>
     </pluginManagement>
