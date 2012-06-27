@@ -21,15 +21,15 @@ import com.novoda.imageloader.core.model.ImageWrapper;
 
 public class BitmapDisplayer implements Runnable {
   private Bitmap bitmap;
-  private ImageWrapper imageView;
+  private ImageWrapper imageWrapper;
 
-  public BitmapDisplayer(Bitmap b, ImageWrapper i) {
-    bitmap = b;
-    imageView = i;
+  public BitmapDisplayer(Bitmap bitmap, ImageWrapper imageWrapper) {
+    this.bitmap = bitmap;
+    this.imageWrapper = imageWrapper;
   }
   
   public void runOnUiThread() {
-  	imageView.runOnUiThread(this);
+  	imageWrapper.runOnUiThread(this);
   }
 
   @Override
@@ -37,9 +37,9 @@ public class BitmapDisplayer implements Runnable {
     if (bitmap == null) {
       return;
     }
-    if(imageView.isUrlChanged()) {
+    if(imageWrapper.isUrlChanged()) {
   		return;
   	}
-    imageView.setBitmap(bitmap);
+    imageWrapper.setBitmap(bitmap);
   }
 }

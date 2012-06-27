@@ -21,6 +21,7 @@ import android.content.Context;
 import android.os.Build;
 
 import com.novoda.imageloader.core.cache.CacheManager;
+import com.novoda.imageloader.core.file.util.AndroidFileContext;
 import com.novoda.imageloader.core.file.util.FileUtil;
 
 /**
@@ -127,6 +128,10 @@ public class LoaderSettings {
     public void setUseAsyncTasks(boolean useAsyncTasks) {
         this.useAsyncTasks = useAsyncTasks;
     }
+    
+    public boolean isCleanOnSetup() {
+        return true;
+    }
 
     /**
      * Builder for the LoaderSettings.
@@ -175,7 +180,8 @@ public class LoaderSettings {
         }
 
         public LoaderSettings build(Context context) {
-            settings.setCacheDir(new FileUtil().prepareCacheDirectory(context));
+            File dir = new FileUtil().prepareCacheDirectory(new AndroidFileContext(context));
+            settings.setCacheDir(dir);
             settings.setSdkVersion(Build.VERSION.SDK);
             return settings;
         }

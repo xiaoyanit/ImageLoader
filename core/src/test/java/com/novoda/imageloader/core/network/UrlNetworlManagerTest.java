@@ -1,4 +1,28 @@
+/**
+ * Copyright 2012 Novoda Ltd
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.novoda.imageloader.core.network;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.io.Closeable;
 import java.io.File;
@@ -9,27 +33,21 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.*;
-
 import com.novoda.imageloader.core.LoaderSettings;
-import com.novoda.imageloader.core.Util;
 import com.novoda.imageloader.core.exception.ImageNotFoundException;
+import com.novoda.imageloader.core.file.FileTestCase;
 import com.novoda.imageloader.core.file.util.FileUtil;
 
-public class UrlNetworlManagerTest {
+public class UrlNetworlManagerTest extends FileTestCase {
     
     private UrlNetworkManager urlNetworkManager;
     private LoaderSettings loaderSettings;
     private HttpURLConnection httpURLConnection;
     private FileUtil fileUtil;
-    private File cacheDir;
     private File imageFile;
     
     @Before
@@ -44,15 +62,14 @@ public class UrlNetworlManagerTest {
                 return httpURLConnection;
             }
         };
-        cacheDir = new File(Util.FOLDER_FOR_TEST_TMP_FILES);
-        cacheDir.mkdirs();
+        createCacheDir();
         imageFile = new File(cacheDir.getAbsolutePath() + "/test.jpg");
         imageFile.createNewFile();
     }
 
     @After 
-    public void afterEachTest() throws IOException {
-        FileUtils.deleteDirectory(cacheDir);
+    public void afterEachTest() {
+        deleteCacheDir();
     } 
     
     @Test(expected = ImageNotFoundException.class)

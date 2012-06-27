@@ -56,11 +56,7 @@ public class ImageManager {
             cacheManager = new SoftMapCache();
         }
         loaderContext.setCache(cacheManager);
-        if (settings.isUseAsyncTasks()) {
-            this.loader = new ConcurrentLoader(loaderContext);
-        } else {
-            this.loader = new SimpleLoader(loaderContext);
-        }
+        setLoader(settings);
         verifyPermissions(context);
     }
 
@@ -82,6 +78,14 @@ public class ImageManager {
 
     public void setCacheManager(CacheManager cacheManager) {
         this.cacheManager = cacheManager;
+    }
+    
+    protected void setLoader(LoaderSettings settings) {
+        if (settings.isUseAsyncTasks()) {
+            this.loader = new ConcurrentLoader(loaderContext);
+        } else {
+            this.loader = new SimpleLoader(loaderContext);
+        }
     }
 
     private void verifyPermissions(Context context) {
