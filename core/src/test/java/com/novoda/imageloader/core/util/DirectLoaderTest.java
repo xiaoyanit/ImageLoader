@@ -1,3 +1,18 @@
+/**
+ * Copyright 2012 Novoda Ltd
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.novoda.imageloader.core.util;
 
 import static org.junit.Assert.assertEquals;
@@ -6,26 +21,26 @@ import static org.junit.Assert.assertNull;
 import java.io.InputStream;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.rule.PowerMockRule;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import android.graphics.Bitmap;
 
 import com.novoda.imageloader.core.bitmap.BitmapUtil;
 import com.novoda.imageloader.core.network.NetworkManager;
 
+@RunWith(PowerMockRunner.class)
 @PrepareForTest({ Bitmap.class })
 public class DirectLoaderTest {
-    
-    @Rule public PowerMockRule rule = new PowerMockRule();
     
     private DirectLoader directLoader;
     private NetworkManager networkManager;
     private BitmapUtil bitmapUtil;
+    private String url = "http://www.google.com";
     
     @Before
     public void beforeEachTest() {
@@ -46,14 +61,12 @@ public class DirectLoaderTest {
     
     @Test
     public void shouldReturnNullIfIsNotPossibleToGetAnInputStreamFromNetwrokResource() {
-        String url = "http://www.google.com";
         Mockito.when(networkManager.retrieveInputStream(url)).thenReturn(null);
         assertNull(directLoader.download(url));
     }
-    
+
     @Test
     public void shouldReturnBitmapFromHttpResource() {
-        String url = "http://www.google.com";
         InputStream is = Mockito.mock(InputStream.class);
         Mockito.when(networkManager.retrieveInputStream(url)).thenReturn(is);
         Bitmap expectedBitmap = PowerMockito.mock(Bitmap.class);
