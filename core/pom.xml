@@ -7,10 +7,6 @@
     <version>1.5.6-SNAPSHOT</version>
   </parent>
 
-  <properties>
-    <emma.report.formats>xml</emma.report.formats>
-  </properties>
-
   <artifactId>imageloader-core</artifactId>
   <name>imageloader-core</name>
   <packaging>jar</packaging>
