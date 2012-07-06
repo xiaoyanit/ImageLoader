@@ -7,10 +7,6 @@
     <version>1.5.6-SNAPSHOT</version>
   </parent>
 
-  <properties>
-    <emma.report.formats>xml</emma.report.formats>
-  </properties>
-
   <artifactId>imageloader-core</artifactId>
   <name>imageloader-core</name>
   <packaging>jar</packaging>
@@ -84,7 +80,7 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>cobertura-maven-plugin</artifactId>
-            <version>2.2</version>
+            <version>2.5.1</version>
             <configuration>
               <formats>
                 <format>xml</format>
