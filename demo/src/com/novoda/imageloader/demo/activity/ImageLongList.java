@@ -3,6 +3,8 @@ package com.novoda.imageloader.demo.activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter.ViewBinder;
 
@@ -47,6 +49,19 @@ public class ImageLongList extends SingleTableBaseListActivity {
         imageTagFactory.setErrorImageId(R.drawable.bg_img_notfound);
         imageTagFactory.setSaveThumbnail(true);
         setAdapter();
+        
+      //added by dwa012
+        Button button = (Button) this.findViewById(R.id.refresh_button);
+        button.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				refreshData();
+			
+				
+			}
+        	
+        });
     }
 
     /**
