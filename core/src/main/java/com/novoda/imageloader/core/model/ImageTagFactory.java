@@ -40,9 +40,7 @@ public class ImageTagFactory {
     }
 
     public ImageTagFactory(Context context, int defaultImageResId) {
-        Display d = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-        DisplayMetrics dm = new DisplayMetrics();
-        d.getMetrics(dm);
+        Display d = prepareDisplay(context);
         this.width = d.getWidth();
         this.height = d.getHeight();
         this.defaultImageResId = defaultImageResId;
@@ -77,6 +75,13 @@ public class ImageTagFactory {
         it.setPreviewHeight(previewImageHeight);
         it.setPreviewWidth(previewImageWidth);
         return it;
+    }
+    
+    protected Display prepareDisplay(Context context) {
+        Display d = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        DisplayMetrics dm = new DisplayMetrics();
+        d.getMetrics(dm);
+        return d;
     }
 
 }

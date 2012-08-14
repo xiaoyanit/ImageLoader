@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.novoda.imageloader.core.util;
+package com.novoda.imageloader.core.network;
 
 import static org.junit.Assert.assertEquals;
 
@@ -22,22 +22,22 @@ import org.junit.Test;
 import com.novoda.imageloader.core.network.UrlUtil;
 
 public class UrlUtilTest {
-  
-  private UrlUtil urlUtil = new UrlUtil();
-  
-  @Test
-  public void SHOULD_removeQueryFromUrlReturnNul_WHEN_urlIsNull() {
-    assertEquals(null, urlUtil.removeQuery(null));
-  }
-  
-  @Test
-  public void SHOULD_removeQueryFromUrlReturnUnmodifiedUrl_WHEN_qeryNotPresent() {
-    assertEquals("http://www.google.com", urlUtil.removeQuery("http://www.google.com"));
-  }
-  
-  @Test
-  public void SHOULD_removeQueryFromUrl() {
-    assertEquals("http://www.google.com", urlUtil.removeQuery("http://www.google.com?q=test"));
-  }
+
+    private UrlUtil urlUtil = new UrlUtil();
+
+    @Test
+    public void SHOULD_removeQueryFromUrlReturnNul_WHEN_urlIsNull() {
+        assertEquals(null, urlUtil.removeQuery(null));
+    }
+
+    @Test
+    public void SHOULD_removeQueryFromUrlReturnUnmodifiedUrl_WHEN_qeryNotPresent() {
+        assertEquals("http://www.google.com", urlUtil.removeQuery("http://www.google.com"));
+    }
+
+    @Test
+    public void SHOULD_removeQueryFromUrl() {
+        assertEquals("http://www.google.com", urlUtil.removeQuery("http://www.google.com?q=test"));
+    }
 
 }

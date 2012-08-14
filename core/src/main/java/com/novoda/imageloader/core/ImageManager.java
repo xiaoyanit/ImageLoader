@@ -27,7 +27,7 @@ import com.novoda.imageloader.core.loader.ConcurrentLoader;
 import com.novoda.imageloader.core.loader.Loader;
 import com.novoda.imageloader.core.loader.SimpleLoader;
 import com.novoda.imageloader.core.network.NetworkManager;
-import com.novoda.imageloader.core.network.UrlNetworkLoader;
+import com.novoda.imageloader.core.network.UrlNetworkManager;
 
 /**
  * ImageManager has the responsibility to provide a
@@ -49,18 +49,14 @@ public class ImageManager {
         this.loaderContext = new LoaderContext();
         loaderContext.setSettings(settings);
         loaderContext.setFileManager(new BasicFileManager(settings));
-        loaderContext.setNetworkManager(new UrlNetworkLoader(settings));
+        loaderContext.setNetworkManager(new UrlNetworkManager(settings));
         loaderContext.setResBitmapCache(new SoftMapCache());
         cacheManager = settings.getCacheManager();
         if (cacheManager == null) {
             cacheManager = new SoftMapCache();
         }
         loaderContext.setCache(cacheManager);
-        if (settings.isUseAsyncTasks()) {
-            this.loader = new ConcurrentLoader(loaderContext);
-        } else {
-            this.loader = new SimpleLoader(loaderContext);
-        }
+        setLoader(settings);
         verifyPermissions(context);
     }
 
@@ -82,6 +78,14 @@ public class ImageManager {
 
     public void setCacheManager(CacheManager cacheManager) {
         this.cacheManager = cacheManager;
+    }
+    
+    protected void setLoader(LoaderSettings settings) {
+        if (settings.isUseAsyncTasks()) {
+            this.loader = new ConcurrentLoader(loaderContext);
+        } else {
+            this.loader = new SimpleLoader(loaderContext);
+        }
     }
 
     private void verifyPermissions(Context context) {

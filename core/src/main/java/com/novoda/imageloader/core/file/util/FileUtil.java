@@ -23,20 +23,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import android.content.Context;
-import android.util.Log;
-
 import com.novoda.imageloader.core.exception.ImageCopyException;
+import com.novoda.imageloader.core.util.Log;
 
+/**
+ * This class is internal to the imageLoader. 
+ * If you want to used it make sure to prepare for changes to the interface.
+ */
 public class FileUtil {
 
     private static final String ANDROID_ROOT = "/Android/data/";
     private static final String NOMEDIA_FILE_NAME = ".nomedia";
     private static final String DEFAULT_IMAGE_FOLDER_NAME = "/cache/images";
-    private static final String TAG = "ImageLoader";
-
     private static final int BUFFER_SIZE = 60 * 1024;
-    private static final byte[] BUFFER = new byte[BUFFER_SIZE];
 
     public void closeSilently(Closeable c) {
         try {
@@ -44,26 +43,26 @@ public class FileUtil {
                 c.close();
             }
         } catch (Exception e) {
-            Log.e(TAG, "Problem closing stream " + e.getMessage());
+            Log.warning("Problem closing stream " + e.getMessage());
         }
     }
 
     public void copyStream(InputStream is, OutputStream os) {
         try {
+            byte[] buffer = new byte[BUFFER_SIZE];
             while (true) {
-                synchronized (BUFFER) {
-                    int amountRead = is.read(BUFFER);
-                    if (amountRead == -1) {
-                        break;
-                    }
-                    os.write(BUFFER, 0, amountRead);
+                int amountRead = is.read(buffer);
+                if (amountRead == -1) {
+                    break;
                 }
+                os.write(buffer, 0, amountRead);
             }
-        } catch (Exception ex) {
-            Log.e(TAG, "Exception : ", ex);
+        } catch (Exception e) {
+            Log.warning("Exception : " + e.getMessage());
         }
     }
 
+    
     public boolean deleteFileCache(String cacheDirFullPath) {
         return reduceFileCache(cacheDirFullPath, -1);
     }
@@ -101,42 +100,31 @@ public class FileUtil {
         }
     }
 
-    public File prepareCacheDirectory(Context context) {
+    public File prepareCacheDirectory(AndroidFileContext fileContext) {
         File dir = null;
-        if (!isMounted()) {
-            dir = preparePhoneCacheDir(context);
+        if (fileContext.isMounted()) {
+            dir = prepareExternalCacheDir(fileContext);
         } else {
-            dir = prepareExternalCacheDir(context);
+            dir = fileContext.preparePhoneCacheDir();
         }
         addNomediaFile(dir);
         return dir;
     }
 
-    public boolean isMounted() {
-        if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
-            return true;
-        }
-        return false;
-    }
-
-    private File prepareExternalCacheDir(Context context) {
-        String relativepath = ANDROID_ROOT + context.getPackageName() + DEFAULT_IMAGE_FOLDER_NAME;
-        File file = new File(android.os.Environment.getExternalStorageDirectory(), relativepath);
+    private File prepareExternalCacheDir(AndroidFileContext fileContext) {
+        String relativepath = ANDROID_ROOT + fileContext.getPackageName() + DEFAULT_IMAGE_FOLDER_NAME;
+        File file = new File(fileContext.getExternalStorageDirectory(), relativepath);
         if (!file.isDirectory()) {
             file.mkdirs();
         }
         return file;
     }
 
-    private File preparePhoneCacheDir(Context context) {
-        return context.getCacheDir();
-    }
-
     private void addNomediaFile(File dir) {
         try {
             new File(dir, NOMEDIA_FILE_NAME).createNewFile();
         } catch (Exception e) {
-            // Don't care if doesn't save the file
+            Log.warning("Problem creating .nomedia file : " + e.getMessage());
         }
     }
 

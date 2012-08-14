@@ -18,22 +18,32 @@ package com.novoda.imageloader.core.network;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import com.novoda.imageloader.core.LoaderSettings;
 import com.novoda.imageloader.core.exception.ImageNotFoundException;
 import com.novoda.imageloader.core.file.util.FileUtil;
 
-public class UrlNetworkLoader implements NetworkManager {
+/**
+ * Basic implementation of the NetworkManager using URL connection. 
+ */
+public class UrlNetworkManager implements NetworkManager {
 
-    private FileUtil fileUtil = new FileUtil();
+    private FileUtil fileUtil;
     private LoaderSettings settings;
 
-    public UrlNetworkLoader(LoaderSettings settings) {
+    public UrlNetworkManager(LoaderSettings settings) {
+        this(settings, new FileUtil());
+    }
+    
+    public UrlNetworkManager(LoaderSettings settings, FileUtil fileUtil) {
         this.settings = settings;
+        this.fileUtil = fileUtil;
     }
 
     @Override
@@ -43,7 +53,7 @@ public class UrlNetworkLoader implements NetworkManager {
         HttpURLConnection conn = null;
         applyChangeonSdkVersion(settings.getSdkVersion());
         try {
-            conn = (HttpURLConnection) new URL(url).openConnection();
+            conn = openConnection(url);
             conn.setConnectTimeout(settings.getConnectionTimeout());
             conn.setReadTimeout(settings.getReadTimeout());
             is = conn.getInputStream();
@@ -61,12 +71,12 @@ public class UrlNetworkLoader implements NetworkManager {
             fileUtil.closeSilently(os);
         }
     }
-    
+
     @Override
     public InputStream retrieveInputStream(String url) {
         HttpURLConnection conn = null;
         try {
-            conn = (HttpURLConnection) new URL(url).openConnection();
+            conn = openConnection(url);
             conn.setConnectTimeout(settings.getConnectionTimeout());
             conn.setReadTimeout(settings.getReadTimeout());
             return conn.getInputStream();
@@ -76,6 +86,10 @@ public class UrlNetworkLoader implements NetworkManager {
             //
             return null;
         }
+    }
+    
+    protected HttpURLConnection openConnection(String url) throws IOException, MalformedURLException {
+        return (HttpURLConnection) new URL(url).openConnection();
     }
 
     private void applyChangeonSdkVersion(String sdkVersion) {

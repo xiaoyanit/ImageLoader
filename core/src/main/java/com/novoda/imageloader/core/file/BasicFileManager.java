@@ -23,6 +23,7 @@ import android.graphics.Bitmap;
 import com.novoda.imageloader.core.LoaderSettings;
 import com.novoda.imageloader.core.file.util.FileUtil;
 import com.novoda.imageloader.core.network.UrlUtil;
+import com.novoda.imageloader.core.util.Log;
 
 /**
  * This is a basic implementation for the file manager.
@@ -31,11 +32,13 @@ import com.novoda.imageloader.core.network.UrlUtil;
  */
 public class BasicFileManager implements FileManager {
 
-    private LoaderSettings settings;
+    private LoaderSettings loaderSettings;
 
     public BasicFileManager(LoaderSettings settings) {
-        this.settings = settings;
-        cleanOldFiles();
+        this.loaderSettings = settings;
+        if(settings.isCleanOnSetup()) {
+            cleanOldFiles();
+        }
     }
 
     /**
@@ -52,7 +55,7 @@ public class BasicFileManager implements FileManager {
      */
     @Override
     public void cleanOldFiles() {
-        deleteOldFiles(settings.getExpirationPeriod());
+        deleteOldFiles(loaderSettings.getExpirationPeriod());
     }
 
     @Override
@@ -70,7 +73,7 @@ public class BasicFileManager implements FileManager {
             FileOutputStream out = new FileOutputStream(fileName + "-" + width + "x" + height);
             b.compress(Bitmap.CompressFormat.PNG, 90, out);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.warning("" + e.getMessage());
         }
     }
 
@@ -78,25 +81,25 @@ public class BasicFileManager implements FileManager {
     public File getFile(String url) {
         url = processUrl(url);
         String filename = String.valueOf(url.hashCode());
-        return new File(settings.getCacheDir(), filename);
+        return new File(loaderSettings.getCacheDir(), filename);
     }
 
     @Override
     public File getFile(String url, int width, int height) {
         url = processUrl(url);
         String filename = String.valueOf(url.hashCode()) + "-" + width + "x" + height;
-        return new File(settings.getCacheDir(), filename);
+        return new File(loaderSettings.getCacheDir(), filename);
     }
 
     private String processUrl(String url) {
-        if (settings.isQueryIncludedInHash()) {
+        if (loaderSettings.isQueryIncludedInHash()) {
             return url;
         }
         return new UrlUtil().removeQuery(url);
     }
     
     private void deleteOldFiles(final long expirationPeriod) {
-        final String cacheDir = settings.getCacheDir().getAbsolutePath();
+        final String cacheDir = loaderSettings.getCacheDir().getAbsolutePath();
         Thread cleaner = new Thread(new Runnable() {
             @Override
             public void run() {
