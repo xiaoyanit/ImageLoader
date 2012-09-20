@@ -1,3 +1,5 @@
+<a href='http://london.novoda.com:8080/job/ImageLoader/'><img src='http://london.novoda.com:8080/job/ImageLoader/badge/icon'></a>   
+
 h1. ImageLoader
 
 ImageLoader is a simple library that makes it easy to download, display and cache remote images in Android apps. 
