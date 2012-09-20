@@ -38,7 +38,7 @@ public class UrlNetworkManager implements NetworkManager {
     
     private FileUtil fileUtil;
     private LoaderSettings settings;
-    private int redirects;
+    private int manualRedirects;
 
     public UrlNetworkManager(LoaderSettings settings) {
         this(settings, new FileUtil());
@@ -59,8 +59,7 @@ public class UrlNetworkManager implements NetworkManager {
             conn = openConnection(url);
             conn.setConnectTimeout(settings.getConnectionTimeout());
             conn.setReadTimeout(settings.getReadTimeout());
-            conn.setInstanceFollowRedirects(false);
-            if (isRedirectCode(conn.getResponseCode())) {
+            if (conn.getResponseCode() == TEMP_REDIRECT) {
                 redirectManually(f, conn);
             } else {
                 is = conn.getInputStream();
@@ -79,19 +78,12 @@ public class UrlNetworkManager implements NetworkManager {
             fileUtil.closeSilently(os);
         }
     }
-    
-    public boolean isRedirectCode(int responseCode) {
-        return responseCode == TEMP_REDIRECT 
-                || responseCode == HttpURLConnection.HTTP_MOVED_TEMP
-                || responseCode == HttpURLConnection.HTTP_MOVED_PERM
-                || responseCode == HttpURLConnection.HTTP_SEE_OTHER;
-    }
 
     public void redirectManually(File f, HttpURLConnection conn) {
-        if (redirects++ < 3) {
+        if (manualRedirects++ < 3) {
             retrieveImage(conn.getHeaderField("Location"), f);
         } else {
-            redirects = 0;
+            manualRedirects = 0;
         }
     }
 
