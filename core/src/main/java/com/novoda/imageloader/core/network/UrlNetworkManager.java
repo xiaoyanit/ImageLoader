@@ -30,17 +30,20 @@ import com.novoda.imageloader.core.exception.ImageNotFoundException;
 import com.novoda.imageloader.core.file.util.FileUtil;
 
 /**
- * Basic implementation of the NetworkManager using URL connection. 
+ * Basic implementation of the NetworkManager using URL connection.
  */
 public class UrlNetworkManager implements NetworkManager {
 
+    private static final int TEMP_REDIRECT = 307;
+    
     private FileUtil fileUtil;
     private LoaderSettings settings;
+    private int redirects;
 
     public UrlNetworkManager(LoaderSettings settings) {
         this(settings, new FileUtil());
     }
-    
+
     public UrlNetworkManager(LoaderSettings settings, FileUtil fileUtil) {
         this.settings = settings;
         this.fileUtil = fileUtil;
@@ -56,9 +59,14 @@ public class UrlNetworkManager implements NetworkManager {
             conn = openConnection(url);
             conn.setConnectTimeout(settings.getConnectionTimeout());
             conn.setReadTimeout(settings.getReadTimeout());
-            is = conn.getInputStream();
-            os = new FileOutputStream(f);
-            fileUtil.copyStream(is, os);
+            conn.setInstanceFollowRedirects(false);
+            if (isRedirectCode(conn.getResponseCode())) {
+                redirectManually(f, conn);
+            } else {
+                is = conn.getInputStream();
+                os = new FileOutputStream(f);
+                fileUtil.copyStream(is, os);
+            }
         } catch (FileNotFoundException fnfe) {
             throw new ImageNotFoundException();
         } catch (Throwable ex) {
@@ -69,6 +77,21 @@ public class UrlNetworkManager implements NetworkManager {
             }
             fileUtil.closeSilently(is);
             fileUtil.closeSilently(os);
+        }
+    }
+    
+    public boolean isRedirectCode(int responseCode) {
+        return responseCode == TEMP_REDIRECT 
+                || responseCode == HttpURLConnection.HTTP_MOVED_TEMP
+                || responseCode == HttpURLConnection.HTTP_MOVED_PERM
+                || responseCode == HttpURLConnection.HTTP_SEE_OTHER;
+    }
+
+    public void redirectManually(File f, HttpURLConnection conn) {
+        if (redirects++ < 3) {
+            retrieveImage(conn.getHeaderField("Location"), f);
+        } else {
+            redirects = 0;
         }
     }
 
@@ -83,11 +106,10 @@ public class UrlNetworkManager implements NetworkManager {
         } catch (FileNotFoundException fnfe) {
             throw new ImageNotFoundException();
         } catch (Throwable ex) {
-            //
             return null;
         }
     }
-    
+
     protected HttpURLConnection openConnection(String url) throws IOException, MalformedURLException {
         return (HttpURLConnection) new URL(url).openConnection();
     }
