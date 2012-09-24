@@ -3,11 +3,11 @@
 h1. ImageLoader
 
 ImageLoader is a simple library that makes it easy to download, display and cache remote images in Android apps. 
-Download happens away from the UI thread and the images are cached with a two-level in-memory/SD card cache.
+Image download happens off the UI thread and the images are cached with a two-level in-memory/SD card cache.
 
 h2. Recent changes
 
-h3. 1.5.6-SNAPSHOT
+h3. 1.5.6
 
 * Removed necessity to set a service in the manifest for the clean up. Everything is done in the BasicFileManager with a background thread.
 
@@ -109,13 +109,13 @@ h3. Cleaning the SD card cache
 
 If you want ImageLoader to clean up the SD card cache, add the following code in the onCreate of the Application class:
 
-<pre><code>imageManager.getFileManager().clean(this);</code></pre>
+<pre><code>imageManager.getFileManager().clean();</code></pre>
 
 In the settings builder you can configure the expiration period (it's set to 7 days by default).
 
 h3. In the AndroidManifest.xml
 
-There are two things you need to add: Permissions and the Service to clean up the SD cache.
+There are two things you need to add: Permissions and the Service to clean up the SD cache. (Since 1.5.6 the cleanup service is no longer required!)
 
 <pre><code><uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 <uses-permission android:name="android.permission.INTERNET" />
@@ -169,22 +169,15 @@ h3. Using Maven
 
 If you are using Maven you can define the repo and dependency in your POM:
 
-<pre><code><repositories>
-  <repository>
-    <id>public-mvn-repo-releases</id>
-    <url>https://github.com/novoda/public-mvn-repo/raw/master/releases</url>
-  </repository>
-</repositories></code></pre>
-
 <pre><code><dependency>
   <groupId>com.novoda.imageloader</groupId>
   <artifactId>imageloader-core</artifactId>
- <version>1.5.5</version>
+ <version>1.5.6</version>
 </dependency></code></pre>
 
 h3. As a .jar
 
-You can also simply include the "latest version":https://github.com/novoda/public-mvn-repo/raw/master/releases/com/novoda/imageloader/imageloader-core/1.5.5/imageloader-core-1.5.5.jar of the .jar file (v 1.5.5) in you project.
+You can also simply include the "latest version":http://search.maven.org/remotecontent?filepath=com/novoda/imageloader/imageloader-core/1.5.6/imageloader-core-1.5.6.jar of the .jar file (v 1.5.6) in you project.
 
 h2. Helping out
 
@@ -212,7 +205,7 @@ Note : By default we run instrumentation tests, if you don't attach a device the
 
 h3. Eclipse
 
-An easy way to set up the project for eclipse is like so: 
+Here are some simple steps to set up the project in Eclipse: 
 
 * Run <code>mvn clean install -Peclipse</code>. This command copies the dependencies to libs for working in Eclipse. The demo and acceptance projects should be configured as Android projects.
 * Import the core project as a Maven project
