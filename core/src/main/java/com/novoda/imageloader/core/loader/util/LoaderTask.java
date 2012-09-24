@@ -15,16 +15,15 @@
  */
 package com.novoda.imageloader.core.loader.util;
 
-import java.io.File;
-import java.lang.ref.WeakReference;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
-
 import com.novoda.imageloader.core.LoaderContext;
 import com.novoda.imageloader.core.exception.ImageNotFoundException;
 import com.novoda.imageloader.core.model.ImageWrapper;
+
+import java.io.File;
+import java.lang.ref.WeakReference;
 
 public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
 
@@ -145,7 +144,17 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
         if (hasImageViewUrlChanged(imageView)) {
             return;
         }
+
+        listenerCallback(imageView);
         imageView.setImageBitmap(bitmap);
+    }
+
+    private void listenerCallback(ImageView imageView) {
+        if (loaderContext != null && loaderContext.getListener() != null) {
+            if (loaderContext.getListener().get() != null) {
+                loaderContext.getListener().get().OnImageLoaded(imageView);
+            }
+        }
     }
 
     private Bitmap getNotFoundImage(Context c) {
