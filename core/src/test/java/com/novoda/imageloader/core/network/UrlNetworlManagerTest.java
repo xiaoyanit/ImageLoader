@@ -23,6 +23,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.times;
 
 import java.io.Closeable;
 import java.io.File;
@@ -36,6 +37,8 @@ import java.net.MalformedURLException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import com.novoda.imageloader.core.LoaderSettings;
 import com.novoda.imageloader.core.exception.ImageNotFoundException;
@@ -49,6 +52,7 @@ public class UrlNetworlManagerTest extends FileTestCase {
     private HttpURLConnection httpURLConnection;
     private FileUtil fileUtil;
     private File imageFile;
+	protected String lastUrl;
     
     @Before
     public void beforeEachTest() throws IOException {
@@ -59,6 +63,7 @@ public class UrlNetworlManagerTest extends FileTestCase {
         urlNetworkManager = new UrlNetworkManager(loaderSettings, fileUtil) {
             @Override
             protected HttpURLConnection openConnection(String url) throws IOException, MalformedURLException {
+            	lastUrl = url;
                 return httpURLConnection;
             }
         };
@@ -120,7 +125,39 @@ public class UrlNetworlManagerTest extends FileTestCase {
         urlNetworkManager.retrieveImage("http://king.com", imageFile);
         assertEquals("false", System.getProperty("http.keepAlive"));
     }
+
+    @Test
+    public void shouldResolveRedirectAtMostThreeTimes() throws IOException {
+        when(httpURLConnection.getResponseCode()).thenReturn(307);
+        urlNetworkManager.retrieveImage("http://king.com", imageFile); 
+        verify(httpURLConnection, times(3)).getHeaderField("Location");
+        verify(httpURLConnection, never()).getInputStream();
+    }
     
+    @Test
+    public void shouldResolveRedirect() throws IOException {
+        when(httpURLConnection.getResponseCode()).thenAnswer(new Answer<Integer>() {
+        	private boolean redirect = true;
+			@Override
+			public Integer answer(InvocationOnMock invocation) throws Throwable {
+				if (redirect){
+					redirect = false;
+					return 307;
+				} else { 
+					return 200;
+				}
+			}
+		});		
+        InputStream expected = mock(InputStream.class);
+        when(httpURLConnection.getInputStream()).thenReturn(expected);
+        when(httpURLConnection.getHeaderField("Location")).thenReturn("http://king2.com");
+        
+        urlNetworkManager.retrieveImage("http://king.com", imageFile); 
+        verify(httpURLConnection, times(1)).getHeaderField("Location");
+        verify(httpURLConnection).getInputStream();        
+        assertEquals("http://king2.com", lastUrl);       
+    }
+
     @Test
     public void shouldRetrieveInputStream() throws IOException {
         InputStream expected = mock(InputStream.class);
