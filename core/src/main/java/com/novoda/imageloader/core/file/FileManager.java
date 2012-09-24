@@ -21,19 +21,57 @@ import android.graphics.Bitmap;
 
 /**
  * FileManager is an interface marking all the implementation of file cache managers.
+ * It gives access to the cached files and re-sampled images.
  */
 public interface FileManager {
 
+    /**    
+     * Removes all the files in the cache directory.     
+     */
     void clean();
 
+    /**
+     * Removes the files in the cache directory where the 
+     * timestamp is older then the expiration time.
+     */
     void cleanOldFiles();
 
+    /**
+     * Returns the absolute path of the cached content for the given url.
+     *  
+     * @param url original url of the content 
+     * @return the absolute path as a string or null if there is no cached file
+     */
     String getFilePath(String url);
 
+    /**
+     * Returns the file handle of the cached content for the given url.
+     * 
+     * @param url original of the content
+     * @return file handle of the cached content
+     */
     File getFile(String url);
 
+    /**
+     * Creates a re-sampled image from the given bitmap in the specified size.
+     * This helper method uses the same naming convention for resized images as getFile(String, width, height)  
+     * 
+     * @param fileName Absolute path where the new image will be stored.  
+     * @param b bitmap that should be re-sampled
+     * @param width width of new image
+     * @param height height of new image
+     */
     void saveBitmap(String fileName, Bitmap b, int width, int height);
 
+    /**
+     * Returns the file handle of the cached content for the given url with a specified size.
+     * The resized content is not created by calling this method.
+     *  
+     * @param url original url of the content
+     * @param width width of image
+     * @param height height of image
+     * @return file handle of cached resized content
+     */
     File getFile(String url, int width, int height);
 
 }
