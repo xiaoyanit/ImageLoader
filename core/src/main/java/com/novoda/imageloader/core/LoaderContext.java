@@ -20,6 +20,8 @@ import com.novoda.imageloader.core.cache.CacheManager;
 import com.novoda.imageloader.core.file.FileManager;
 import com.novoda.imageloader.core.network.NetworkManager;
 
+import java.lang.ref.WeakReference;
+
 /**
  * LoaderContext provides a generic context for the imageLoader
  * where different objects can access different levels of caching, 
@@ -34,6 +36,7 @@ public class LoaderContext {
     private CacheManager resBitmapCache;
     private LoaderSettings settings;
     private BitmapUtil bitmapUtil = new BitmapUtil();
+    private WeakReference<OnImageLoadedListener> onImageLoadedListener;
 
     public FileManager getFileManager() {
         return fileManager;
@@ -78,4 +81,13 @@ public class LoaderContext {
     public BitmapUtil getBitmapUtil() {
         return bitmapUtil;
     }
+
+    public void setListener(WeakReference<OnImageLoadedListener> listener) {
+        this.onImageLoadedListener = listener;
+    }
+
+    public WeakReference<OnImageLoadedListener> getListener() {
+        return onImageLoadedListener;
+    }
+
 }
