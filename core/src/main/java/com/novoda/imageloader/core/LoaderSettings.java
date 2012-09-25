@@ -48,6 +48,9 @@ public class LoaderSettings {
     private CacheManager cacheManager;
     private boolean useAsyncTasks;
 
+    /**
+     * Constructor with all settings set to default values
+     */
     public LoaderSettings() {
         this.setExpirationPeriod(DEFAULT_EXPIRATION_PERIOD);
         this.setQueryIncludedInHash(DEFAULT_INCLUDE_QUERY_IN_HASH);
@@ -65,6 +68,10 @@ public class LoaderSettings {
         this.cacheDir = cacheDir;
     }
 
+    /**
+     * Time period in millis how long cached images should be kept in the file storage. 
+     * @return
+     */
     public long getExpirationPeriod() {
         return expirationPeriod;
     }
@@ -73,6 +80,13 @@ public class LoaderSettings {
         this.expirationPeriod = expirationPeriod;
     }
 
+    /**
+     * Flag indicating whether queries of image urls should be used as part of the cache key.
+     * If set to false the cache returns the same image e.g. 
+     * for <code>http://king.com/img.png?v=1</code> and <code>http://king.com/img.png?v=2</code>
+     *  
+     * @return true if urls with different queries refer to different images.
+     */
     public boolean isQueryIncludedInHash() {
         return isQueryIncludedInHash;
     }
@@ -144,6 +158,24 @@ public class LoaderSettings {
             settings = new LoaderSettings();
         }
 
+        /**
+         * Change setting of time period before cached images are removed from file storage.
+         *  
+         * @param timePeriodInMillis time period in milli seconds
+         * @return this SettingsBuilder
+         */
+        public SettingsBuilder withExpirationPeriod(long timePeriodInMillis) {
+        	settings.setExpirationPeriod(timePeriodInMillis);
+        	return this;
+        }
+        
+        /**
+         * Change flag indicating whether queries of image urls should be used as part of the cache key. 
+         * If set to false the cache returns the same image e.g. for <code>http://king.com/img.png?v=1</code> and <code>http://king.com/img.png?v=2</code>
+         * 
+         * @param enableQueryInHashGeneration set to false if querys in urls should be ignored. 
+         * @return this SettingsBuilder.
+         */
         public SettingsBuilder withEnableQueryInHashGeneration(boolean enableQueryInHashGeneration) {
             settings.setQueryIncludedInHash(enableQueryInHashGeneration);
             return this;
