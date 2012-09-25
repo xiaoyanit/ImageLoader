@@ -38,7 +38,7 @@ public class BitmapUtil {
         updateLastModifiedForCache(f);
         int suggestedSize = height;
         if (width > height) {
-            suggestedSize = height;
+            suggestedSize = width;
         }
         Bitmap unscaledBitmap = decodeFile(f, suggestedSize);
         if (unscaledBitmap == null) {
