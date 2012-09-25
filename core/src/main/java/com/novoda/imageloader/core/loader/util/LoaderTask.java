@@ -52,6 +52,7 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
         }
         ImageWrapper imageWrapper = setAndValidateTagInformation(imageView);
         if (imageWrapper == null) {
+        	// url was empty, so no image to load.
             return null;
         }
         if (hasImageViewUrlChanged(imageView)) {
