@@ -47,6 +47,8 @@ public class LoaderSettings {
     private String sdkVersion;
     private CacheManager cacheManager;
     private boolean useAsyncTasks;
+    private boolean allowUpsampling;
+    private boolean alwaysUseOriginalSize;
 
     /**
      * Constructor with all settings set to default values
@@ -145,9 +147,41 @@ public class LoaderSettings {
     
     public boolean isCleanOnSetup() {
         return true;
-    }
+    }       
 
     /**
+     * Flag to enable upsampling for small images.
+     * If true and the image is smaller than the requested size the image is resized to a larger image.  
+     * Default is false.
+     * 
+     * @return true if 
+     */
+    public boolean isAllowUpsampling() {
+		return allowUpsampling;
+	}
+
+	public void setAllowUpsampling(boolean allowUpsampling) {
+		this.allowUpsampling = allowUpsampling;
+	}
+
+	/**
+	 * Flag to disable image resizing.
+	 * Set this flag to true if you want to avoid bitmap resizing
+	 * Default is false.
+	 * 
+	 * @return true if images are always cached in the original size
+	 */
+	public boolean isAlwaysUseOriginalSize() {
+		return alwaysUseOriginalSize;
+	}
+
+	public void setAlwaysUseOriginalSize(boolean alwaysUseOriginalSize) {
+		this.alwaysUseOriginalSize = alwaysUseOriginalSize;
+	}
+
+
+
+	/**
      * Builder for the LoaderSettings.
      */
     public static class SettingsBuilder {
@@ -209,6 +243,31 @@ public class LoaderSettings {
         public SettingsBuilder withCacheDir(File file) {
             settings.setCacheDir(file);
             return this;
+        }
+        
+        /**
+         * Changes flag to enable upsampling for small images. 
+         * If true and the image is smaller than the requested size 
+         * the image is resized to a larger image. Default is false.
+         * 
+         * @param allowUpsampling set to true if you want to enlarge small images
+         * @return this SettingsBuilder
+         */
+        public SettingsBuilder withUpsampling(boolean allowUpsampling){
+        	settings.setAllowUpsampling(allowUpsampling);
+        	return this;
+        }
+        
+        /**
+         * Changes flag to disable image resizing. 
+         * Set the flag to true if you want to avoid bitmap resizing. Default is false.
+         * 
+         * @param alwaysUseOriginalSize set to true if you want to avoid bitmap resizing 
+         * @return this SettingsBuilder
+         */
+        public SettingsBuilder withoutResizing(boolean alwaysUseOriginalSize ){
+        	settings.setAlwaysUseOriginalSize(alwaysUseOriginalSize);
+        	return this;
         }
 
         public LoaderSettings build(Context context) {
