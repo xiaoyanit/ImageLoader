@@ -53,19 +53,19 @@ public interface FileManager {
     File getFile(String url);
 
     /**
-     * Creates a re-sampled image from the given bitmap in the specified size.
+     * Stores the given bitmap. The width and height of the bitmap are used for naming only. 
      * This helper method uses the same naming convention for resized images as getFile(String, width, height)  
      * 
-     * @param fileName Absolute path where the new image will be stored.  
-     * @param b bitmap that should be re-sampled
-     * @param width width of new image
-     * @param height height of new image
+     * @param fileName Absolute path where the image will be stored.  
+     * @param b bitmap that should be stored.
+     * @param width width of the bitmap
+     * @param height height of new bitmap
      */
     void saveBitmap(String fileName, Bitmap b, int width, int height);
 
     /**
      * Returns the file handle of the cached content for the given url with a specified size.
-     * The resized content is not created by calling this method.
+     * Dimensions are only used for naming. The resized content is not created by calling this method.
      *  
      * @param url original url of the content
      * @param width width of image

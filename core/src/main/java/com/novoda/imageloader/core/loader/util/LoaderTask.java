@@ -16,6 +16,7 @@
 package com.novoda.imageloader.core.loader.util;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
 import com.novoda.imageloader.core.LoaderContext;
@@ -52,6 +53,7 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
         }
         ImageWrapper imageWrapper = setAndValidateTagInformation(imageView);
         if (imageWrapper == null) {
+        	// url was empty, so no image to load.
             return null;
         }
         if (hasImageViewUrlChanged(imageView)) {
@@ -79,10 +81,18 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
     }
 
     private Bitmap getImageFromFile(File imageFile) {
-        Bitmap b = loaderContext.getBitmapUtil().decodeFileAndScale(imageFile, width, height);
+    	Bitmap b;
+    	if (loaderContext.getSettings().isAlwaysUseOriginalSize()){
+    		b = loaderContext.getBitmapUtil().decodeFile(imageFile, width, height);
+    	} else {
+    		b = loaderContext.getBitmapUtil().decodeFileAndScale(imageFile, width, height);
+    	}
+    	
         if(b == null) {
+        	// decoding failed
             return b;
         }
+        
         if (saveScaledImage) {
             saveScaledImage(imageFile, b);
         }
@@ -164,7 +174,11 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
         if (b != null) {
             return b;
         }
-        b = loaderContext.getBitmapUtil().scaleResourceBitmap(c, width, height, notFoundResourceId);
+        if (loaderContext.getSettings().isAlwaysUseOriginalSize()){
+        	b = loaderContext.getBitmapUtil().decodeResourceBitmap(c, width, height, notFoundResourceId);
+        } else {
+        	b = loaderContext.getBitmapUtil().decodeResourceBitmapAndScale(c, width, height, notFoundResourceId);
+        }
         loaderContext.getResBitmapCache().put(key, b);
         return b;
     }

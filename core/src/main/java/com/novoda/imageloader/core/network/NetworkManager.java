@@ -26,8 +26,23 @@ import java.io.InputStream;
  */
 public interface NetworkManager {
 
+    /**
+     * Retrieves the image of the given url and stores the content as the file.
+     * Throws an ImageNotFound exception when the url could not be resolved.
+     * 
+     * @param url URL of the image to be downloaded.
+     * @param f File where the image should be stored.
+     */
     void retrieveImage(String url, File f);
 
+    /**
+     * Returns the input stream for the given url
+     * Throws an ImageNotFound exception when the url could not be resolved.
+     *      
+     * 
+     * @param url URL of the image to be downloaded
+     * @return input stream of the image or null on error.
+     */
     InputStream retrieveInputStream(String url);
 
 }
