@@ -16,7 +16,6 @@
 package com.novoda.imageloader.core.loader.util;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
 import com.novoda.imageloader.core.LoaderContext;
@@ -148,15 +147,18 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
             return;
         }
         ImageView imageView = imageViewReference.get();
-        if (imageView == null) {
+        if (!imageViewIsValid(imageView)) {
             return;
         }
-        if (hasImageViewUrlChanged(imageView)) {
-            return;
-        }
-
         listenerCallback(imageView);
         imageView.setImageBitmap(bitmap);
+    }
+
+    private boolean imageViewIsValid(ImageView imageView) {
+        if (imageView == null || hasImageViewUrlChanged(imageView)) {
+            return false;
+        }
+        return true;
     }
 
     private void listenerCallback(ImageView imageView) {
