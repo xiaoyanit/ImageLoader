@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter.ViewBinder;
 import com.novoda.imageloader.core.ImageManager;
 import com.novoda.imageloader.core.OnImageLoadedListener;
+import com.novoda.imageloader.core.model.ImageTag;
 import com.novoda.imageloader.core.model.ImageTagFactory;
 import com.novoda.imageloader.demo.DemoApplication;
 import com.novoda.imageloader.demo.R;
@@ -21,21 +22,21 @@ import com.novoda.imageloader.demo.activity.base.SingleTableBaseListActivity;
  */
 public class BigImages extends SingleTableBaseListActivity implements OnImageLoadedListener {
 
-    private final static String TAG = BigImages.class.getSimpleName().toLowerCase();
+    private final static String TAG = DemoApplication.class.getSimpleName().toLowerCase();
 
     /**
      * TODO
-     * Generally we can keep an instance of the 
+     * Generally we can keep an instance of the
      * image loader and the imageTagFactory.
      */
     private ImageManager imageManager;
     private ImageTagFactory imageTagFactory;
-    
+
     @Override
     protected String getTableName() {
         return BigImages.class.getSimpleName().toLowerCase();
     }
-    
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,8 +68,7 @@ public class BigImages extends SingleTableBaseListActivity implements OnImageLoa
     @Override
     protected void onResume() {
         super.onResume();
-        imageManager.registerOnImageLoadedListener(this);
-
+        imageManager.setOnImageLoadedListener(this);
     }
 
     @Override
@@ -99,6 +99,6 @@ public class BigImages extends SingleTableBaseListActivity implements OnImageLoa
     @Override
     public void OnImageLoaded(ImageView imageView) {
         Log.v(TAG, "OnImageLoaded");
-        Log.i(TAG, "ImageView Tag : " + imageView.getTag());
+        Log.i(TAG, "ImageView URL : " + ((ImageTag) imageView.getTag()).getUrl());
     }
 }

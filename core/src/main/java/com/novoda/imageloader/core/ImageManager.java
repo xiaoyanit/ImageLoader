@@ -28,10 +28,6 @@ import com.novoda.imageloader.core.loader.SimpleLoader;
 import com.novoda.imageloader.core.network.NetworkManager;
 import com.novoda.imageloader.core.network.UrlNetworkManager;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * ImageManager has the responsibility to provide a
  * simple and easy interface to access three fundamental part of the imageLoader
@@ -47,10 +43,8 @@ public class ImageManager {
     private LoaderContext loaderContext;
     private Loader loader;
     private CacheManager cacheManager;
-    private List listenerStrongRef;
 
     public ImageManager(Context context, LoaderSettings settings) {
-        listenerStrongRef = new ArrayList();
         this.loaderContext = new LoaderContext();
         loaderContext.setSettings(settings);
         loaderContext.setFileManager(new BasicFileManager(settings));
@@ -105,13 +99,12 @@ public class ImageManager {
         }
     }
 
-    public void registerOnImageLoadedListener(OnImageLoadedListener listener) {
-        WeakReference<OnImageLoadedListener> weakListener = new WeakReference<OnImageLoadedListener>(listener);
-        listenerStrongRef.add(weakListener);
-        loaderContext.setListener(weakListener);
+    public void setOnImageLoadedListener(OnImageLoadedListener listener) {
+        loaderContext.setListener(listener);
     }
 
     public void unRegisterOnImageLoadedListener(OnImageLoadedListener listener) {
-        listenerStrongRef.remove(listener);
+        loaderContext.removeOnImageLoadedListener(listener.hashCode());
     }
+
 }

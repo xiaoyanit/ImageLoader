@@ -153,6 +153,7 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
         if (loaderContext != null && loaderContext.getListener() != null) {
             if (loaderContext.getListener().get() != null) {
                 loaderContext.getListener().get().OnImageLoaded(imageView);
+                return;
             }
         }
     }
