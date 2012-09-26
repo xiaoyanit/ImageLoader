@@ -24,6 +24,7 @@ import com.novoda.imageloader.core.loader.util.BitmapDisplayer;
 
 public class ImageWrapper {
 
+    private static final String URL_ERROR = "_url_error";
     private String url;
     private String previewUrl;
     private int width;
@@ -59,7 +60,12 @@ public class ImageWrapper {
 
     public String getCurrentUrl() {
         ImageTag tag = (ImageTag) imageView.getTag();
-        return tag.getUrl();
+
+        if (tag.getUrl() != null) {
+            return tag.getUrl();
+        } else {
+            return URL_ERROR;
+        }
     }
 
     public String getUrl() {

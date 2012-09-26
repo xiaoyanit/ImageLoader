@@ -15,16 +15,13 @@
  */
 package com.novoda.imageloader.core.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
+import android.widget.ImageView;
 import org.junit.Before;
 import org.junit.Test;
 
-import android.widget.ImageView;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 public class ImageWrapperTest {
@@ -84,5 +81,16 @@ public class ImageWrapperTest {
         
         assertFalse(imageWrapper.isUrlChanged());
     }
+
+    @Test
+    public void shouldHandleNullTag() {
+        imageTag = new ImageTag(null,0,0,0,0);
+        when(imageView.getTag()).thenReturn(imageTag);
+        imageWrapper = new ImageWrapper(imageView);
+
+        assertNotNull(imageWrapper.getCurrentUrl());
+    }
+
+
     
 }
