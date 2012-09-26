@@ -92,4 +92,10 @@ public class ImageTagFactoryTest {
         assertEquals(12, imageTag.getWidth());
     }
 
+    @Test (expected = RuntimeException.class)
+    public void shouldComplainAboutUnsetParameters() {
+        imageTagFactory = ImageTagFactory.newInstance();
+        imageTagFactory.build(url);
+    }
+
 }

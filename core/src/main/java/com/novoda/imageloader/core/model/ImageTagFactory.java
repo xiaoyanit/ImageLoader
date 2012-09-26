@@ -112,6 +112,7 @@ public class ImageTagFactory {
     }
 
     public ImageTag build(String url) {
+        checkValidTagParameters();
         ImageTag it = new ImageTag(url, defaultImageResId, errorImageResId, width, height);
         it.setUseOnlyCache(useOnlyCache);
         it.setSaveThumbnail(saveThumbnail);
@@ -121,6 +122,12 @@ public class ImageTagFactory {
         it.setPreviewHeight(previewImageHeight);
         it.setPreviewWidth(previewImageWidth);
         return it;
+    }
+
+    private void checkValidTagParameters() {
+        if (defaultImageResId == 0 || width == 0 || height == 0) {
+            throw new RuntimeException("defaultImageResId, width or height was not set before calling build()");
+        }
     }
 
 }
