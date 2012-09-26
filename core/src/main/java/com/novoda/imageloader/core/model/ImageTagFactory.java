@@ -32,11 +32,38 @@ public class ImageTagFactory {
     private boolean saveThumbnail;
     private boolean useSameUrlForPreviewImage;
 
-    public ImageTagFactory(int width, int height, int defaultImageResId) {
-        this.width = width;
-        this.height = height;
-        this.defaultImageResId = defaultImageResId;
-        this.errorImageResId = defaultImageResId;
+    public static ImageTagFactory newInstance() {
+        return new ImageTagFactory();
+    }
+
+    private ImageTagFactory() {
+    }
+
+    public static ImageTagFactory newInstance(int width, int height, int defaultImageResId) {
+        ImageTagFactory imageTagFactory = new ImageTagFactory();
+        imageTagFactory.setInitialSizeParams(imageTagFactory, width, height);
+        imageTagFactory.setInitialImageId(imageTagFactory, defaultImageResId);
+        return imageTagFactory;
+    }
+
+    public static ImageTagFactory newInstance(Context context, int defaultImageResId) {
+        ImageTagFactory imageTagFactory = new ImageTagFactory();
+        Display display = imageTagFactory.prepareDisplay(context);
+        imageTagFactory.setInitialSizeParams(imageTagFactory, display.getWidth(), display.getHeight());
+        imageTagFactory.setInitialImageId(imageTagFactory, defaultImageResId);
+        return imageTagFactory;
+    }
+
+    private ImageTagFactory setInitialSizeParams(ImageTagFactory imageTagFactory, int width, int height) {
+        imageTagFactory.setWidth(width);
+        imageTagFactory.setHeight(height);
+        return imageTagFactory;
+    }
+
+    private ImageTagFactory setInitialImageId(ImageTagFactory imageTagFactory, int defaultImageResId) {
+        imageTagFactory.setDefaultImageResId(defaultImageResId);
+        imageTagFactory.setErrorImageId(defaultImageResId);
+        return imageTagFactory;
     }
 
     public ImageTagFactory(Context context, int defaultImageResId) {
@@ -46,15 +73,34 @@ public class ImageTagFactory {
         this.defaultImageResId = defaultImageResId;
         this.errorImageResId = defaultImageResId;
     }
-    
-    public void usePreviewImage(int previewImageWidth, int previewImageHeight, boolean useSameUrlForPreviewImage) {
-        this.previewImageWidth = previewImageWidth;
-        this.previewImageHeight = previewImageHeight;
-        this.useSameUrlForPreviewImage = useSameUrlForPreviewImage;
+
+    protected Display prepareDisplay(Context context) {
+        Display d = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        DisplayMetrics dm = new DisplayMetrics();
+        d.getMetrics(dm);
+        return d;
+    }
+
+    public void setDefaultImageResId(int defaultImageResId) {
+        this.defaultImageResId = defaultImageResId;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 
     public void setErrorImageId(int errorImageResId) {
         this.errorImageResId = errorImageResId;
+    }
+
+    public void usePreviewImage(int previewImageWidth, int previewImageHeight, boolean useSameUrlForPreviewImage) {
+        this.previewImageWidth = previewImageWidth;
+        this.previewImageHeight = previewImageHeight;
+        this.useSameUrlForPreviewImage = useSameUrlForPreviewImage;
     }
 
     public void setUseOnlyCache(boolean useOnlyCache) {
@@ -75,13 +121,6 @@ public class ImageTagFactory {
         it.setPreviewHeight(previewImageHeight);
         it.setPreviewWidth(previewImageWidth);
         return it;
-    }
-    
-    protected Display prepareDisplay(Context context) {
-        Display d = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-        DisplayMetrics dm = new DisplayMetrics();
-        d.getMetrics(dm);
-        return d;
     }
 
 }

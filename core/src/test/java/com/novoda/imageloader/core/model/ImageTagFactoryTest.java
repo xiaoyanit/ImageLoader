@@ -15,16 +15,15 @@
  */
 package com.novoda.imageloader.core.model;
 
+import android.content.Context;
+import android.view.Display;
+import org.junit.Before;
+import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import android.content.Context;
-import android.view.Display;
 
 public class ImageTagFactoryTest {
     
@@ -36,7 +35,7 @@ public class ImageTagFactoryTest {
     
     @Before
     public void beforeEachTest() {
-        imageTagFactory = new ImageTagFactory(9, 12, 1);        
+        imageTagFactory = ImageTagFactory.newInstance(9, 12, 1);
     }
     
     @Test
