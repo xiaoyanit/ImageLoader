@@ -27,7 +27,7 @@ import android.graphics.Bitmap;
  * LruBitmapCache overcome the issue with soft reference cache.
  * It is in fact keeping all the certain amount of images in memory.
  * The size of the memory used for cache depends on the memory that the android
- * SDK provide to the application and the percentage specified (by default is 25MB).
+ * SDK provide to the application and the percentage specified (default percentage is 25%).
  */
 public class LruBitmapCache implements CacheManager {
 

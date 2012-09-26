@@ -82,13 +82,24 @@ public class SimpleLoader implements Loader {
         if (url != null && url.length() >= 0) {
             File f = loaderContext.getFileManager().getFile(url);
             if (f.exists()) {
-                Bitmap b = loaderContext.getBitmapUtil().decodeFileAndScale(f, width, height);
+            	Bitmap b; 
+            	if (loaderContext.getSettings().isAlwaysUseOriginalSize()){
+            		b = loaderContext.getBitmapUtil().decodeFile(f, width, height); 	
+            	} else {
+            		b = loaderContext.getBitmapUtil().decodeFileAndScale(f, width, height);
+            	}
                 if (b != null) {
                     return b;
                 }
             }
             loaderContext.getNetworkManager().retrieveImage(url, f);
-            return loaderContext.getBitmapUtil().decodeFileAndScale(f, width, height);
+            
+            if (loaderContext.getSettings().isAlwaysUseOriginalSize()){
+            	return loaderContext.getBitmapUtil().decodeFile(f, width, height);
+            } else {
+            	return loaderContext.getBitmapUtil().decodeFileAndScale(f, width, height);
+            }
+            
         }
         return null;
     }
@@ -99,7 +110,11 @@ public class SimpleLoader implements Loader {
             w.setBitmap(b);
             return;
         }
-        b = loaderContext.getBitmapUtil().scaleResourceBitmap(w, resId);
+        if (loaderContext.getSettings().isAlwaysUseOriginalSize()){
+        	b = loaderContext.getBitmapUtil().decodeResourceBitmap(w, resId);
+        } else {
+        	b = loaderContext.getBitmapUtil().decodeResourceBitmapAndScale(w, resId);
+        }        
         loaderContext.getResBitmapCache().put("" + resId, b);
         w.setBitmap(b);
     }
