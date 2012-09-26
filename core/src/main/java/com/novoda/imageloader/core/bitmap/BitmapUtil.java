@@ -15,16 +15,15 @@
  */
 package com.novoda.imageloader.core.bitmap;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import com.novoda.imageloader.core.model.ImageWrapper;
+
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-
-import com.novoda.imageloader.core.model.ImageWrapper;
 
 /**
  * Utility class abstract the usage of the BitmapFactory.
@@ -34,63 +33,32 @@ public class BitmapUtil {
 
     private static final int BUFFER_SIZE = 64 * 1024;
 
-
-	public Bitmap decodeFile(File f, int width, int height) {
-		updateLastModifiedForCache(f);
+    public Bitmap decodeFileAndScale(File f, int width, int height) {
+        updateLastModifiedForCache(f);
         int suggestedSize = height;
         if (width > height) {
-            suggestedSize = width;
+            suggestedSize = height;
         }
         Bitmap unscaledBitmap = decodeFile(f, suggestedSize);
         if (unscaledBitmap == null) {
             return null;
         }
-        return unscaledBitmap;
-	}
-	
-    public Bitmap decodeFileAndScale(File f, int width, int height) {
-        Bitmap unscaledBitmap = decodeFile(f, width, height);
         return scaleBitmap(unscaledBitmap, width, height);
     }
 
-    @Deprecated
     public Bitmap scaleResourceBitmap(Context c, int width, int height, int resourceId) {
-    	return decodeResourceBitmapAndScale(c, width, height, resourceId);
-    }
-
-    public Bitmap decodeResourceBitmap(Context c, int width, int height, int resourceId) {
-        Bitmap unscaledBitmap = null;
+        Bitmap b = null;
         try {
-        	unscaledBitmap = BitmapFactory.decodeResource(c.getResources(), resourceId);
-            return unscaledBitmap;
-        } catch (final Throwable e) {
-            System.gc();
-        }
-        return null;    	
-    }
-    
-    public Bitmap decodeResourceBitmapAndScale(Context c, int width, int height, int resourceId) {    	        	
-        Bitmap unscaledBitmap = null;
-        try {
-        	unscaledBitmap = BitmapFactory.decodeResource(c.getResources(), resourceId);
-            return scaleBitmap(unscaledBitmap, width, height);
+            b = BitmapFactory.decodeResource(c.getResources(), resourceId);
+            return scaleBitmap(b, width, height);
         } catch (final Throwable e) {
             System.gc();
         }
         return null;
     }
 
-    public Bitmap decodeResourceBitmap(ImageWrapper w, int resId) {
-        return decodeResourceBitmap(w.getContext(), w.getWidth(), w.getHeight(), resId);
-    }
-
-    @Deprecated
     public Bitmap scaleResourceBitmap(ImageWrapper w, int resId) {
-        return decodeResourceBitmapAndScale(w.getContext(), w.getWidth(), w.getHeight(), resId);
-    }
-    
-    public Bitmap decodeResourceBitmapAndScale(ImageWrapper w, int resId) {
-        return decodeResourceBitmapAndScale(w.getContext(), w.getWidth(), w.getHeight(), resId);
+        return scaleResourceBitmap(w.getContext(), w.getWidth(), w.getHeight(), resId);
     }
 
     public Bitmap scaleBitmap(Bitmap b, int width, int height) {
@@ -119,7 +87,7 @@ public class BitmapUtil {
         recycle(b);
         return scaled;
     }
-    
+
     public Bitmap decodeInputStream(InputStream is) {
         Bitmap bitmap = null;
         try {
@@ -192,7 +160,7 @@ public class BitmapUtil {
         }
     }
 
-    int calculateScale(final int requiredSize, int widthTmp, int heightTmp) {
+    private int calculateScale(final int requiredSize, int widthTmp, int heightTmp) {
         int scale = 1;
         while (true) {
             if ((widthTmp / 2) < requiredSize || (heightTmp / 2) < requiredSize) {
@@ -204,6 +172,5 @@ public class BitmapUtil {
         }
         return scale;
     }
-
 
 }

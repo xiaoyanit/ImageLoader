@@ -80,9 +80,9 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
     }
 
     private Bitmap getImageFromFile(File imageFile) {
-    	Bitmap b;
+    	Bitmap b = null;
     	if (loaderContext.getSettings().isAlwaysUseOriginalSize()){
-    		b = loaderContext.getBitmapUtil().decodeFile(imageFile, width, height);
+    		//b = loaderContext.getBitmapUtil().decodeFile(imageFile, width, height);
     	} else {
     		b = loaderContext.getBitmapUtil().decodeFileAndScale(imageFile, width, height);
     	}
@@ -176,11 +176,7 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
         if (b != null) {
             return b;
         }
-        if (loaderContext.getSettings().isAlwaysUseOriginalSize()){
-        	b = loaderContext.getBitmapUtil().decodeResourceBitmap(c, width, height, notFoundResourceId);
-        } else {
-        	b = loaderContext.getBitmapUtil().decodeResourceBitmapAndScale(c, width, height, notFoundResourceId);
-        }
+        b = loaderContext.getBitmapUtil().scaleResourceBitmap(c, width, height, notFoundResourceId);
         loaderContext.getResBitmapCache().put(key, b);
         return b;
     }
