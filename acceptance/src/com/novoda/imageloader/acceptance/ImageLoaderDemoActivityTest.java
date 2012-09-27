@@ -59,4 +59,14 @@ public class ImageLoaderDemoActivityTest extends ActivityInstrumentationTestCase
 //		robotium.clickOnButton(btn);
 	}
 
+    public void testScrollingThroughList() {
+        solo = new Solo(getInstrumentation(), getActivity());
+        list = getActivity().getListView();
+        for (int i = 0; i < list.getCount(); i++) {
+            solo.scrollDown();
+        }
+
+        assertEquals(list.getCount() -1, list.getSelectedItemPosition());
+    }
+
 }
