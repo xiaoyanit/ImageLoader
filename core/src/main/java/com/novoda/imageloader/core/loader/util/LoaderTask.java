@@ -17,6 +17,7 @@ package com.novoda.imageloader.core.loader.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.widget.ImageView;
 import com.novoda.imageloader.core.LoaderContext;
 import com.novoda.imageloader.core.exception.ImageNotFoundException;
@@ -43,6 +44,8 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
 
     @Override
     protected Bitmap doInBackground(String... arg0) {
+        Log.e("Test", "Do in background");
+
         if (imageViewReference == null) {
             return null;
         }
@@ -51,10 +54,11 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
             return null;
         }
         ImageWrapper imageWrapper = setAndValidateTagInformation(imageView);
-        if (imageWrapper == null) {
-        	// url was empty, so no image to load.
-            return null;
+
+        if (url == null || url.length() <= 0 || url.equals("_url_error")) {
+            return getNotFoundImage(imageWrapper.getContext());
         }
+
         if (hasImageViewUrlChanged(imageView)) {
             return null;
         }
@@ -81,15 +85,11 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
 
     private Bitmap getImageFromFile(File imageFile) {
     	Bitmap b = null;
-    	if (loaderContext.getSettings().isAlwaysUseOriginalSize()){
-    		//b = loaderContext.getBitmapUtil().decodeFile(imageFile, width, height);
-    	} else {
-    		b = loaderContext.getBitmapUtil().decodeFileAndScale(imageFile, width, height);
-    	}
-    	
+        b = loaderContext.getBitmapUtil().decodeFileAndScale(imageFile, width, height);
+
         if(b == null) {
         	// decoding failed
-            return b;
+            return null;
         }
         
         if (saveScaledImage) {
@@ -102,9 +102,6 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
     private ImageWrapper setAndValidateTagInformation(ImageView imageView) {
         ImageWrapper imageWrapper = new ImageWrapper(imageView);
         url = imageWrapper.getUrl();
-        if (url == null || url.length() <= 0) {
-            return null;
-        }
         width = imageWrapper.getWidth();
         height = imageWrapper.getHeight();
         notFoundResourceId = imageWrapper.getNotFoundResourceId();
@@ -131,7 +128,11 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
     }
 
     private boolean hasImageViewUrlChanged(ImageView imageView) {
-        return !url.equals(new ImageWrapper(imageView).getCurrentUrl());
+        if (url == null) {
+            return false;
+        } else {
+            return !url.equals(new ImageWrapper(imageView).getCurrentUrl());
+        }
     }
 
     @Override

@@ -45,7 +45,7 @@ public class LongSmallImageList extends SingleTableBaseListActivity implements O
     }
 
     private ImageTagFactory createImageTagFactory() {
-        ImageTagFactory imageTagFactory = ImageTagFactory.newInstance();
+        ImageTagFactory imageTagFactory = ImageTagFactory.getInstance();
         imageTagFactory.setHeight(SIZE);
         imageTagFactory.setWidth(SIZE);
         imageTagFactory.setDefaultImageResId(R.drawable.bg_img_loading);

@@ -83,8 +83,8 @@ public class ImageWrapperTest {
     }
 
     @Test
-    public void shouldHandleNullTag() {
-        imageTag = new ImageTag(null,0,0,0,0);
+    public void shouldHandleNullPointerException() {
+        imageTag = new ImageTag(null, 0, 0, 0, 0);
         when(imageView.getTag()).thenReturn(imageTag);
         imageWrapper = new ImageWrapper(imageView);
 

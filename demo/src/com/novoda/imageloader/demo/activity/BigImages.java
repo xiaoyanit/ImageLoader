@@ -41,13 +41,9 @@ public class BigImages extends SingleTableBaseListActivity implements OnImageLoa
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.single_table_base_list_activity);
-        /**
-         * TODO
-         * Need to prepare imageLoader and imageTagFactory
-         */
-        imageManager = DemoApplication.getImageLoader();
 
-        imageTagFactory = new ImageTagFactory(this, R.drawable.bg_img_loading);
+        imageManager = DemoApplication.getImageLoader();
+        imageTagFactory = ImageTagFactory.getInstance(this, R.drawable.bg_img_loading);
         imageTagFactory.setErrorImageId(R.drawable.bg_img_notfound);
         setAdapter();
         initButton();
@@ -61,7 +57,6 @@ public class BigImages extends SingleTableBaseListActivity implements OnImageLoa
             public void onClick(View v) {
                 refreshData();
             }
-
         });
     }
 
@@ -88,7 +83,7 @@ public class BigImages extends SingleTableBaseListActivity implements OnImageLoa
             @Override
             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
                 String url = cursor.getString(columnIndex);
-                ((ImageView) view).setTag(imageTagFactory.build(url));
+                ((ImageView) view).setTag(imageTagFactory.build(null));
                 imageManager.getLoader().load((ImageView) view);
                 return true;
             }

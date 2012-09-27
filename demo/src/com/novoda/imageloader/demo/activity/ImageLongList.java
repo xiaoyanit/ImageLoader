@@ -45,7 +45,7 @@ public class ImageLongList extends SingleTableBaseListActivity {
          * Need to prepare imageLoader and imageTagFactory
          */
         imageManager = DemoApplication.getImageLoader();
-        imageTagFactory = ImageTagFactory.newInstance(SIZE, SIZE, R.drawable.bg_img_loading);
+        imageTagFactory = ImageTagFactory.getInstance(SIZE, SIZE, R.drawable.bg_img_loading);
         imageTagFactory.setErrorImageId(R.drawable.bg_img_notfound);
         imageTagFactory.setSaveThumbnail(true);
         setAdapter();
