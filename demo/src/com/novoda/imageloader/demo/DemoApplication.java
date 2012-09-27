@@ -1,18 +1,16 @@
 package com.novoda.imageloader.demo;
 
-import java.io.File;
-
 import android.app.Application;
-
 import com.novoda.imageloader.core.ImageManager;
 import com.novoda.imageloader.core.LoaderSettings;
 import com.novoda.imageloader.core.LoaderSettings.SettingsBuilder;
 import com.novoda.imageloader.core.cache.LruBitmapCache;
 
+
 public class DemoApplication extends Application {
 
     /**
-     * It is possible to keep a static reference across the 
+     * It is possible to keep a static reference across the
      * application of the image loader.
      */
     private static ImageManager imageManager;
@@ -20,7 +18,6 @@ public class DemoApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        
         normalImageManagerSettings();
     }
 

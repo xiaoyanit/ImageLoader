@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.bugsense.trace.BugSenseHandler;
 import com.novoda.imageloader.demo.R;
 
 /**
@@ -15,12 +16,21 @@ import com.novoda.imageloader.demo.R;
  */
 public class Demos extends Activity implements OnItemClickListener {
 
+    private static final String API_KEY = "api key";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        BugSenseHandler.initAndStartSession(this, API_KEY);
         setContentView(R.layout.demos);
         ListView entries = (ListView) findViewById(R.id.demo_list);
         entries.setOnItemClickListener(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        BugSenseHandler.closeSession(this);
     }
 
     @Override
