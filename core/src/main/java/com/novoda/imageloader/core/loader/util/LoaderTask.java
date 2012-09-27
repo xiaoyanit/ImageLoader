@@ -52,10 +52,11 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
             return null;
         }
         ImageWrapper imageWrapper = setAndValidateTagInformation(imageView);
-        if (imageWrapper == null) {
-        	// url was empty, so no image to load.
-            return null;
+
+        if (url == null || url.length() <= 0 || url.equals("_url_error")) {
+            return getNotFoundImage(imageWrapper.getContext());
         }
+
         if (hasImageViewUrlChanged(imageView)) {
             return null;
         }
@@ -103,9 +104,6 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
     private ImageWrapper setAndValidateTagInformation(ImageView imageView) {
         ImageWrapper imageWrapper = new ImageWrapper(imageView);
         url = imageWrapper.getUrl();
-        if (url == null || url.length() <= 0) {
-            return null;
-        }
         width = imageWrapper.getWidth();
         height = imageWrapper.getHeight();
         notFoundResourceId = imageWrapper.getNotFoundResourceId();
@@ -132,7 +130,11 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
     }
 
     private boolean hasImageViewUrlChanged(ImageView imageView) {
-        return !url.equals(new ImageWrapper(imageView).getCurrentUrl());
+        if (url == null) {
+            return false;
+        } else {
+            return !url.equals(new ImageWrapper(imageView).getCurrentUrl());
+        }
     }
 
     @Override
@@ -148,15 +150,18 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
             return;
         }
         ImageView imageView = imageViewReference.get();
-        if (imageView == null) {
+        if (!imageViewIsValid(imageView)) {
             return;
         }
-        if (hasImageViewUrlChanged(imageView)) {
-            return;
-        }
-
         listenerCallback(imageView);
         imageView.setImageBitmap(bitmap);
+    }
+
+    private boolean imageViewIsValid(ImageView imageView) {
+        if (imageView == null || hasImageViewUrlChanged(imageView)) {
+            return false;
+        }
+        return true;
     }
 
     private void listenerCallback(ImageView imageView) {

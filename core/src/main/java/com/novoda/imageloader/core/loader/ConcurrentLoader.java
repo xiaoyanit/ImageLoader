@@ -16,9 +16,7 @@
 package com.novoda.imageloader.core.loader;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.widget.ImageView;
-
 import com.novoda.imageloader.core.LoaderContext;
 import com.novoda.imageloader.core.exception.ImageNotFoundException;
 import com.novoda.imageloader.core.loader.util.LoaderTask;
@@ -35,10 +33,6 @@ public class ConcurrentLoader implements Loader {
     @Override
     public void load(ImageView imageView) {
         ImageWrapper w = new ImageWrapper(imageView);
-        if (w.getUrl() == null) {
-            Log.w("ImageLoader", "You should never call load if you don't set a ImageTag on the view");
-            return;
-        }
         try {
             Bitmap b = loaderContext.getCache().get(w.getUrl(), w.getHeight(), w.getWidth());
             if (b != null) {
@@ -73,11 +67,7 @@ public class ConcurrentLoader implements Loader {
             w.setBitmap(b);
             return;
         }
-        if (loaderContext.getSettings().isAlwaysUseOriginalSize()){
-        	b = loaderContext.getBitmapUtil().decodeResourceBitmap(w, resId);
-        } else {
-        	b = loaderContext.getBitmapUtil().decodeResourceBitmapAndScale(w, resId);
-        }
+        b = loaderContext.getBitmapUtil().scaleResourceBitmap(w, resId);
         loaderContext.getResBitmapCache().put("" + resId, b);
         w.setBitmap(b);
     }

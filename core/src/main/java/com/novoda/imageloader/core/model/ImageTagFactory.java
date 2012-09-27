@@ -32,22 +32,22 @@ public class ImageTagFactory {
     private boolean saveThumbnail;
     private boolean useSameUrlForPreviewImage;
 
-    public static ImageTagFactory newInstance() {
-        return new ImageTagFactory();
-    }
-
     private ImageTagFactory() {
     }
 
-    public static ImageTagFactory newInstance(int width, int height, int defaultImageResId) {
-        ImageTagFactory imageTagFactory = new ImageTagFactory();
+    public static ImageTagFactory getInstance() {
+        return new ImageTagFactory();
+    }
+
+    public static ImageTagFactory getInstance(int width, int height, int defaultImageResId) {
+        ImageTagFactory imageTagFactory = getInstance();
         imageTagFactory.setInitialSizeParams(imageTagFactory, width, height);
         imageTagFactory.setInitialImageId(imageTagFactory, defaultImageResId);
         return imageTagFactory;
     }
 
-    public static ImageTagFactory newInstance(Context context, int defaultImageResId) {
-        ImageTagFactory imageTagFactory = new ImageTagFactory();
+    public static ImageTagFactory getInstance(Context context, int defaultImageResId) {
+        ImageTagFactory imageTagFactory = getInstance();
         Display display = imageTagFactory.prepareDisplay(context);
         imageTagFactory.setInitialSizeParams(imageTagFactory, display.getWidth(), display.getHeight());
         imageTagFactory.setInitialImageId(imageTagFactory, defaultImageResId);
@@ -66,15 +66,7 @@ public class ImageTagFactory {
         return imageTagFactory;
     }
 
-    public ImageTagFactory(Context context, int defaultImageResId) {
-        Display d = prepareDisplay(context);
-        this.width = d.getWidth();
-        this.height = d.getHeight();
-        this.defaultImageResId = defaultImageResId;
-        this.errorImageResId = defaultImageResId;
-    }
-
-    protected Display prepareDisplay(Context context) {
+    private Display prepareDisplay(Context context) {
         Display d = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         DisplayMetrics dm = new DisplayMetrics();
         d.getMetrics(dm);
