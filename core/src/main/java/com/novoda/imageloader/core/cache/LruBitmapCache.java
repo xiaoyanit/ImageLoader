@@ -15,13 +15,12 @@
  */
 package com.novoda.imageloader.core.cache;
 
-import java.lang.reflect.Method;
-
-import com.novoda.imageloader.core.cache.util.LruCache;
-
 import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.Bitmap;
+import com.novoda.imageloader.core.cache.util.LruCache;
+
+import java.lang.reflect.Method;
 
 /**
  * LruBitmapCache overcome the issue with soft reference cache.
@@ -76,10 +75,19 @@ public class LruBitmapCache implements CacheManager {
     }
 
     private void reset() {
+        if (cache!= null) {
+            cache.evictAll();
+        }
         cache = new LruCache<String, Bitmap>(capacity) {
             @Override
             protected int sizeOf(String key, Bitmap bitmap) {
                 return bitmap.getRowBytes()*bitmap.getHeight();
+            }
+
+            @Override
+            protected void entryRemoved(boolean evicted, String key, Bitmap oldValue, Bitmap newValue) {
+                oldValue.recycle();
+                super.entryRemoved(evicted, key, oldValue, newValue);    //To change body of overridden methods use File | Settings | File Templates.
             }
         };
     }
