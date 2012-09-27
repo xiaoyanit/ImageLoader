@@ -3,9 +3,9 @@ package com.novoda.imageloader.acceptance;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.ListView;
 import com.jayway.android.robotium.solo.Solo;
-import com.novoda.imageloader.demo.activity.BigImages;
+import com.novoda.imageloader.demo.activity.ImageLongList;
 
-public class ImageLoaderDemoActivityTest extends ActivityInstrumentationTestCase2<BigImages> {
+public class ImageLoaderDemoActivityTest extends ActivityInstrumentationTestCase2<ImageLongList> {
 
 	private static final int QUICK = 2;
 	
@@ -13,7 +13,7 @@ public class ImageLoaderDemoActivityTest extends ActivityInstrumentationTestCase
 	private ListView list;
 
 	public ImageLoaderDemoActivityTest() {
-		super("com.novoda.imageloader.demo", BigImages.class);
+		super("com.novoda.imageloader.demo", ImageLongList.class);
 	}
 	
 	public void testOpenTheActivity(){

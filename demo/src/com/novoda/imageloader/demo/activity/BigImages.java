@@ -80,14 +80,14 @@ public class BigImages extends SingleTableBaseListActivity implements OnImageLoa
     @Override
     protected ViewBinder getViewBinder() {
         return new ViewBinder() {
+
             @Override
             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
                 String url = cursor.getString(columnIndex);
-                ((ImageView) view).setTag(imageTagFactory.build(null));
+                ((ImageView) view).setTag(imageTagFactory.build(url));
                 imageManager.getLoader().load((ImageView) view);
                 return true;
             }
-
         };
     }
 
