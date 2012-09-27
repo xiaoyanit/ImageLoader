@@ -15,34 +15,23 @@
  */
 package com.novoda.imageloader.core.file.util;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
+import com.novoda.imageloader.core.exception.ImageCopyException;
+import com.novoda.imageloader.core.file.FileTestCase;
 import junit.framework.Assert;
 import junitx.framework.FileAssert;
-
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.novoda.imageloader.core.exception.ImageCopyException;
-import com.novoda.imageloader.core.file.FileTestCase;
+import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
 
 public class FileUtilTest extends FileTestCase {
 	
@@ -106,15 +95,16 @@ public class FileUtilTest extends FileTestCase {
     }
 	
 	@Test
-	public void shouldCopyStream() throws ImageCopyException {
-	    File from = new File("src/test/resources/testFile1");
-	    assertTrue(from.exists());
-	    File to = new File(cacheDir.getAbsolutePath() + "testFile1");
-	    
-	    fileUtil.copy(from, to);
-	    
-	    FileAssert.assertBinaryEquals(from, to);
-	}
+	public void shouldCopyStream() throws ImageCopyException, URISyntaxException {
+        URL testFile = ClassLoader.getSystemResource("testFile1");
+        File from = new File(testFile.toURI());
+        assertTrue(from.exists());
+        File to = new File(cacheDir.getAbsolutePath() + "testFile1");
+
+        fileUtil.copy(from, to);
+
+        FileAssert.assertBinaryEquals(from, to);
+    }
 	
 	@Test(expected = ImageCopyException.class)
     public void shouldCopyStreamFailWithImageCopyException() throws ImageCopyException {
@@ -125,8 +115,9 @@ public class FileUtilTest extends FileTestCase {
     }
 	
 	@Test
-	public void shouldCopyStreams() throws FileNotFoundException {
-	    File from = new File("src/test/resources/testFile1");
+	public void shouldCopyStreams() throws FileNotFoundException, URISyntaxException {
+        URL testFile = ClassLoader.getSystemResource("testFile1");
+        File from = new File(testFile.toURI());
         assertTrue(from.exists());
         File to = new File(cacheDir.getAbsolutePath() + "testFile3");
 	    InputStream in = new FileInputStream(from);
