@@ -67,7 +67,7 @@ public class ConcurrentLoader implements Loader {
             w.setBitmap(b);
             return;
         }
-        b = loaderContext.getBitmapUtil().scaleResourceBitmap(w, resId);
+        b = loaderContext.getBitmapUtil().decodeResourceBitmapAndScale(w, resId, loaderContext.getSettings().isAllowUpsampling());
         loaderContext.getResBitmapCache().put("" + resId, b);
         w.setBitmap(b);
     }
