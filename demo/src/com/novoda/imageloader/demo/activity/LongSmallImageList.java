@@ -6,9 +6,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.SimpleCursorAdapter.ViewBinder;
-
 import com.novoda.imageloader.core.ImageManager;
 import com.novoda.imageloader.core.model.ImageTagFactory;
 import com.novoda.imageloader.demo.DemoApplication;
@@ -18,15 +16,10 @@ import com.novoda.imageloader.demo.activity.base.SingleTableBaseListActivity;
 /**
  * Very similar to imageLongList example.
  */
-public class LongSmallImageList extends SingleTableBaseListActivity {
+public class LongSmallImageList extends SingleTableBaseListActivity implements OnClickListener {
 
     private static final int SIZE = 80;
 
-    /**
-     * TODO
-     * Generally we can keep an instance of the 
-     * image loader and the imageTagFactory.
-     */
     private ImageManager imageManager;
     private ImageTagFactory imageTagFactory;
     
@@ -44,32 +37,34 @@ public class LongSmallImageList extends SingleTableBaseListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.single_table_base_list_activity);
-        /**
-         * TODO
-         * Need to prepare imageLoader and imageTagFactory
-         */
+
         imageManager = DemoApplication.getImageLoader();
-        imageTagFactory = new ImageTagFactory(SIZE, SIZE, R.drawable.bg_img_loading);
+        imageTagFactory = createImageTagFactory();
+        setAdapter();
+        initRefreshButton();
+    }
+
+    private ImageTagFactory createImageTagFactory() {
+        ImageTagFactory imageTagFactory = ImageTagFactory.getInstance();
+        imageTagFactory.setHeight(SIZE);
+        imageTagFactory.setWidth(SIZE);
+        imageTagFactory.setDefaultImageResId(R.drawable.bg_img_loading);
         imageTagFactory.setErrorImageId(R.drawable.bg_img_notfound);
         imageTagFactory.setSaveThumbnail(true);
-        setAdapter();
-        
-        //added by dwa012
-        Button button = (Button) this.findViewById(R.id.refresh_button);
-        button.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				refreshData();
-			
-				
-			}
-        	
-        });
+        return imageTagFactory;
     }
-    
+
+    private void initRefreshButton() {
+        Button button = (Button) this.findViewById(R.id.refresh_button);
+        button.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        refreshData();
+    }
+
     /**
-     * TODO
      * Generally you will have a binder where you have to set the image.
      * This is an example of using the imageManager to load
      */
@@ -86,5 +81,4 @@ public class LongSmallImageList extends SingleTableBaseListActivity {
 
         };
     }
-
 }

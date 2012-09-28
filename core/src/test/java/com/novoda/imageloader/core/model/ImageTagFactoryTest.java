@@ -15,16 +15,14 @@
  */
 package com.novoda.imageloader.core.model;
 
+import android.view.Display;
+import org.junit.Before;
+import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import android.content.Context;
-import android.view.Display;
 
 public class ImageTagFactoryTest {
     
@@ -36,7 +34,7 @@ public class ImageTagFactoryTest {
     
     @Before
     public void beforeEachTest() {
-        imageTagFactory = new ImageTagFactory(9, 12, 1);        
+        imageTagFactory = ImageTagFactory.getInstance(9, 12, 1);
     }
     
     @Test
@@ -82,15 +80,17 @@ public class ImageTagFactoryTest {
         final Display display = mock(Display.class);
         when(display.getHeight()).thenReturn(21);
         when(display.getWidth()).thenReturn(12);
-        imageTagFactory = new ImageTagFactory(null, 1) {
-            @Override
-            protected Display prepareDisplay(Context context) {
-                return display;
-            }
-        };
+        imageTagFactory = ImageTagFactory.getInstance(display.getWidth(), display.getHeight(), 1);
         ImageTag imageTag = imageTagFactory.build(url);
+
         assertEquals(21, imageTag.getHeight());
         assertEquals(12, imageTag.getWidth());
+    }
+
+    @Test (expected = RuntimeException.class)
+    public void shouldComplainAboutUnsetParameters() {
+        imageTagFactory = ImageTagFactory.getInstance();
+        imageTagFactory.build(url);
     }
 
 }

@@ -21,6 +21,7 @@ import com.novoda.imageloader.core.file.FileManager;
 import com.novoda.imageloader.core.network.NetworkManager;
 
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
 
 /**
  * LoaderContext provides a generic context for the imageLoader
@@ -36,7 +37,12 @@ public class LoaderContext {
     private CacheManager resBitmapCache;
     private LoaderSettings settings;
     private BitmapUtil bitmapUtil = new BitmapUtil();
-    private WeakReference<OnImageLoadedListener> onImageLoadedListener;
+    private HashMap<Integer, WeakReference> weakListeners;
+    private int listenerKey;
+
+    public LoaderContext() {
+        weakListeners = new HashMap<Integer, WeakReference>();
+    }
 
     public FileManager getFileManager() {
         return fileManager;
@@ -82,12 +88,18 @@ public class LoaderContext {
         return bitmapUtil;
     }
 
-    public void setListener(WeakReference<OnImageLoadedListener> listener) {
-        this.onImageLoadedListener = listener;
+    public void setListener(OnImageLoadedListener listener) {
+        listenerKey = listener.hashCode();
+        WeakReference<OnImageLoadedListener> weakReference = new WeakReference<OnImageLoadedListener>(listener);
+        weakListeners.put(listenerKey, weakReference);
     }
 
     public WeakReference<OnImageLoadedListener> getListener() {
-        return onImageLoadedListener;
+        return (WeakReference<OnImageLoadedListener>) weakListeners.get(listenerKey);
+    }
+
+    public void removeOnImageLoadedListener(int listenerKey) {
+        weakListeners.remove(listenerKey);
     }
 
 }

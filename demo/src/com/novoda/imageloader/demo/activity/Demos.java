@@ -7,20 +7,36 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-
 import com.novoda.imageloader.demo.R;
+import com.novoda.imageloader.demo.util.BugSenseHelper;
+import com.novoda.imageloader.demo.util.BugsenseApiKeyFailedException;
 
 /**
  * Nothing really interesting here just a dashboard.
  */
 public class Demos extends Activity implements OnItemClickListener {
 
+    private BugSenseHelper bugsenseHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        bugsenseHelper = new BugSenseHelper(this);
+
+        try {
+            bugsenseHelper.initBugSense();
+        } catch (BugsenseApiKeyFailedException e) {
+            e.printStackTrace();
+        }
         setContentView(R.layout.demos);
         ListView entries = (ListView) findViewById(R.id.demo_list);
         entries.setOnItemClickListener(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        bugsenseHelper.closeBugsense();
     }
 
     @Override
