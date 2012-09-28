@@ -39,11 +39,7 @@ public class LruBitmapCache implements CacheManager {
      * @param percentageOfMemoryForCache 1-80
      */
     public LruBitmapCache(Context context, int percentageOfMemoryForCache) {
-        int memClass = 0;
-        ActivityManager am = ((ActivityManager) context.getSystemService(
-                Context.ACTIVITY_SERVICE));
-
-        memClass = am.getMemoryClass();
+        int memClass = ((ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();
 
         if(memClass == 0) {
             memClass = DEFAULT_MEMORY_CAPACITY_FOR_DEVICES_OLDER_THAN_API_LEVEL_4;
