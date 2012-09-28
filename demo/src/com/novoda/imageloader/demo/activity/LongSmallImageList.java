@@ -20,9 +20,6 @@ public class LongSmallImageList extends SingleTableBaseListActivity {
 
     private ImageManager imageManager;
     private ImageTagFactory imageTagFactory;
-    private boolean null_tag;
-    private boolean null_url;
-
     @Override
     protected String getTableName() {
         return LongSmallImageList.class.getSimpleName().toLowerCase();

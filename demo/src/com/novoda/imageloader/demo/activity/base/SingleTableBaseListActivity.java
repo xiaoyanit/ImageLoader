@@ -21,10 +21,14 @@ public abstract class SingleTableBaseListActivity extends ListActivity implement
 
     private SimpleCursorAdapter adapter;
 
+    protected abstract String getTableName();
+
+    protected abstract ViewBinder getViewBinder();
+
     protected int getImageItem() {
         return R.layout.image_item;
     }
-    
+
     protected void setAdapter() {
     	adapter = initAdapter();
         ViewBinder binder = getViewBinder();
@@ -34,21 +38,13 @@ public abstract class SingleTableBaseListActivity extends ListActivity implement
         getListView().setAdapter(adapter);
     }
 
-    protected SimpleCursorAdapter initAdapter() {
+    private SimpleCursorAdapter initAdapter() {
         return new SimpleCursorAdapter(this, getImageItem(), getCursor(), FROM, TO);
     }
 
     private Cursor getCursor() {
         return managedQuery(Uri.parse("content://com.novoda.imageloader.demo/" + getTableName()), null, null, null,
                 null);
-    }
-
-    protected abstract String getTableName();
-
-    protected abstract ViewBinder getViewBinder();
-
-    protected void refreshData(){
-    	adapter.notifyDataSetChanged();
     }
 
     protected void initButtons() {
@@ -77,6 +73,10 @@ public abstract class SingleTableBaseListActivity extends ListActivity implement
                 refreshData();
                 break;
         }
+    }
+
+    protected void refreshData(){
+        adapter.notifyDataSetChanged();
     }
 
     protected ImageTag getTag(ImageTagFactory imageTagFactory, String url) {
