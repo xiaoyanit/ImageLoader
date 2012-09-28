@@ -4,12 +4,32 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-<!--     added by dwa012 -->
+  <LinearLayout
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="horizontal">
     <Button
         android:id="@+id/refresh_button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="refresh" />
+        android:layout_weight="1"
+        android:text="Refresh" />
+
+    <Button
+      android:id="@+id/null_tag_button"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:text="Null Tag" />
+
+    <Button
+      android:id="@+id/null_url_button"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:text="Null URL" />
+
+  </LinearLayout>
 
     <ListView
         android:id="@android:id/android:list"

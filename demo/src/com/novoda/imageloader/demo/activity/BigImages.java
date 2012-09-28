@@ -4,8 +4,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter.ViewBinder;
 import com.novoda.imageloader.core.ImageManager;
@@ -46,18 +44,7 @@ public class BigImages extends SingleTableBaseListActivity implements OnImageLoa
         imageTagFactory = ImageTagFactory.getInstance(this, R.drawable.bg_img_loading);
         imageTagFactory.setErrorImageId(R.drawable.bg_img_notfound);
         setAdapter();
-        initButton();
-    }
-
-    private void initButton() {
-        Button button = (Button) this.findViewById(R.id.refresh_button);
-        button.setOnClickListener(new OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                refreshData();
-            }
-        });
+        initButtons();
     }
 
     @Override
@@ -84,7 +71,7 @@ public class BigImages extends SingleTableBaseListActivity implements OnImageLoa
             @Override
             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
                 String url = cursor.getString(columnIndex);
-                ((ImageView) view).setTag(imageTagFactory.build(url));
+                ((ImageView) view).setTag(getTag(imageTagFactory, url));
                 imageManager.getLoader().load((ImageView) view);
                 return true;
             }

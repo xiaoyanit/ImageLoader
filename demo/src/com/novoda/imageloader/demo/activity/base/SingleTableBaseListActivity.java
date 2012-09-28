@@ -3,15 +3,22 @@ package com.novoda.imageloader.demo.activity.base;
 import android.app.ListActivity;
 import android.database.Cursor;
 import android.net.Uri;
+import android.view.View;
+import android.widget.Button;
 import android.widget.SimpleCursorAdapter;
 import android.widget.SimpleCursorAdapter.ViewBinder;
+import com.novoda.imageloader.core.model.ImageTag;
+import com.novoda.imageloader.core.model.ImageTagFactory;
 import com.novoda.imageloader.demo.R;
 
-public abstract class SingleTableBaseListActivity extends ListActivity {
+public abstract class SingleTableBaseListActivity extends ListActivity implements View.OnClickListener {
 
     private static final String[] FROM = new String[] { "url" };
     private static final int[] TO = new int[] { R.id.list_item_image };
-    
+
+    private boolean null_tag;
+    private boolean null_url;
+
     private SimpleCursorAdapter adapter;
 
     protected int getImageItem() {
@@ -43,5 +50,44 @@ public abstract class SingleTableBaseListActivity extends ListActivity {
     protected void refreshData(){
     	adapter.notifyDataSetChanged();
     }
+
+    protected void initButtons() {
+        Button button = (Button) this.findViewById(R.id.refresh_button);
+        button.setOnClickListener(this);
+        button = (Button) this.findViewById(R.id.null_tag_button);
+        button.setOnClickListener(this);
+        button = (Button) this.findViewById(R.id.null_url_button);
+        button.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()) {
+            case R.id.refresh_button:
+                null_tag = false;
+                null_url = false;
+                refreshData();
+                break;
+            case R.id.null_tag_button:
+                null_tag = !null_tag;
+                refreshData();
+                break;
+            case R.id.null_url_button:
+                null_url = !null_url;
+                refreshData();
+                break;
+        }
+    }
+
+    protected ImageTag getTag(ImageTagFactory imageTagFactory, String url) {
+        if (null_tag) {
+            return null;
+        }
+        if (null_url) {
+            return imageTagFactory.build(null);
+        }
+        return imageTagFactory.build(url);
+    }
+
 
 }

@@ -3,11 +3,8 @@ package com.novoda.imageloader.demo.activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter.ViewBinder;
-
 import com.novoda.imageloader.core.ImageManager;
 import com.novoda.imageloader.core.model.ImageTagFactory;
 import com.novoda.imageloader.demo.DemoApplication;
@@ -49,19 +46,7 @@ public class ImageLongList extends SingleTableBaseListActivity {
         imageTagFactory.setErrorImageId(R.drawable.bg_img_notfound);
         imageTagFactory.setSaveThumbnail(true);
         setAdapter();
-        
-      //added by dwa012
-        Button button = (Button) this.findViewById(R.id.refresh_button);
-        button.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				refreshData();
-			
-				
-			}
-        	
-        });
+        initButtons();
     }
 
     /**
@@ -75,7 +60,7 @@ public class ImageLongList extends SingleTableBaseListActivity {
             @Override
             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
                 String url = cursor.getString(columnIndex);
-                ((ImageView) view).setTag(imageTagFactory.build(url));
+                ((ImageView) view).setTag(getTag(imageTagFactory, url));
                 imageManager.getLoader().load((ImageView) view);
                 return true;
             }
