@@ -20,8 +20,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import com.novoda.imageloader.core.cache.util.LruCache;
 
-import java.lang.reflect.Method;
-
 /**
  * LruBitmapCache overcome the issue with soft reference cache.
  * It is in fact keeping all the certain amount of images in memory.
@@ -44,11 +42,9 @@ public class LruBitmapCache implements CacheManager {
         int memClass = 0;
         ActivityManager am = ((ActivityManager) context.getSystemService(
                 Context.ACTIVITY_SERVICE));
-        try {
-            Method m = ActivityManager.class.getMethod("getMemoryClass");
-            memClass = (Integer)m.invoke(am);
-        } catch (Exception e) {
-        }
+
+        memClass = am.getMemoryClass();
+
         if(memClass == 0) {
             memClass = DEFAULT_MEMORY_CAPACITY_FOR_DEVICES_OLDER_THAN_API_LEVEL_4;
         }
@@ -75,19 +71,13 @@ public class LruBitmapCache implements CacheManager {
     }
 
     private void reset() {
-        if (cache!= null) {
+        if (cache != null) {
             cache.evictAll();
         }
         cache = new LruCache<String, Bitmap>(capacity) {
             @Override
             protected int sizeOf(String key, Bitmap bitmap) {
                 return bitmap.getRowBytes()*bitmap.getHeight();
-            }
-
-            @Override
-            protected void entryRemoved(boolean evicted, String key, Bitmap oldValue, Bitmap newValue) {
-                oldValue.recycle();
-                super.entryRemoved(evicted, key, oldValue, newValue);    //To change body of overridden methods use File | Settings | File Templates.
             }
         };
     }

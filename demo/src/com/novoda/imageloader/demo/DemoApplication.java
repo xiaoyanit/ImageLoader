@@ -1,6 +1,8 @@
 package com.novoda.imageloader.demo;
 
 import android.app.Application;
+import android.os.Build;
+import android.util.Log;
 import com.novoda.imageloader.core.ImageManager;
 import com.novoda.imageloader.core.LoaderSettings;
 import com.novoda.imageloader.core.LoaderSettings.SettingsBuilder;
@@ -25,6 +27,13 @@ public class DemoApplication extends Application {
      * Normal image manager settings
      */
     private void normalImageManagerSettings() {
+        Log.e("Test", "Current API LEVEL : " + android.os.Build.VERSION.SDK_INT);
+        Log.e("Test", "Eclair API LEVEL : " + Build.VERSION_CODES.ECLAIR);
+
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.ECLAIR) {
+            Log.e("Test", "sdk is smaller");
+        }
+
         imageManager = new ImageManager(this, new SettingsBuilder()
             .withCacheManager(new LruBitmapCache(this))
             .build(this));
