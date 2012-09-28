@@ -37,6 +37,8 @@ public class LoaderSettings {
     private static final int DEFAULT_READ_TIMEOUT = 10 * 1000;
     private static final boolean DEFAULT_DISCONNECT_ON_EVERY_CALL = false;
     private static final boolean DEFAULT_USE_ASYNC_TASKS = true;
+    private static final boolean DEFAULT_ALLOW_UPSAMPLING = false;
+    private static final boolean DEFAULT_ALWAYS_USE_ORIGINAL_SIZE = false;
 
     private File cacheDir;
     private int connectionTimeout;
@@ -60,6 +62,8 @@ public class LoaderSettings {
         this.setReadTimeout(DEFAULT_READ_TIMEOUT);
         this.setDisconnectOnEveryCall(DEFAULT_DISCONNECT_ON_EVERY_CALL);
         this.setUseAsyncTasks(DEFAULT_USE_ASYNC_TASKS);
+        this.setAllowUpsampling(DEFAULT_ALLOW_UPSAMPLING);
+        this.setAlwaysUseOriginalSize(DEFAULT_ALWAYS_USE_ORIGINAL_SIZE);
     }
 
     public File getCacheDir() {

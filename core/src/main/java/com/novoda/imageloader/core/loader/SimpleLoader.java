@@ -81,7 +81,7 @@ public class SimpleLoader implements Loader {
         if (url != null && url.length() >= 0) {
             File f = loaderContext.getFileManager().getFile(url);
             if (f.exists()) {
-                Bitmap b = loaderContext.getBitmapUtil().decodeFileAndScale(f, width, height);
+                Bitmap b = loaderContext.getBitmapUtil().decodeFileAndScale(f, width, height, loaderContext.getSettings().isAllowUpsampling());
                 if (b != null) {
                     return b;
                 }
@@ -98,7 +98,7 @@ public class SimpleLoader implements Loader {
             w.setBitmap(b);
             return;
         }
-        b = loaderContext.getBitmapUtil().scaleResourceBitmap(w, resId);
+        b = loaderContext.getBitmapUtil().decodeResourceBitmapAndScale(w, resId, loaderContext.getSettings().isAllowUpsampling());
         loaderContext.getResBitmapCache().put("" + resId, b);
         w.setBitmap(b);
     }

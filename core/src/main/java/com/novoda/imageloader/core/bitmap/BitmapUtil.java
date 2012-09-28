@@ -47,18 +47,38 @@ public class BitmapUtil {
         return unscaledBitmap;
     }
 
+    /**
+     * Use decodeFileAndScale(File, int, int, boolean) instead.
+     * @param f
+     * @param width
+     * @param height
+     * @return
+     */
+    @Deprecated
     public Bitmap decodeFileAndScale(File f, int width, int height) {
-        Bitmap unscaledBitmap = decodeFile(f, width, height);
+    	return decodeFileAndScale(f, width, height, false);
+    }
+    
+    public Bitmap decodeFileAndScale(File f, int width, int height, boolean upsampling) {
+            Bitmap unscaledBitmap = decodeFile(f, width, height);
         if (unscaledBitmap == null) {
         	return null;
         } else {        	
-        	return scaleBitmap(unscaledBitmap, width, height);
+        	return scaleBitmap(unscaledBitmap, width, height, upsampling);
         }
     }
 
+    /**
+     * use {@link decodeResourceBitmapAndScale} instead
+     * @param c
+     * @param width
+     * @param height
+     * @param resourceId
+     * @return
+     */
     @Deprecated
     public Bitmap scaleResourceBitmap(Context c, int width, int height, int resourceId) {
-        return decodeResourceBitmapAndScale(c, width, height, resourceId);
+        return decodeResourceBitmapAndScale(c, width, height, resourceId, false);
     }
 
     public Bitmap decodeResourceBitmap(Context c, int width, int height, int resourceId) {
@@ -71,12 +91,12 @@ public class BitmapUtil {
         }
         return null;
     }
-
-    public Bitmap decodeResourceBitmapAndScale(Context c, int width, int height, int resourceId) {
+    
+    public Bitmap decodeResourceBitmapAndScale(Context c, int width, int height, int resourceId, boolean upsampling) {
         Bitmap unscaledBitmap = null;
         try {
             unscaledBitmap = BitmapFactory.decodeResource(c.getResources(), resourceId);
-            return scaleBitmap(unscaledBitmap, width, height);
+            return scaleBitmap(unscaledBitmap, width, height, upsampling);
         } catch (final Throwable e) {
             System.gc();
         }
@@ -87,19 +107,49 @@ public class BitmapUtil {
         return decodeResourceBitmap(w.getContext(), w.getWidth(), w.getHeight(), resId);
     }
 
+    /**
+     * use {@link decodeResourceBitmapAndScale} instead.
+     * This method ignores the upsampling settings.
+     * @param w
+     * @param resId
+     * @return
+     */
     @Deprecated
     public Bitmap scaleResourceBitmap(ImageWrapper w, int resId) {
-        return decodeResourceBitmapAndScale(w.getContext(), w.getWidth(), w.getHeight(), resId);
+        return decodeResourceBitmapAndScale(w.getContext(), w.getWidth(), w.getHeight(), resId, false);
     }
 
-    public Bitmap decodeResourceBitmapAndScale(ImageWrapper w, int resId) {
-        return decodeResourceBitmapAndScale(w.getContext(), w.getWidth(), w.getHeight(), resId);
+    public Bitmap decodeResourceBitmapAndScale(ImageWrapper w, int resId, boolean upsampling) {    	
+        return decodeResourceBitmapAndScale(w.getContext(), w.getWidth(), w.getHeight(), resId, upsampling);
     }
 
+    /**
+     * Calls {@link scaleBitmap(Bitmap, int, int, boolean)} with upsampling disabled.
+     * 
+     * This method ignores the upsampling settings.
+     * 
+     * @param b
+     * @param width
+     * @param height
+     * @return
+     */    
     public Bitmap scaleBitmap(Bitmap b, int width, int height) {
+    	return scaleBitmap(b, width, height, false);
+    }
+    
+    /**
+     * Creates a new bitmap from the given one in the specified size respecting the size ratio of the origin image.
+     * 
+     * @param b original image
+     * @param width preferred width of the new image
+     * @param height preferred height of the new image
+     * @param upsample if true smaller images than the preferred size are increased, if false the origin bitmap is returned
+     * @return new bitmap if size has changed, otherwise original bitmap.
+     */
+    public Bitmap scaleBitmap(Bitmap b, int width, int height, boolean upsampling) {
         int imageHeight = b.getHeight();
         int imageWidth = b.getWidth();
-        if (imageHeight <= height && imageWidth <= width) {
+        if (!upsampling && imageHeight <= height && imageWidth <= width) {
             return b;
         }
         int finalWidth = width;
@@ -123,6 +173,14 @@ public class BitmapUtil {
         return scaled;
     }
 
+    /**
+     * Convenience method to decode an input stream as a bitmap using BitmapFactory.decodeStream without any parameter options.
+     * 
+     * If decoding fails the input stream is closed.
+     * 
+     * @param is input stream of image data
+     * @return bitmap created from the given input stream.
+     */
     public Bitmap decodeInputStream(InputStream is) {
         Bitmap bitmap = null;
         try {

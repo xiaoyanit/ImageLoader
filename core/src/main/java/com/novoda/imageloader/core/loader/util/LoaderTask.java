@@ -86,7 +86,7 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
     	if (loaderContext.getSettings().isAlwaysUseOriginalSize()){
     		b = loaderContext.getBitmapUtil().decodeFile(imageFile, width, height);
     	} else {
-    		b = loaderContext.getBitmapUtil().decodeFileAndScale(imageFile, width, height);
+    		b = loaderContext.getBitmapUtil().decodeFileAndScale(imageFile, width, height, loaderContext.getSettings().isAllowUpsampling());
     	}
     	
         if(b == null) {
@@ -182,7 +182,7 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
         if (loaderContext.getSettings().isAlwaysUseOriginalSize()){
         	b = loaderContext.getBitmapUtil().decodeResourceBitmap(c, width, height, notFoundResourceId);
         } else {
-        	b = loaderContext.getBitmapUtil().decodeResourceBitmapAndScale(c, width, height, notFoundResourceId);
+        	b = loaderContext.getBitmapUtil().decodeResourceBitmapAndScale(c, width, height, notFoundResourceId, loaderContext.getSettings().isAllowUpsampling());
         }
         loaderContext.getResBitmapCache().put(key, b);
         return b;
