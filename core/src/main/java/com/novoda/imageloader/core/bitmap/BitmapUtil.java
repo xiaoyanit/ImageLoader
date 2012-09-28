@@ -50,7 +50,11 @@ public class BitmapUtil {
 	
     public Bitmap decodeFileAndScale(File f, int width, int height) {
         Bitmap unscaledBitmap = decodeFile(f, width, height);
-        return scaleBitmap(unscaledBitmap, width, height);
+        if (unscaledBitmap == null) {
+        	return null;
+        } else {        	
+        	return scaleBitmap(unscaledBitmap, width, height);
+        }
     }
 
     @Deprecated
