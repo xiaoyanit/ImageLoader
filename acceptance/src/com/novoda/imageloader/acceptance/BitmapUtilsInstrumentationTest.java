@@ -30,6 +30,12 @@ public class BitmapUtilsInstrumentationTest extends InstrumentationTestCase {
 
 		bm = new BitmapUtil().scaleBitmap(bmOriginal, 200, 200, false);		
 		assertEquals(bmOriginal, bm);
+		
+		bm = new BitmapUtil().scaleBitmap(bmOriginal, 200, 200, true);		
+		assertNotSame(bmOriginal, bm);
+		assertEquals(200, bm.getHeight());
+		assertEquals(200, bm.getWidth());
+
 	}
 
 	
