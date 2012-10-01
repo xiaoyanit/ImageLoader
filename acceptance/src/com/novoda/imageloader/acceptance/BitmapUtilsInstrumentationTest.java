@@ -24,7 +24,12 @@ public class BitmapUtilsInstrumentationTest extends InstrumentationTestCase {
 		assertEquals(200, bm.getWidth());
 		
 		bm = new BitmapUtil().decodeResourceBitmapAndScale(getInstrumentation().getContext(), 200, 200, R.drawable.icon, false);		
-		assertEquals(bm, bmOriginal);
+
+		assertEquals(bmOriginal.getHeight(), bm.getHeight());
+		assertEquals(bmOriginal.getWidth(), bm.getWidth());
+
+		bm = new BitmapUtil().scaleBitmap(bmOriginal, 200, 200, false);		
+		assertEquals(bmOriginal, bm);
 	}
 
 	
