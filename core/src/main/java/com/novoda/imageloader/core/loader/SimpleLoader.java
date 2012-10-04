@@ -18,6 +18,7 @@ package com.novoda.imageloader.core.loader;
 import java.io.File;
 
 import android.graphics.Bitmap;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 
 import com.novoda.imageloader.core.LoaderContext;
@@ -50,6 +51,16 @@ public class SimpleLoader implements Loader {
     @Override
     public void load(ImageView imageView) {
         ImageWrapper w = new ImageWrapper(imageView);
+        loadLoader(w, imageView);
+    }
+
+    @Override
+    public void load(ImageView imageView, Animation animation) {
+        ImageWrapper w = new ImageWrapper(imageView, animation);
+        loadLoader(w, imageView);
+    }
+
+    private void loadLoader(ImageWrapper w, ImageView imageView){
         try {
             Bitmap b = loaderContext.getCache().get(w.getUrl(), w.getWidth(), w.getHeight());
             if (b != null) {
@@ -94,6 +105,17 @@ public class SimpleLoader implements Loader {
     }
 
     private void setResource(ImageWrapper w, int resId) {
+        Bitmap b = loaderContext.getResBitmapCache().get("" + resId, w.getWidth(), w.getHeight());
+        if (b != null) {
+            w.setBitmap(b);
+            return;
+        }
+        b = loaderContext.getBitmapUtil().scaleResourceBitmap(w, resId);
+        loaderContext.getResBitmapCache().put("" + resId, b);
+        w.setBitmap(b);
+    }
+
+    private void setResource(ImageWrapper w, int resId, Animation animation) {
         Bitmap b = loaderContext.getResBitmapCache().get("" + resId, w.getWidth(), w.getHeight());
         if (b != null) {
             w.setBitmap(b);

@@ -43,7 +43,7 @@
       android:name=".activity.DirectLoading"
       android:label="@string/direct_loader" />
 
-    <provider
+      <provider
       android:name=".provider.ImageLoaderDemoProvider"
       android:authorities="com.novoda.imageloader.demo" />
 

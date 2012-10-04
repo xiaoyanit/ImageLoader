@@ -15,10 +15,11 @@
  */
 package com.novoda.imageloader.core.loader;
 
+import android.view.animation.Animation;
 import android.widget.ImageView;
 
 public interface Loader {
 
-  void load(ImageView imageView);
-  
+    void load(ImageView imageView);
+    void load(ImageView imageView, Animation animation);
 }

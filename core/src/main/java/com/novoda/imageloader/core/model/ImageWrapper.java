@@ -18,6 +18,7 @@ package com.novoda.imageloader.core.model;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 
 import com.novoda.imageloader.core.loader.util.BitmapDisplayer;
@@ -36,7 +37,19 @@ public class ImageWrapper {
     private ImageView imageView;
     private boolean saveThumbnail;
 
+    private Animation animation;
+
     public ImageWrapper(ImageView imageView) {
+        initWrapper(imageView);
+    }
+
+    public ImageWrapper(ImageView imageView, Animation animation) {
+        initWrapper(imageView);
+
+        this.imageView.setAnimation(animation);
+    }
+
+    private void initWrapper(ImageView imageView){
         this.imageView = imageView;
         ImageTag tag = (ImageTag) imageView.getTag();
         if (tag == null) {

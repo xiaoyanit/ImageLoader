@@ -4,6 +4,8 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -22,6 +24,9 @@ public class LongSmallImageList extends SingleTableBaseListActivity {
 
     private static final int SIZE = 80;
 
+    private Animation fadeInAnimation;
+    private Boolean isAnimated = false;
+
     /**
      * TODO
      * Generally we can keep an instance of the 
@@ -29,7 +34,7 @@ public class LongSmallImageList extends SingleTableBaseListActivity {
      */
     private ImageManager imageManager;
     private ImageTagFactory imageTagFactory;
-    
+
     @Override
     protected String getTableName() {
         return LongSmallImageList.class.getSimpleName().toLowerCase();
@@ -44,6 +49,12 @@ public class LongSmallImageList extends SingleTableBaseListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.single_table_base_list_activity);
+
+        if (getIntent().hasExtra("animated")) {
+            isAnimated = true;
+            fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        }
+
         /**
          * TODO
          * Need to prepare imageLoader and imageTagFactory
@@ -80,7 +91,13 @@ public class LongSmallImageList extends SingleTableBaseListActivity {
             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
                 String url = cursor.getString(columnIndex);
                 ((ImageView) view).setTag(imageTagFactory.build(url));
-                imageManager.getLoader().load((ImageView) view);
+
+                if (!isAnimated) {
+                    imageManager.getLoader().load((ImageView) view);
+                } else{
+                    imageManager.getLoader().load((ImageView) view, fadeInAnimation);
+                }
+
                 return true;
             }
 
