@@ -7,6 +7,9 @@ Image download happens off the UI thread and the images are cached with a two-le
 
 h2. Recent changes
 
+h3. 1.5.7
+* Added callback when image is loaded, more methods on SettingsBuilder
+
 h3. 1.5.6
 
 * Removed necessity to set a service in the manifest for the clean up. Everything is done in the BasicFileManager with a background thread.
