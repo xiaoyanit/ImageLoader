@@ -10,7 +10,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.novoda.imageloader</groupId>
   <artifactId>imageloader-parent</artifactId>
-  <version>1.5.7</version>
+  <version>1.5.7-SNAPSHOT</version>
   <name>imageloader-parent</name>
   <packaging>pom</packaging>
 
