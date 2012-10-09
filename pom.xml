@@ -23,6 +23,12 @@
     <android.maven.plugin.version>3.2.0</android.maven.plugin.version>
   </properties>
 
+<repositories>
+    <repository>
+      <id>public-mvn-repo-releases</id>
+      <url>https://github.com/novoda/public-mvn-repo/raw/master/releases</url>
+    </repository>
+  </repositories>
 
   <scm>
     <url>http://github.com/novoda/ImageLoader/tree/${scm.branch}</url>
