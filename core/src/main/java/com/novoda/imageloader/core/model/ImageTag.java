@@ -15,6 +15,12 @@
  */
 package com.novoda.imageloader.core.model;
 
+/**
+ * Model class for information of an image. The model is attached via the tag property of the ImageView.
+ * 
+ * @author Novoda
+ *
+ */
 public class ImageTag {
 
     private String url;
