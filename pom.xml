@@ -10,7 +10,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.novoda.imageloader</groupId>
   <artifactId>imageloader-parent</artifactId>
-  <version>1.5.7-SNAPSHOT</version>
+  <version>1.5.8-SNAPSHOT</version>
   <name>imageloader-parent</name>
   <packaging>pom</packaging>
 
@@ -23,20 +23,12 @@
     <android.maven.plugin.version>3.2.0</android.maven.plugin.version>
   </properties>
 
-  <repositories>
+<repositories>
     <repository>
       <id>public-mvn-repo-releases</id>
       <url>https://github.com/novoda/public-mvn-repo/raw/master/releases</url>
     </repository>
   </repositories>
-
-  <distributionManagement>
-    <repository>
-      <id>local-public-mvn-repo</id>
-      <name>local clone of https://github.com/novoda/public-mvn-repo</name>
-      <url>${local.public.mvn.repo}</url>
-    </repository>
-  </distributionManagement>
 
   <scm>
     <url>http://github.com/novoda/ImageLoader/tree/${scm.branch}</url>
