@@ -25,7 +25,7 @@ public class ImageLoaderDemoActivityTest extends ActivityInstrumentationTestCase
         solo = new Solo(getInstrumentation(), getActivity());
         list = getActivity().getListView();
 
-        for (int i = 0; i < list.getCount(); i++) {
+        for (int i = 0; i < Math.max(2, list.getCount()); i++) {
             solo.scrollDown();
         }
 
