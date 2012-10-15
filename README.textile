@@ -14,6 +14,7 @@ When upgrading, please use ImageTagFactory.getInstance instead of new ImageFacto
 * Added ability to disable bitmap resizing
 * Fixed some problems scrolling through long lists
 * Added an error image when the URL is null
+* Fix for loading images behind redirects (max 3)
 
 h3. 1.5.6
 
