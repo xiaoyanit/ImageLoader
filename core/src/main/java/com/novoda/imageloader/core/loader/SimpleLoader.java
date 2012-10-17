@@ -51,14 +51,14 @@ public class SimpleLoader implements Loader {
         ImageWrapper w = new ImageWrapper(imageView);
         try {
             Bitmap b = loaderContext.getCache().get(w.getUrl(), w.getWidth(), w.getHeight());
-            if (b != null) {
+            if (b != null && !b.isRecycled()) {
                 imageView.setImageBitmap(b);
                 return;
             }
             String thumbUrl = w.getPreviewUrl();
             if(thumbUrl != null) {
                 b = loaderContext.getCache().get(thumbUrl, w.getPreviewHeight(), w.getPreviewWidth());
-                if (b != null) {
+                if (b != null && !b.isRecycled()) {
                     w.setBitmap(b);
                 } else {
                     setResource(w, w.getLoadingResourceId());
@@ -87,7 +87,7 @@ public class SimpleLoader implements Loader {
                 }
             }
             loaderContext.getNetworkManager().retrieveImage(url, f);
-            return loaderContext.getBitmapUtil().decodeFileAndScale(f, width, height);
+            return loaderContext.getBitmapUtil().decodeFileAndScale(f, width, height, loaderContext.getSettings().isAllowUpsampling());
         }
         return null;
     }

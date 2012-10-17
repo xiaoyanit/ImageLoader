@@ -87,7 +87,9 @@ public class BitmapUtil {
             unscaledBitmap = BitmapFactory.decodeResource(c.getResources(), resourceId);
             return unscaledBitmap;
         } catch (final Throwable e) {
-            System.gc();
+        	// calling gc does not help as is called anyway
+        	// http://code.google.com/p/android/issues/detail?id=8488#c80
+            //System.gc();
         }
         return null;
     }
@@ -98,7 +100,9 @@ public class BitmapUtil {
             unscaledBitmap = BitmapFactory.decodeResource(c.getResources(), resourceId);
             return scaleBitmap(unscaledBitmap, width, height, upsampling);
         } catch (final Throwable e) {
-            System.gc();
+        	// calling gc does not help as is called anyway
+        	// http://code.google.com/p/android/issues/detail?id=8488#c80
+            //System.gc();
         }
         return null;
     }
@@ -167,7 +171,9 @@ public class BitmapUtil {
         try {
             scaled = Bitmap.createScaledBitmap(b, finalWidth, finalHeight, true);
         } catch (final Throwable e) {
-            System.gc();
+        	// calling gc does not help as is called anyway
+        	// http://code.google.com/p/android/issues/detail?id=8488#c80
+            //System.gc();
         }
         recycle(b);
         return scaled;
@@ -186,7 +192,9 @@ public class BitmapUtil {
         try {
             bitmap = BitmapFactory.decodeStream(is, null, null);
         } catch (final Throwable e) {
-            System.gc();
+        	// calling gc does not help as is called anyway
+        	// http://code.google.com/p/android/issues/detail?id=8488#c80
+            //System.gc();
         } finally {
             closeSilently(is);
         }
@@ -217,7 +225,9 @@ public class BitmapUtil {
             fis = new FileInputStream(f);
             bitmap = BitmapFactory.decodeStream(fis, null, options);
         } catch (final Throwable e) {
-            System.gc();
+        	// calling gc does not help as is called anyway 
+        	// http://code.google.com/p/android/issues/detail?id=8488#c80
+            //System.gc();
         } finally {
             closeSilently(fis);
         }
@@ -238,7 +248,9 @@ public class BitmapUtil {
             BitmapFactory.decodeStream(fis, null, o);
             closeSilently(fis);
         } catch (final Throwable e) {
-            System.gc();
+        	// calling gc does not help as is called anyway
+        	// http://code.google.com/p/android/issues/detail?id=8488#c80
+            //System.gc();
         } finally {
             closeSilently(fis);
         }

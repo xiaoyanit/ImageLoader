@@ -35,14 +35,14 @@ public class ConcurrentLoader implements Loader {
         ImageWrapper w = new ImageWrapper(imageView);
         try {
             Bitmap b = loaderContext.getCache().get(w.getUrl(), w.getHeight(), w.getWidth());
-            if (b != null) {
+            if (b != null  && !b.isRecycled()) {
                 w.setBitmap(b);
                 return;
             }
             String thumbUrl = w.getPreviewUrl();
             if(thumbUrl != null) {
                 b = loaderContext.getCache().get(thumbUrl, w.getPreviewHeight(), w.getPreviewWidth());
-                if (b != null) {
+                if (b != null  && !b.isRecycled()) {
                     w.setBitmap(b);
                 } else {
                     setResource(w, w.getLoadingResourceId());
