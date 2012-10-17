@@ -61,7 +61,7 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
             return null;
         }
         Bitmap b = loaderContext.getCache().get(url, width, height);
-        if (b != null) {
+        if (b != null  && !b.isRecycled()) {
             return b;
         }
         File imageFile = getImageFile(imageWrapper);

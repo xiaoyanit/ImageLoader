@@ -82,7 +82,7 @@ public class SimpleLoader implements Loader {
             File f = loaderContext.getFileManager().getFile(url);
             if (f.exists()) {
                 Bitmap b = loaderContext.getBitmapUtil().decodeFileAndScale(f, width, height, loaderContext.getSettings().isAllowUpsampling());
-                if (b != null) {
+                if (b != null && !b.isRecycled()) {
                     return b;
                 }
             }
