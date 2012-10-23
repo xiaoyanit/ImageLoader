@@ -20,7 +20,7 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
 
-public class ImageTagFactory {
+public final class ImageTagFactory {
 
     private int previewImageWidth;
     private int previewImageHeight;
