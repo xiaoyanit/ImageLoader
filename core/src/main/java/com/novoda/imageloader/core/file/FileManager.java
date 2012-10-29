@@ -70,7 +70,7 @@ public interface FileManager {
      * @param url original url of the content
      * @param width width of image
      * @param height height of image
-     * @return file handle of cached resized content
+     * @return file handle of cached resized content, must not return null
      */
     File getFile(String url, int width, int height);
 

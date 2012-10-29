@@ -18,16 +18,29 @@ package com.novoda.imageloader.core;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.test.mock.MockContext;
 import android.widget.ImageView;
+import com.novoda.imageloader.core.bitmap.BitmapUtil;
+import com.novoda.imageloader.core.cache.CacheManager;
+import com.novoda.imageloader.core.file.FileManager;
+import com.novoda.imageloader.core.file.util.FileUtil;
+import com.novoda.imageloader.core.network.NetworkManager;
+import com.novoda.imageloader.core.network.UrlNetworkManager;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.ref.WeakReference;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class ImageManagerTest {
 
@@ -96,6 +109,40 @@ public class ImageManagerTest {
 
     }
 
+    @Test
+    public void testCacheImage(){
+        setValidImageManagerPermissions();
+
+        File file = mock(File.class);
+        FileManager fm = mock(FileManager.class);
+        when(fm.getFile("http://king.com/img.png", 100, 100)).thenReturn(file);
+
+        final BitmapUtil bmUtil = mock(BitmapUtil.class);
+        when(bmUtil.decodeFile(file, 100, 100)).thenReturn(null);
+        LoaderContext loaderContext = new LoaderContext(){
+            public BitmapUtil getBitmapUtil(){
+                return bmUtil;
+            }
+        };
+
+        NetworkManager nm = mock(NetworkManager.class);
+
+        loaderContext.setNetworkManager(nm);
+        loaderContext.setFileManager(fm);
+
+
+        CacheManager cache = mock(CacheManager.class);
+        loaderContext.setCache(cache);
+        loaderContext.setSettings(new LoaderSettings());
+
+        imageManager = new ImageManager(context, loaderContext);
+
+        imageManager.cacheImage("http://king.com/img.png", 100, 100);
+        // file decode failed, therefore nothing in cache
+        verify(cache, never()).put("", null);
+
+    }
+
     private void setUpImageManager() {
         setValidImageManagerPermissions();
         imageManager = new ImageManager(context, loaderSettings);
@@ -116,5 +163,6 @@ public class ImageManagerTest {
         };
         return listener;
     }
+
 
 }
