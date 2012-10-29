@@ -188,19 +188,8 @@ ImageTagFactory imageTagFactory = new ImageTagFactory(this, R.drawable.bg_img_lo
 imageTagFactory.setErrorImageId(R.drawable.bg_img_notfound);
 
 Animation fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+imageTagFactory.setAnimation(fadeInAnimation);
 
-private ViewBinder getViewBinder() {
-  return new ViewBinder() {
-    @Override
-    public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-      // Build image tag with remote image URL
-      ImageTag tag = imageTagFactory.build(cursor.getString(columnIndex));
-      ((ImageView) view).setTag(tag);
-      imageLoader.load(view, fadeInAnimation);
-      return true;
-    }
-  };
-}
 </code></pre>
 
 h2. Getting the library
