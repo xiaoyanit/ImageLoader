@@ -58,12 +58,12 @@ public class DirectLoading extends Activity {
             @Override
             public void run() {
 
+                imageView.setImageBitmap(bitmap);
+
                 // Start animating the image
                 if (isAnimated){
-                   imageView.setAnimation(fadeInAnimation);
+                    imageView.startAnimation(fadeInAnimation);
                 }
-
-                imageView.setImageBitmap(bitmap);
 
             }
         });

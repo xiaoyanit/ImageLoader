@@ -22,6 +22,7 @@ import android.view.animation.Animation;
 import android.widget.ImageView;
 
 import com.novoda.imageloader.core.loader.util.BitmapDisplayer;
+import com.novoda.imageloader.core.loader.util.LoaderTask;
 
 public class ImageWrapper {
 
@@ -99,7 +100,7 @@ public class ImageWrapper {
 
     public void setBitmap(Bitmap bitmap) {
         imageView.setImageBitmap(bitmap);
-        imageView.setAnimation(animation);
+        imageView.startAnimation(animation);
     }
 
     public boolean isCorrectUrl(String url) {
@@ -149,4 +150,15 @@ public class ImageWrapper {
     public void setAnimation(Animation animation) {
         this.animation = animation;
     }
+
+    public LoaderTask getLoaderTask() {
+        ImageTag tag = (ImageTag)imageView.getTag();
+        return tag.getLoaderTask();
+    }
+
+    public void setLoaderTask(LoaderTask task) {
+        ImageTag tag = (ImageTag)imageView.getTag();
+        tag.setLoaderTask(task);
+    }
+
 }
