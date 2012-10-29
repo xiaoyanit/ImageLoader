@@ -17,11 +17,11 @@ package com.novoda.imageloader.core.loader;
 
 import android.graphics.Bitmap;
 import android.util.Log;
-import android.view.animation.Animation;
 import android.widget.ImageView;
 import com.novoda.imageloader.core.LoaderContext;
 import com.novoda.imageloader.core.exception.ImageNotFoundException;
 import com.novoda.imageloader.core.loader.util.LoaderTask;
+import com.novoda.imageloader.core.model.ImageTag;
 import com.novoda.imageloader.core.model.ImageWrapper;
 
 public class ConcurrentLoader implements Loader {
@@ -40,32 +40,68 @@ public class ConcurrentLoader implements Loader {
             Log.w("ImageLoader", "You should never call load if you don't set a ImageTag on the view");
             return;
         }
-        try {
-            Bitmap b = loaderContext.getCache().get(w.getUrl(), w.getHeight(), w.getWidth());
-            if (b != null  && !b.isRecycled()) {
-                w.setBitmap(b);
-                return;
-            }
-            String thumbUrl = w.getPreviewUrl();
-            if(thumbUrl != null) {
-                b = loaderContext.getCache().get(thumbUrl, w.getPreviewHeight(), w.getPreviewWidth());
-                if (b != null  && !b.isRecycled()) {
+
+
+        if (checkConcurrentTasks(w.getUrl(), w.getLoaderTask())) {
+            // only continue if a concurrent task has not yet been started
+
+            try {
+
+                // get bitmap from cache
+                Bitmap b = loaderContext.getCache().get(w.getUrl(), w.getHeight(), w.getWidth());
+                if (b != null && !b.isRecycled()) {
                     w.setBitmap(b);
+                    return;
+                }
+
+                // get preview or loading image
+                String thumbUrl = w.getPreviewUrl();
+                if (thumbUrl != null) {
+                    b = loaderContext.getCache().get(thumbUrl, w.getPreviewHeight(), w.getPreviewWidth());
+                    if (b != null && !b.isRecycled()) {
+                        w.setBitmap(b);
+                    } else {
+                        setResource(w, w.getLoadingResourceId());
+                    }
                 } else {
                     setResource(w, w.getLoadingResourceId());
                 }
-            } else {
-                setResource(w, w.getLoadingResourceId());
+
+                if (w.isUseCacheOnly()) {
+                    return;
+                }
+
+                // spin off a new task for this url
+                LoaderTask task = new LoaderTask(imageView, loaderContext);
+                w.setLoaderTask(task);
+                task.execute();
+
+            } catch (ImageNotFoundException inf) {
+                setResource(w, w.getNotFoundResourceId());
+            } catch (Throwable t) {
+                setResource(w, w.getNotFoundResourceId());
             }
-            if (w.isUseCacheOnly()) {
-                return;
-            }
-            new LoaderTask(imageView, loaderContext).execute();
-        } catch (ImageNotFoundException inf) {
-            setResource(w, w.getNotFoundResourceId());
-        } catch (Throwable t) {
-            setResource(w, w.getNotFoundResourceId());
         }
+    }
+
+    /**
+     * checks whether a previous task is loading the same url
+     *
+     * @param url url of the image to be fetched
+     * @param oldTask task that might already fetching an image, might be null
+     * @return true if there is no other concurrent task running
+     */
+
+    private boolean checkConcurrentTasks(String url, LoaderTask oldTask) {
+        if (oldTask == null || (!url.equals(oldTask.getUrl()))){
+            oldTask.cancel(true);
+        } else {
+            // task != null && url == task.getUrl
+            // there is already a concurrent task fetching the image
+            return false;
+        }
+
+        return true;
     }
 
     private void setResource(ImageWrapper w, int resId) {
@@ -75,8 +111,8 @@ public class ConcurrentLoader implements Loader {
             return;
         }
         b = loaderContext.getBitmapUtil().decodeResourceBitmapAndScale(w, resId, loaderContext.getSettings().isAllowUpsampling());
-        loaderContext.getResBitmapCache().put("" + resId, b);
+        loaderContext.getResBitmapCache().put(String.valueOf(resId), b);
         w.setBitmap(b);
     }
-    
+
 }

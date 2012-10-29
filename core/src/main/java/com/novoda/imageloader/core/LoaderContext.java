@@ -22,6 +22,7 @@ import com.novoda.imageloader.core.network.NetworkManager;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * LoaderContext provides a generic context for the imageLoader
@@ -37,7 +38,7 @@ public class LoaderContext {
     private CacheManager resBitmapCache;
     private LoaderSettings settings;
     private BitmapUtil bitmapUtil = new BitmapUtil();
-    private HashMap<Integer, WeakReference> weakListeners;
+    private Map<Integer, WeakReference> weakListeners;
     private int listenerKey;
 
     public LoaderContext() {

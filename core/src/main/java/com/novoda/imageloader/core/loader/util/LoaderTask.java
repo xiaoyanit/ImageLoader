@@ -22,6 +22,7 @@ import android.view.animation.Animation;
 import android.widget.ImageView;
 import com.novoda.imageloader.core.LoaderContext;
 import com.novoda.imageloader.core.exception.ImageNotFoundException;
+import com.novoda.imageloader.core.model.ImageTag;
 import com.novoda.imageloader.core.model.ImageWrapper;
 
 import java.io.File;
@@ -157,12 +158,15 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
             return;
         }
         listenerCallback(imageView);
+
+        // ImageWrapper.setBitmap is not available here, therefore, copy the code.
         imageView.setImageBitmap(bitmap);
         imageView.startAnimation(animation);
     }
 
     private boolean imageViewIsValid(ImageView imageView) {
-        if (imageView == null || hasImageViewUrlChanged(imageView)) {
+        if (imageView == null || hasImageViewUrlChanged(imageView) ||
+                ((ImageTag)imageView.getTag()).getLoaderTask() != this) {
             return false;
         }
         return true;
@@ -190,6 +194,10 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
         }
         loaderContext.getResBitmapCache().put(key, b);
         return b;
+    }
+
+    public String getUrl(){
+        return url;
     }
 
 }
