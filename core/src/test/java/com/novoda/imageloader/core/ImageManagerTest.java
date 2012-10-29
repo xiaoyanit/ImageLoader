@@ -158,7 +158,7 @@ public class ImageManagerTest {
     private OnImageLoadedListener createOnImageLoadedListener() {
         OnImageLoadedListener listener = new OnImageLoadedListener() {
             @Override
-            public void OnImageLoaded(ImageView imageView) {
+            public void onImageLoaded(ImageView imageView) {
             }
         };
         return listener;

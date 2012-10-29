@@ -16,7 +16,6 @@
 package com.novoda.imageloader.core.loader.util;
 
 import android.graphics.Bitmap;
-
 import com.novoda.imageloader.core.model.ImageWrapper;
 
 public class BitmapDisplayer implements Runnable {

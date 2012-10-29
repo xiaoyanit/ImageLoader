@@ -102,7 +102,7 @@ public class UrlNetworkManager implements NetworkManager {
         }
     }
 
-    protected HttpURLConnection openConnection(String url) throws IOException, MalformedURLException {
+    protected HttpURLConnection openConnection(String url) throws IOException {
         return (HttpURLConnection) new URL(url).openConnection();
     }
 

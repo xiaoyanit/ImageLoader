@@ -1,6 +1,6 @@
 package com.novoda.imageloader.core.util;
 
-public class Log {
+public abstract class Log {
 
     private static final String TAG = "ImageLoader";
     

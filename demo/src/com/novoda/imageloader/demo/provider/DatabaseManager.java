@@ -67,7 +67,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         exec(db, stms);
     }
 
-    private static final void exec(SQLiteDatabase db, List<String> staments) {
+    private static void exec(SQLiteDatabase db, List<String> staments) {
         for (String stm : staments) {
             Log.v("exec", stm);
             try {

@@ -25,21 +25,23 @@ public class SqlFile {
             if (line.length() == 0) {
                 continue;
             }
-            if (line.startsWith("--"))
+            if (line.startsWith("--")) {
                 continue;
+            }
 
             if (line.startsWith("/*")) {
                 inComment = true;
                 continue;
             }
 
-            if (line.endsWith("*/") && inComment == true) {
+            if (line.endsWith("*/") && inComment) {
                 inComment = false;
                 continue;
             }
 
-            if (inComment == true)
+            if (inComment){
                 continue;
+            }
 
             statements.add(line);
         }

@@ -15,20 +15,11 @@
  */
 package com.novoda.imageloader.core.loader.util;
 
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.Callable;
-import java.util.concurrent.FutureTask;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import android.os.Handler;
 import android.os.Message;
+
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * <p>
@@ -446,8 +437,9 @@ public abstract class AsyncTask<Params, Progress, Result> {
     }
 
     private void finish(Result result) {
-        if (isCancelled())
+        if (isCancelled()){
             result = null;
+        }
         onPostExecute(result);
         mStatus = Status.FINISHED;
     }

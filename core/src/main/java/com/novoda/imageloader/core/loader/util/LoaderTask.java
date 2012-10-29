@@ -16,7 +16,6 @@
 package com.novoda.imageloader.core.loader.util;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.view.animation.Animation;
 import android.widget.ImageView;
@@ -64,7 +63,7 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
             return null;
         }
         Bitmap b = loaderContext.getCache().get(url, width, height);
-        if (b != null  && !b.isRecycled()) {
+        if (b != null && !b.isRecycled()) {
             return b;
         }
         File imageFile = getImageFile(imageWrapper);
@@ -85,18 +84,18 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
     }
 
     private Bitmap getImageFromFile(File imageFile) {
-    	Bitmap b;
-    	if (loaderContext.getSettings().isAlwaysUseOriginalSize()){
-    		b = loaderContext.getBitmapUtil().decodeFile(imageFile, width, height);
-    	} else {
-    		b = loaderContext.getBitmapUtil().decodeFileAndScale(imageFile, width, height, loaderContext.getSettings().isAllowUpsampling());
-    	}
-    	
-        if(b == null) {
-        	// decoding failed
+        Bitmap b;
+        if (loaderContext.getSettings().isAlwaysUseOriginalSize()) {
+            b = loaderContext.getBitmapUtil().decodeFile(imageFile, width, height);
+        } else {
+            b = loaderContext.getBitmapUtil().decodeFileAndScale(imageFile, width, height, loaderContext.getSettings().isAllowUpsampling());
+        }
+
+        if (b == null) {
+            // decoding failed
             return b;
         }
-        
+
         if (saveScaledImage) {
             saveScaledImage(imageFile, b);
         }
@@ -166,18 +165,17 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
 
     private boolean imageViewIsValid(ImageView imageView) {
         if (imageView == null || hasImageViewUrlChanged(imageView) ||
-                ((ImageTag)imageView.getTag()).getLoaderTask() != this) {
+                ((ImageTag) imageView.getTag()).getLoaderTask() != this) {
             return false;
         }
         return true;
     }
 
     private void listenerCallback(ImageView imageView) {
-        if (loaderContext != null && loaderContext.getListener() != null) {
-            if (loaderContext.getListener().get() != null) {
-                loaderContext.getListener().get().OnImageLoaded(imageView);
-                return;
-            }
+        if (loaderContext != null && loaderContext.getListener() != null &&
+                loaderContext.getListener().get() != null) {
+            loaderContext.getListener().get().onImageLoaded(imageView);
+            return;
         }
     }
 
@@ -187,16 +185,16 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
         if (b != null) {
             return b;
         }
-        if (loaderContext.getSettings().isAlwaysUseOriginalSize()){
-        	b = loaderContext.getBitmapUtil().decodeResourceBitmap(c, width, height, notFoundResourceId);
+        if (loaderContext.getSettings().isAlwaysUseOriginalSize()) {
+            b = loaderContext.getBitmapUtil().decodeResourceBitmap(c, width, height, notFoundResourceId);
         } else {
-        	b = loaderContext.getBitmapUtil().decodeResourceBitmapAndScale(c, width, height, notFoundResourceId, loaderContext.getSettings().isAllowUpsampling());
+            b = loaderContext.getBitmapUtil().decodeResourceBitmapAndScale(c, width, height, notFoundResourceId, loaderContext.getSettings().isAllowUpsampling());
         }
         loaderContext.getResBitmapCache().put(key, b);
         return b;
     }
 
-    public String getUrl(){
+    public String getUrl() {
         return url;
     }
 
