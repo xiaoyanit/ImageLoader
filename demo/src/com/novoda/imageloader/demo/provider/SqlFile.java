@@ -21,7 +21,7 @@ public class SqlFile {
         statements = new ArrayList<String>();
         String line = null;
         while ((line = reader.readLine()) != null) {
-            line.trim();
+            line = line.trim();
             if (line.length() == 0) {
                 continue;
             }
