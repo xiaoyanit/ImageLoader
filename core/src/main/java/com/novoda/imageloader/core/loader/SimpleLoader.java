@@ -16,6 +16,7 @@
 package com.novoda.imageloader.core.loader;
 
 import android.graphics.Bitmap;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import com.novoda.imageloader.core.LoaderContext;
 import com.novoda.imageloader.core.exception.ImageNotFoundException;
@@ -49,10 +50,11 @@ public class SimpleLoader implements Loader {
     @Override
     public void load(ImageView imageView) {
         ImageWrapper w = new ImageWrapper(imageView);
+
         try {
             Bitmap b = loaderContext.getCache().get(w.getUrl(), w.getWidth(), w.getHeight());
             if (b != null && !b.isRecycled()) {
-                imageView.setImageBitmap(b);
+                w.setBitmap(b);
                 return;
             }
             String thumbUrl = w.getPreviewUrl();
@@ -102,5 +104,6 @@ public class SimpleLoader implements Loader {
         loaderContext.getResBitmapCache().put("" + resId, b);
         w.setBitmap(b);
     }
+
 
 }

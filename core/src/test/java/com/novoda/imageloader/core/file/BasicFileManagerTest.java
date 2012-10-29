@@ -15,16 +15,15 @@
  */
 package com.novoda.imageloader.core.file;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
+import com.novoda.imageloader.core.LoaderSettings;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.novoda.imageloader.core.LoaderSettings;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class BasicFileManagerTest extends FileTestCase {
 

@@ -18,6 +18,7 @@ package com.novoda.imageloader.core.loader.util;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import com.novoda.imageloader.core.LoaderContext;
 import com.novoda.imageloader.core.exception.ImageNotFoundException;
@@ -36,6 +37,7 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
     private int width;
     private int height;
     private int notFoundResourceId;
+    private Animation animation;
 
     public LoaderTask(ImageView imageView, LoaderContext loaderContext) {
         this.imageViewReference = new WeakReference<ImageView>(imageView);
@@ -108,6 +110,7 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
         height = imageWrapper.getHeight();
         notFoundResourceId = imageWrapper.getNotFoundResourceId();
         useCacheOnly = imageWrapper.isUseCacheOnly();
+        animation = imageWrapper.getAnimation();
         return imageWrapper;
     }
 
@@ -155,6 +158,7 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
         }
         listenerCallback(imageView);
         imageView.setImageBitmap(bitmap);
+        imageView.startAnimation(animation);
     }
 
     private boolean imageViewIsValid(ImageView imageView) {

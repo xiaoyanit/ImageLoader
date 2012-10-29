@@ -7,6 +7,12 @@ Image download happens off the UI thread and the images are cached with a two-le
 
 h2. Recent changes
 
+
+h3. 1.5.8-SNAPSHOT
+
+* Added the possibility of loading a picture with an Animation
+
+
 h3. 1.5.7
 * ImageTagFactory has now factory methods for writing better tests. 
 When upgrading, please use ImageTagFactory.getInstance instead of new ImageFactory()
@@ -171,6 +177,31 @@ ImageLoader contains a utility class for directly downloading a Bitmap from a UR
 <pre><code>Bitmap myImage = new DirectLoader().download(url);</code></pre>
 
 This method will throw an ImageNotFoundException if there is no image on the other end of your URL.
+
+h3. Adding an animation
+
+If you want to load a an image using an animation you just have to add an Animation object to the imageLoader.load method
+
+<pre><code>
+
+ImageTagFactory imageTagFactory = new ImageTagFactory(this, R.drawable.bg_img_loading);
+imageTagFactory.setErrorImageId(R.drawable.bg_img_notfound);
+
+Animation fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+
+private ViewBinder getViewBinder() {
+  return new ViewBinder() {
+    @Override
+    public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+      // Build image tag with remote image URL
+      ImageTag tag = imageTagFactory.build(cursor.getString(columnIndex));
+      ((ImageView) view).setTag(tag);
+      imageLoader.load(view, fadeInAnimation);
+      return true;
+    }
+  };
+}
+</code></pre>
 
 h2. Getting the library
 

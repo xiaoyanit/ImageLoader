@@ -15,35 +15,24 @@
  */
 package com.novoda.imageloader.core.network;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.times;
-
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-
+import com.novoda.imageloader.core.LoaderSettings;
+import com.novoda.imageloader.core.exception.ImageNotFoundException;
+import com.novoda.imageloader.core.file.FileTestCase;
+import com.novoda.imageloader.core.file.util.FileUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import com.novoda.imageloader.core.LoaderSettings;
-import com.novoda.imageloader.core.exception.ImageNotFoundException;
-import com.novoda.imageloader.core.file.FileTestCase;
-import com.novoda.imageloader.core.file.util.FileUtil;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
 
 public class UrlNetworlManagerTest extends FileTestCase {
     

@@ -4,6 +4,8 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter.ViewBinder;
 import com.novoda.imageloader.core.ImageManager;
@@ -21,6 +23,9 @@ import com.novoda.imageloader.demo.activity.base.SingleTableBaseListActivity;
 public class BigImages extends SingleTableBaseListActivity implements OnImageLoadedListener {
 
     private final static String TAG = DemoApplication.class.getSimpleName().toLowerCase();
+
+    private Animation fadeInAnimation;
+    private Boolean isAnimated = false;
 
     /**
      * TODO
@@ -40,9 +45,19 @@ public class BigImages extends SingleTableBaseListActivity implements OnImageLoa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.single_table_base_list_activity);
 
+        if (getIntent().hasExtra("animated")) {
+            isAnimated = true;
+            fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        }
+
+        /**
+         * TODO
+         * Need to prepare imageLoader and imageTagFactory
+         */
         imageManager = DemoApplication.getImageLoader();
-        imageTagFactory = ImageTagFactory.getInstance(this, R.drawable.bg_img_loading);
+        imageTagFactory = ImageTagFactory.newInstance(this, R.drawable.bg_img_loading);
         imageTagFactory.setErrorImageId(R.drawable.bg_img_notfound);
+        imageTagFactory.setAnimation(fadeInAnimation);
         setAdapter();
         initButtons();
     }
@@ -71,8 +86,11 @@ public class BigImages extends SingleTableBaseListActivity implements OnImageLoa
             @Override
             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
                 String url = cursor.getString(columnIndex);
-                ((ImageView) view).setTag(getTag(imageTagFactory, url));
-                imageManager.getLoader().load((ImageView) view);
+                ((ImageView) view).setTag(imageTagFactory.build(url));
+
+                    imageManager.getLoader().load((ImageView) view);
+
+
                 return true;
             }
         };

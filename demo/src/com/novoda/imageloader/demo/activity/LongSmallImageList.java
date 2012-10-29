@@ -3,6 +3,8 @@ package com.novoda.imageloader.demo.activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter.ViewBinder;
 import com.novoda.imageloader.core.ImageManager;
@@ -18,8 +20,17 @@ public class LongSmallImageList extends SingleTableBaseListActivity {
 
     private static final int SIZE = 80;
 
+    private Animation fadeInAnimation;
+    private Boolean isAnimated = false;
+
+    /**
+     * TODO
+     * Generally we can keep an instance of the 
+     * image loader and the imageTagFactory.
+     */
     private ImageManager imageManager;
     private ImageTagFactory imageTagFactory;
+
     @Override
     protected String getTableName() {
         return LongSmallImageList.class.getSimpleName().toLowerCase();
@@ -35,14 +46,24 @@ public class LongSmallImageList extends SingleTableBaseListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.single_table_base_list_activity);
 
+        if (getIntent().hasExtra("animated")) {
+            isAnimated = true;
+            fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        }
+
+        /**
+         * TODO
+         * Need to prepare imageLoader and imageTagFactory
+         */
         imageManager = DemoApplication.getImageLoader();
         imageTagFactory = createImageTagFactory();
+        imageTagFactory.setAnimation(fadeInAnimation);
         setAdapter();
         initButtons();
     }
 
     private ImageTagFactory createImageTagFactory() {
-        ImageTagFactory imageTagFactory = ImageTagFactory.getInstance();
+        ImageTagFactory imageTagFactory = ImageTagFactory.newInstance();
         imageTagFactory.setHeight(SIZE);
         imageTagFactory.setWidth(SIZE);
         imageTagFactory.setDefaultImageResId(R.drawable.bg_img_loading);
@@ -61,8 +82,10 @@ public class LongSmallImageList extends SingleTableBaseListActivity {
             @Override
             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
                 String url = cursor.getString(columnIndex);
-                ((ImageView) view).setTag(getTag(imageTagFactory, url));
-                imageManager.getLoader().load((ImageView) view);
+                ((ImageView) view).setTag(imageTagFactory.build(url));
+
+                    imageManager.getLoader().load((ImageView) view);
+
                 return true;
             }
 

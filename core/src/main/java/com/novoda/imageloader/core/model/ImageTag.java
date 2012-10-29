@@ -15,6 +15,8 @@
  */
 package com.novoda.imageloader.core.model;
 
+import android.view.animation.Animation;
+
 /**
  * Model class for information of an image. The model is attached via the tag property of the ImageView.
  * 
@@ -33,6 +35,7 @@ public class ImageTag {
     private int previewWidth;
     private boolean useOnlyCache;
     private boolean saveThumbnail;
+    private Animation animation;
 
     public ImageTag(String url, int loadingResourceId, int notFoundResourceId, int width, int height) {
         this.url = url;
@@ -103,4 +106,11 @@ public class ImageTag {
         this.previewHeight = previewHeight;
     }
 
+    public Animation getAnimation() {
+        return animation;
+    }
+
+    public void setAnimation(Animation animation) {
+        this.animation = animation;
+    }
 }

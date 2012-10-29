@@ -19,6 +19,7 @@ import android.content.Context;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
+import android.view.animation.Animation;
 
 public final class ImageTagFactory {
 
@@ -31,6 +32,8 @@ public final class ImageTagFactory {
     private boolean useOnlyCache;
     private boolean saveThumbnail;
     private boolean useSameUrlForPreviewImage;
+    private Animation animation;
+
 
     private ImageTagFactory() {
     }
@@ -46,7 +49,7 @@ public final class ImageTagFactory {
     
     /**
      * Use newInstance instead.
-     * 
+     * private
      * @param width
      * @param height
      * @param defaultImageResId
@@ -201,6 +204,11 @@ public final class ImageTagFactory {
         this.saveThumbnail = saveThumbnail;
     }
 
+
+    public void setAnimation(Animation animation) {
+        this.animation = animation;
+    }
+
     /**
      * Creates a new ImageTag for the given iamge url. It uses the previously set parameters.
      * 
@@ -220,6 +228,7 @@ public final class ImageTagFactory {
         }
         it.setPreviewHeight(previewImageHeight);
         it.setPreviewWidth(previewImageWidth);
+        it.setAnimation(animation);
         return it;
     }
 

@@ -15,11 +15,9 @@
  */
 package com.novoda.imageloader.core.network;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
 
-import com.novoda.imageloader.core.network.UrlUtil;
+import static org.junit.Assert.assertEquals;
 
 public class UrlUtilTest {
 

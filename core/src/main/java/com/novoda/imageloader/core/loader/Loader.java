@@ -15,21 +15,22 @@
  */
 package com.novoda.imageloader.core.loader;
 
+import android.view.animation.Animation;
 import android.widget.ImageView;
 
 /**
- * Worker class that retrieves images for {@link ImageView}s. 
+ * Worker class that retrieves images for {@link ImageView}s.
  * The information about the image have to be stored in the tag attribute as an
- * {@link ImageTag} 
- *
+ * {@link com.novoda.imageloader.core.model.ImageTag}
  */
 public interface Loader {
 
-  /**
-   * Initiates the loading process for the given image view. 
-   * <code>imageView.getTag()</code> has to be of type {@link ImageTag} 
-   * @param imageView ImageView with attached image information
-   */
-void load(ImageView imageView);
-  
+    /**
+     * Initiates the loading process for the given image view.
+     * <code>imageView.getTag()</code> has to be of type {@link com.novoda.imageloader.core.model.ImageTag}
+     *
+     * @param imageView ImageView with attached image information
+     */
+    void load(ImageView imageView);
+
 }

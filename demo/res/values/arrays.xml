@@ -3,8 +3,12 @@
 <resources>
   <string-array name="demo_array">
     <item>@string/long_list</item>
+    <item>@string/long_list_animated</item>
     <item>@string/long_small_list</item>
+    <item>@string/long_small_list_animated</item>
     <item>@string/large_list</item>
+    <item>@string/large_list_animated</item>
     <item>@string/direct_loader</item>
+    <item>@string/direct_loader_animated</item>
   </string-array>
-</resources> 
+</resources>

@@ -3,6 +3,10 @@ package com.novoda.imageloader.demo.activity;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 
 import com.novoda.imageloader.core.util.DirectLoader;
@@ -15,11 +19,21 @@ public class DirectLoading extends Activity {
 
     private ImageView imageView;
 
+    private Animation fadeInAnimation;
+    private Boolean isAnimated = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.direct_loading);
+
+        if (getIntent().hasExtra("animated")) {
+            isAnimated = true;
+            fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        }
+
         imageView = (ImageView) findViewById(R.id.direct_image);
+        fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
     }
 
     @Override
@@ -43,7 +57,14 @@ public class DirectLoading extends Activity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+
+                // Start animating the image
+                if (isAnimated){
+                   imageView.setAnimation(fadeInAnimation);
+                }
+
                 imageView.setImageBitmap(bitmap);
+
             }
         });
     }

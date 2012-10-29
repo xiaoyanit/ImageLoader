@@ -18,6 +18,7 @@ package com.novoda.imageloader.core.model;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 
 import com.novoda.imageloader.core.loader.util.BitmapDisplayer;
@@ -37,7 +38,13 @@ public class ImageWrapper {
     private ImageView imageView;
     private boolean saveThumbnail;
 
+    private Animation animation;
+
     public ImageWrapper(ImageView imageView) {
+        initWrapper(imageView);
+    }
+
+    private void initWrapper(ImageView imageView){
         this.imageView = imageView;
         ImageTag tag = (ImageTag) imageView.getTag();
         if (tag == null) {
@@ -56,6 +63,7 @@ public class ImageWrapper {
             this.notFoundResourceId = tag.getLoadingResourceId();
         }
         this.previewUrl = tag.getPreviewUrl();
+        this.animation = tag.getAnimation();
     }
 
     public String getCurrentUrl() {
@@ -91,6 +99,7 @@ public class ImageWrapper {
 
     public void setBitmap(Bitmap bitmap) {
         imageView.setImageBitmap(bitmap);
+        imageView.setAnimation(animation);
     }
 
     public boolean isCorrectUrl(String url) {
@@ -133,4 +142,11 @@ public class ImageWrapper {
         return previewHeight;
     }
 
+    public Animation getAnimation() {
+        return animation;
+    }
+
+    public void setAnimation(Animation animation) {
+        this.animation = animation;
+    }
 }

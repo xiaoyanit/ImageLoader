@@ -15,11 +15,9 @@
  */
 package com.novoda.imageloader.core.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
-import java.io.InputStream;
-
+import android.graphics.Bitmap;
+import com.novoda.imageloader.core.bitmap.BitmapUtil;
+import com.novoda.imageloader.core.network.NetworkManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,10 +26,10 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import android.graphics.Bitmap;
+import java.io.InputStream;
 
-import com.novoda.imageloader.core.bitmap.BitmapUtil;
-import com.novoda.imageloader.core.network.NetworkManager;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ Bitmap.class })

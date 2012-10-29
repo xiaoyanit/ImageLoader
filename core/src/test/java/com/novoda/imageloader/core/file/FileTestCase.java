@@ -15,10 +15,10 @@
  */
 package com.novoda.imageloader.core.file;
 
-import java.io.File;
-
 import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
+
+import java.io.File;
 
 public class FileTestCase {
     
