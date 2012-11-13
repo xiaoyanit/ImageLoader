@@ -83,7 +83,7 @@ public class ImageManagerTest {
         OnImageLoadedListener listener = createOnImageLoadedListener();
         imageManager.setOnImageLoadedListener(listener);
 
-        WeakReference listenerReference = new WeakReference<OnImageLoadedListener>(listener);
+        WeakReference<OnImageLoadedListener> listenerReference = new WeakReference<OnImageLoadedListener>(listener);
 
         System.gc();
         assertNotNull(listenerReference.get());
@@ -95,7 +95,7 @@ public class ImageManagerTest {
         OnImageLoadedListener listener = createOnImageLoadedListener();
         imageManager.setOnImageLoadedListener(listener);
 
-        WeakReference listenerReference = new WeakReference<OnImageLoadedListener>(listener);
+        WeakReference<OnImageLoadedListener> listenerReference = new WeakReference<OnImageLoadedListener>(listener);
         listener = null;
 
         assertNotNull(listenerReference.get());
