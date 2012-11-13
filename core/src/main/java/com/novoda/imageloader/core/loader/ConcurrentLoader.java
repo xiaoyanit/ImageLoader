@@ -18,15 +18,15 @@ package com.novoda.imageloader.core.loader;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.widget.ImageView;
+
 import com.novoda.imageloader.core.LoaderContext;
 import com.novoda.imageloader.core.exception.ImageNotFoundException;
 import com.novoda.imageloader.core.loader.util.LoaderTask;
-import com.novoda.imageloader.core.model.ImageTag;
 import com.novoda.imageloader.core.model.ImageWrapper;
 
 public class ConcurrentLoader implements Loader {
 
-    private LoaderContext loaderContext;
+    private final LoaderContext loaderContext;
 
     public ConcurrentLoader(LoaderContext loaderContext) {
         this.loaderContext = loaderContext;
@@ -92,13 +92,13 @@ public class ConcurrentLoader implements Loader {
      * @return true if there is no other concurrent task running
      */
 
-    private boolean checkConcurrentTasks(String url, LoaderTask oldTask) {
+    private static boolean checkConcurrentTasks(String url, LoaderTask oldTask) {
         if (oldTask == null || (!url.equals(oldTask.getUrl()))){
-            oldTask.cancel(true);
+            return false;
         } else {
             // task != null && url == task.getUrl
             // there is already a concurrent task fetching the image
-            return false;
+        	oldTask.cancel(true);
         }
 
         return true;
