@@ -15,32 +15,25 @@
  */
 package com.novoda.imageloader.core;
 
-import android.Manifest;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.test.mock.MockContext;
-import android.widget.ImageView;
-import com.novoda.imageloader.core.bitmap.BitmapUtil;
-import com.novoda.imageloader.core.cache.CacheManager;
-import com.novoda.imageloader.core.file.FileManager;
-import com.novoda.imageloader.core.file.util.FileUtil;
-import com.novoda.imageloader.core.network.NetworkManager;
-import com.novoda.imageloader.core.network.UrlNetworkManager;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.ref.WeakReference;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static org.mockito.Mockito.*;
+
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.widget.ImageView;
+
+import com.novoda.imageloader.core.bitmap.BitmapUtil;
+import com.novoda.imageloader.core.cache.CacheManager;
+import com.novoda.imageloader.core.file.FileManager;
+import com.novoda.imageloader.core.network.NetworkManager;
+
+import java.io.File;
+import java.lang.ref.WeakReference;
+
+import org.junit.Before;
+import org.junit.Test;
 
 public class ImageManagerTest {
 
@@ -60,7 +53,8 @@ public class ImageManagerTest {
         disableManifestPermission(Manifest.permission.INTERNET);
 
         new ImageManager(context, loaderSettings) {
-            protected void setLoader(LoaderSettings settings) {
+            @Override
+			protected void setLoader(LoaderSettings settings) {
             };
         };
     }
@@ -70,7 +64,8 @@ public class ImageManagerTest {
         disableManifestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
         new ImageManager(context, loaderSettings) {
-            protected void setLoader(LoaderSettings settings) {
+            @Override
+			protected void setLoader(LoaderSettings settings) {
             };
         };
     }
@@ -120,7 +115,8 @@ public class ImageManagerTest {
         final BitmapUtil bmUtil = mock(BitmapUtil.class);
         when(bmUtil.decodeFile(file, 100, 100)).thenReturn(null);
         LoaderContext loaderContext = new LoaderContext(){
-            public BitmapUtil getBitmapUtil(){
+            @Override
+			public BitmapUtil getBitmapUtil(){
                 return bmUtil;
             }
         };
