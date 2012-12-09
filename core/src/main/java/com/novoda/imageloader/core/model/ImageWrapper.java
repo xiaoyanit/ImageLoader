@@ -26,139 +26,138 @@ import com.novoda.imageloader.core.loader.util.LoaderTask;
 
 public class ImageWrapper {
 
-    private static final String URL_ERROR = "_url_error";
-    private String url;
-    private String previewUrl;
-    private int width;
-    private int height;
-    private int previewWidth;
-    private int previewHeight;
-    private int loadingResourceId;
-    private int notFoundResourceId;
-    private boolean isUseCacheOnly;
-    private ImageView imageView;
-    private boolean saveThumbnail;
+	private static final String URL_ERROR = "_url_error";
+	private String url;
+	private String previewUrl;
+	private int width;
+	private int height;
+	private int previewWidth;
+	private int previewHeight;
+	private int loadingResourceId;
+	private int notFoundResourceId;
+	private boolean isUseCacheOnly;
+	private ImageView imageView;
+	private boolean saveThumbnail;
 
-    private Animation animation;
+	private Animation animation;
 
-    public ImageWrapper(ImageView imageView) {
-        initWrapper(imageView);
-    }
+	public ImageWrapper(ImageView imageView) {
+		initWrapper(imageView);
+	}
 
-    private void initWrapper(ImageView imageView){
-        this.imageView = imageView;
-        ImageTag tag = (ImageTag) imageView.getTag();
-        if (tag == null) {
-            return;
-        }
-        this.url = tag.getUrl();
-        this.loadingResourceId = tag.getLoadingResourceId();
-        this.notFoundResourceId = tag.getNotFoundResourceId();
-        this.isUseCacheOnly = tag.isUseOnlyCache();
-        this.height = tag.getHeight();
-        this.width = tag.getWidth();
-        this.previewHeight = tag.getPreviewHeight();
-        this.previewWidth = tag.getPreviewWidth();
-        this.saveThumbnail = tag.isSaveThumbnail();
-        if (notFoundResourceId == 0) {
-            this.notFoundResourceId = tag.getLoadingResourceId();
-        }
-        this.previewUrl = tag.getPreviewUrl();
-        this.animation = tag.getAnimation();
-    }
+	private void initWrapper(ImageView imageView) {
+		this.imageView = imageView;
+		ImageTag tag = (ImageTag) imageView.getTag();
+		if (tag == null) {
+			return;
+		}
+		this.url = tag.getUrl();
+		this.loadingResourceId = tag.getLoadingResourceId();
+		this.notFoundResourceId = tag.getNotFoundResourceId();
+		this.isUseCacheOnly = tag.isUseOnlyCache();
+		this.height = tag.getHeight();
+		this.width = tag.getWidth();
+		this.previewHeight = tag.getPreviewHeight();
+		this.previewWidth = tag.getPreviewWidth();
+		this.saveThumbnail = tag.isSaveThumbnail();
+		if (notFoundResourceId == 0) {
+			this.notFoundResourceId = tag.getLoadingResourceId();
+		}
+		this.previewUrl = tag.getPreviewUrl();
+		this.animation = tag.getAnimation();
+	}
 
-    public String getCurrentUrl() {
-        ImageTag tag = (ImageTag) imageView.getTag();
+	public String getCurrentUrl() {
+		ImageTag tag = (ImageTag) imageView.getTag();
 
-        if (tag.getUrl() != null) {
-            return tag.getUrl();
-        } else {
-            return URL_ERROR;
-        }
-    }
+		if (tag.getUrl() != null) {
+			return tag.getUrl();
+		}
+		return URL_ERROR;
+	}
 
-    public String getUrl() {
-        return url;
-    }
+	public String getUrl() {
+		return url;
+	}
 
-    public int getWidth() {
-        return width;
-    }
+	public int getWidth() {
+		return width;
+	}
 
-    public int getHeight() {
-        return height;
-    }
+	public int getHeight() {
+		return height;
+	}
 
-    public void runOnUiThread(BitmapDisplayer displayer) {
-        Activity a = (Activity) imageView.getContext();
-        a.runOnUiThread(displayer);
-    }
+	public void runOnUiThread(BitmapDisplayer displayer) {
+		Activity a = (Activity) imageView.getContext();
+		a.runOnUiThread(displayer);
+	}
 
-    public Context getContext() {
-        return (Activity) imageView.getContext();
-    }
+	public Context getContext() {
+		return imageView.getContext();
+	}
 
-    public void setBitmap(Bitmap bitmap) {
-        imageView.setImageBitmap(bitmap);
-        imageView.startAnimation(animation);
-    }
+	public void setBitmap(Bitmap bitmap) {
+		imageView.setImageBitmap(bitmap);
+		imageView.startAnimation(animation);
+	}
 
-    public boolean isCorrectUrl(String url) {
-        return url.equals(getUrl());
-    }
+	public boolean isCorrectUrl(String url) {
+		return url.equals(getUrl());
+	}
 
-    public int getLoadingResourceId() {
-        return loadingResourceId;
-    }
+	public int getLoadingResourceId() {
+		return loadingResourceId;
+	}
 
-    public int getNotFoundResourceId() {
-        return notFoundResourceId;
-    }
+	public int getNotFoundResourceId() {
+		return notFoundResourceId;
+	}
 
-    public boolean isUrlChanged() {
-        return !getUrl().equals(getCurrentUrl());
-    }
+	public boolean isUrlChanged() {
+		return !getUrl().equals(getCurrentUrl());
+	}
 
-    public boolean isUseCacheOnly() {
-        return isUseCacheOnly;
-    }
+	public boolean isUseCacheOnly() {
+		return isUseCacheOnly;
+	}
 
-    public boolean isSaveThumbnail() {
-        return saveThumbnail;
-    }
+	public boolean isSaveThumbnail() {
+		return saveThumbnail;
+	}
 
-    public void setSaveThumbnail(boolean saveThumbnail) {
-        this.saveThumbnail = saveThumbnail;
-    }
+	public void setSaveThumbnail(boolean saveThumbnail) {
+		this.saveThumbnail = saveThumbnail;
+	}
 
-    public String getPreviewUrl() {
-        return previewUrl;
-    }
+	public String getPreviewUrl() {
+		return previewUrl;
+	}
 
-    public int getPreviewWidth() {
-        return previewWidth;
-    }
+	public int getPreviewWidth() {
+		return previewWidth;
+	}
 
-    public int getPreviewHeight() {
-        return previewHeight;
-    }
+	public int getPreviewHeight() {
+		return previewHeight;
+	}
 
-    public Animation getAnimation() {
-        return animation;
-    }
+	public Animation getAnimation() {
+		return animation;
+	}
 
-    public void setAnimation(Animation animation) {
-        this.animation = animation;
-    }
+	public void setAnimation(Animation animation) {
+		this.animation = animation;
+	}
 
-    public LoaderTask getLoaderTask() {
-        ImageTag tag = (ImageTag)imageView.getTag();
-        return tag.getLoaderTask();
-    }
+	public LoaderTask getLoaderTask() {
+		ImageTag tag = (ImageTag) imageView.getTag();
+		return tag.getLoaderTask();
+	}
 
-    public void setLoaderTask(LoaderTask task) {
-        ImageTag tag = (ImageTag)imageView.getTag();
-        tag.setLoaderTask(task);
-    }
+	public void setLoaderTask(LoaderTask task) {
+		ImageTag tag = (ImageTag) imageView.getTag();
+		tag.setLoaderTask(task);
+	}
 
 }

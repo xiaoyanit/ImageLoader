@@ -5,8 +5,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 
 import com.novoda.imageloader.core.util.DirectLoader;
@@ -17,56 +15,56 @@ import com.novoda.imageloader.demo.R;
  */
 public class DirectLoading extends Activity {
 
-    private ImageView imageView;
+	private ImageView imageView;
 
-    private Animation fadeInAnimation;
-    private Boolean isAnimated = false;
+	private Animation fadeInAnimation;
+	private Boolean isAnimated = false;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.direct_loading);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.direct_loading);
 
-        if (getIntent().hasExtra("animated")) {
-            isAnimated = true;
-            fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
-        }
+		if (getIntent().hasExtra("animated")) {
+			isAnimated = true;
+			fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+		}
 
-        imageView = (ImageView) findViewById(R.id.direct_image);
-        fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
-    }
+		imageView = (ImageView) findViewById(R.id.direct_image);
+		fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+	}
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        /**
-         * TODO Don't use the direct loader like this.
-         * It's useful for downloading a Bitmap to display in a notification.
-         * You need to handle the threading yourself.
-         */
-        new Thread() {
-            public void run() {
-                DirectLoader dl = new DirectLoader();
-                Bitmap b = dl.download("http://www.asianweek.com/wp-content/uploads/2012/03/microsoft_logo11.jpg");
-                setImageView(b);
-            };
-        }.start();
-    }
+	@Override
+	protected void onResume() {
+		super.onResume();
+		/**
+		 * TODO Don't use the direct loader like this. It's useful for downloading a Bitmap to display in a notification. You need to handle the threading
+		 * yourself.
+		 */
+		new Thread() {
+			@Override
+			public void run() {
+				DirectLoader dl = new DirectLoader();
+				Bitmap b = dl.download("http://www.asianweek.com/wp-content/uploads/2012/03/microsoft_logo11.jpg");
+				setImageView(b);
+			};
+		}.start();
+	}
 
-    public void setImageView(final Bitmap bitmap) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
+	public void setImageView(final Bitmap bitmap) {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
 
-                imageView.setImageBitmap(bitmap);
+				imageView.setImageBitmap(bitmap);
 
-                // Start animating the image
-                if (isAnimated){
-                    imageView.startAnimation(fadeInAnimation);
-                }
+				// Start animating the image
+				if (isAnimated) {
+					imageView.startAnimation(fadeInAnimation);
+				}
 
-            }
-        });
-    }
+			}
+		});
+	}
 
 }
