@@ -176,7 +176,10 @@ public class BitmapUtil {
 			// http://code.google.com/p/android/issues/detail?id=8488#c80
 			// System.gc();
 		}
-		recycle(b);
+        // recycle b only if createScaledBitmap returned a new instance.
+		if (scaled != b) {
+			recycle(b);
+		}
 		return scaled;
 	}
 
