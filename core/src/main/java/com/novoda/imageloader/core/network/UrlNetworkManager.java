@@ -24,6 +24,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 
 import com.novoda.imageloader.core.LoaderSettings;
 import com.novoda.imageloader.core.exception.ImageNotFoundException;
@@ -59,6 +60,14 @@ public class UrlNetworkManager implements NetworkManager {
             conn = openConnection(url);
             conn.setConnectTimeout(settings.getConnectionTimeout());
             conn.setReadTimeout(settings.getReadTimeout());
+            
+            HashMap<String, String> additionalHeaderFields = settings.getAdditionalHeaderFields();
+            if(additionalHeaderFields != null) {
+                for(String key : additionalHeaderFields.keySet()) {
+                    conn.setRequestProperty(key, additionalHeaderFields.get(key));
+                }
+            }
+            
             if (conn.getResponseCode() == TEMP_REDIRECT) {
                 redirectManually(f, conn);
             } else {
