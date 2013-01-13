@@ -15,17 +15,17 @@
  */
 package com.novoda.imageloader.core;
 
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Map;
+
 import android.content.Context;
 import android.os.Build;
 
 import com.novoda.imageloader.core.cache.CacheManager;
 import com.novoda.imageloader.core.file.util.AndroidFileContext;
 import com.novoda.imageloader.core.file.util.FileUtil;
-
-import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.HashMap;
 
 /**
  * LoaderSettings is the main class used to customize the behavior of the imageLoader.
@@ -46,7 +46,7 @@ public class LoaderSettings {
     private File cacheDir;
     private int connectionTimeout;
     private int readTimeout;
-    private HashMap<String, String> additionalHeaderFields = null;
+    private Map<String, String> headers = null;
     private long expirationPeriod;
     private boolean isQueryIncludedInHash;
     private boolean disconnectOnEveryCall;
@@ -121,19 +121,15 @@ public class LoaderSettings {
         this.readTimeout = readTimeout;
     }
     
-    public HashMap<String, String> getAdditionalHeaderFields() {
-        return additionalHeaderFields;
+    public Map<String, String> getHeaders() {
+        return headers;
     }
 
-    public void setAdditionalHeaderFields(HashMap<String, String> additionalHeaderFields) {
-        for(String key : additionalHeaderFields.keySet()) {
-            try {
-                additionalHeaderFields.put(key, URLEncoder.encode(additionalHeaderFields.get(key), "UTF8"));
-            } catch (UnsupportedEncodingException e) {
-            }
+    public void addHeader(String key, String value) {
+        try {
+            headers.put(key, URLEncoder.encode(value, "UTF8"));
+        } catch (UnsupportedEncodingException e) {
         }
-        
-        this.additionalHeaderFields = additionalHeaderFields;
     }
 
     public boolean getDisconnectOnEveryCall() {
@@ -248,8 +244,8 @@ public class LoaderSettings {
             return this;
         }
         
-        public SettingsBuilder withAdditionalHeaderFields(HashMap<String, String> additionalHeaderFields) {
-            settings.setAdditionalHeaderFields(additionalHeaderFields);
+        public SettingsBuilder addHeader(String key, String value) {
+        	settings.addHeader(key, value);
             return this;
         }
 
