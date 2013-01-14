@@ -18,21 +18,17 @@ package com.novoda.imageloader.core.bitmap;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+
 import com.novoda.imageloader.core.model.ImageWrapper;
 
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.*;
 
 /**
- * Utility class abstract the usage of the BitmapFactory.
- * It is shielding the users of this class from bugs and OutOfMemory exceptions. 
+ * Utility class abstract the usage of the BitmapFactory. It is shielding the users of this class from bugs and OutOfMemory exceptions.
  */
 public class BitmapUtil {
 
     private static final int BUFFER_SIZE = 64 * 1024;
-
 
     public Bitmap decodeFile(File f, int width, int height) {
         updateLastModifiedForCache(f);
@@ -49,6 +45,7 @@ public class BitmapUtil {
 
     /**
      * Use decodeFileAndScale(File, int, int, boolean) instead.
+     *
      * @param f
      * @param width
      * @param height
@@ -56,20 +53,20 @@ public class BitmapUtil {
      */
     @Deprecated
     public Bitmap decodeFileAndScale(File f, int width, int height) {
-    	return decodeFileAndScale(f, width, height, false);
+        return decodeFileAndScale(f, width, height, false);
     }
-    
+
     public Bitmap decodeFileAndScale(File f, int width, int height, boolean upsampling) {
-            Bitmap unscaledBitmap = decodeFile(f, width, height);
+        Bitmap unscaledBitmap = decodeFile(f, width, height);
         if (unscaledBitmap == null) {
-        	return null;
-        } else {        	
-        	return scaleBitmap(unscaledBitmap, width, height, upsampling);
+            return null;
         }
+        return scaleBitmap(unscaledBitmap, width, height, upsampling);
     }
 
     /**
      * use {@link decodeResourceBitmapAndScale} instead
+     *
      * @param c
      * @param width
      * @param height
@@ -87,20 +84,22 @@ public class BitmapUtil {
             unscaledBitmap = BitmapFactory.decodeResource(c.getResources(), resourceId);
             return unscaledBitmap;
         } catch (final Throwable e) {
-        	// calling gc does not help as is called anyway
-        	// http://code.google.com/p/android/issues/detail?id=8488#c80
-            //System.gc();
+            // calling gc does not help as is called anyway
+            // http://code.google.com/p/android/issues/detail?id=8488#c80
+            // System.gc();
         }
         return null;
     }
-    
+
     public Bitmap decodeResourceBitmapAndScale(Context c, int width, int height, int resourceId, boolean upsampling) {
         Bitmap unscaledBitmap = null;
         try {
             unscaledBitmap = BitmapFactory.decodeResource(c.getResources(), resourceId);
             return scaleBitmap(unscaledBitmap, width, height, upsampling);
         } catch (final Throwable e) {
-            // out of memory
+            // calling gc does not help as is called anyway
+            // http://code.google.com/p/android/issues/detail?id=8488#c80
+            // System.gc();
         }
         return null;
     }
@@ -110,8 +109,8 @@ public class BitmapUtil {
     }
 
     /**
-     * use {@link decodeResourceBitmapAndScale} instead.
-     * This method ignores the upsampling settings.
+     * use {@link decodeResourceBitmapAndScale} instead. This method ignores the upsampling settings.
+     *
      * @param w
      * @param resId
      * @return
@@ -121,30 +120,30 @@ public class BitmapUtil {
         return decodeResourceBitmapAndScale(w.getContext(), w.getWidth(), w.getHeight(), resId, false);
     }
 
-    public Bitmap decodeResourceBitmapAndScale(ImageWrapper w, int resId, boolean upsampling) {    	
+    public Bitmap decodeResourceBitmapAndScale(ImageWrapper w, int resId, boolean upsampling) {
         return decodeResourceBitmapAndScale(w.getContext(), w.getWidth(), w.getHeight(), resId, upsampling);
     }
 
     /**
      * Calls {@link scaleBitmap(Bitmap, int, int, boolean)} with upsampling disabled.
-     * 
+     * <p/>
      * This method ignores the upsampling settings.
-     * 
+     *
      * @param b
      * @param width
      * @param height
      * @return
-     */    
+     */
     public Bitmap scaleBitmap(Bitmap b, int width, int height) {
-    	return scaleBitmap(b, width, height, false);
+        return scaleBitmap(b, width, height, false);
     }
-    
+
     /**
      * Creates a new bitmap from the given one in the specified size respecting the size ratio of the origin image.
-     * 
-     * @param b original image
-     * @param width preferred width of the new image
-     * @param height preferred height of the new image
+     *
+     * @param b        original image
+     * @param width    preferred width of the new image
+     * @param height   preferred height of the new image
      * @param upsample if true smaller images than the preferred size are increased, if false the origin bitmap is returned
      * @return new bitmap if size has changed, otherwise original bitmap.
      */
@@ -169,17 +168,22 @@ public class BitmapUtil {
         try {
             scaled = Bitmap.createScaledBitmap(b, finalWidth, finalHeight, true);
         } catch (final Throwable e) {
-            // out of memory
+            // calling gc does not help as is called anyway
+            // http://code.google.com/p/android/issues/detail?id=8488#c80
+            // System.gc();
         }
-        recycle(b);
+        // recycle b only if createScaledBitmap returned a new instance.
+        if (scaled != b) {
+            recycle(b);
+        }
         return scaled;
     }
 
     /**
      * Convenience method to decode an input stream as a bitmap using BitmapFactory.decodeStream without any parameter options.
-     * 
+     * <p/>
      * If decoding fails the input stream is closed.
-     * 
+     *
      * @param is input stream of image data
      * @return bitmap created from the given input stream.
      */
@@ -188,7 +192,9 @@ public class BitmapUtil {
         try {
             bitmap = BitmapFactory.decodeStream(is, null, null);
         } catch (final Throwable e) {
-            // out of memory
+            // calling gc does not help as is called anyway
+            // http://code.google.com/p/android/issues/detail?id=8488#c80
+            // System.gc();
         } finally {
             closeSilently(is);
         }
@@ -219,7 +225,9 @@ public class BitmapUtil {
             fis = new FileInputStream(f);
             bitmap = BitmapFactory.decodeStream(fis, null, options);
         } catch (final Throwable e) {
-            // out of memory
+            // calling gc does not help as is called anyway
+            // http://code.google.com/p/android/issues/detail?id=8488#c80
+            // System.gc();
         } finally {
             closeSilently(fis);
         }
@@ -240,7 +248,9 @@ public class BitmapUtil {
             BitmapFactory.decodeStream(fis, null, o);
             closeSilently(fis);
         } catch (final Throwable e) {
-            // out of memory
+            // calling gc does not help as is called anyway
+            // http://code.google.com/p/android/issues/detail?id=8488#c80
+            // System.gc();
         } finally {
             closeSilently(fis);
         }
@@ -267,6 +277,5 @@ public class BitmapUtil {
         }
         return scale;
     }
-
 
 }

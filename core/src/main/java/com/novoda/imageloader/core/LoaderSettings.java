@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -47,7 +48,7 @@ public class LoaderSettings {
     private File cacheDir;
     private int connectionTimeout;
     private int readTimeout;
-    private Map<String, String> headers = null;
+    private final Map<String, String> headers = new HashMap<String, String>();
     private long expirationPeriod;
     private boolean isQueryIncludedInHash;
     private boolean disconnectOnEveryCall;

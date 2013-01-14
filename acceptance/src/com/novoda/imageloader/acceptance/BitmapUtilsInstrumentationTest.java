@@ -3,6 +3,7 @@ package com.novoda.imageloader.acceptance;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.test.InstrumentationTestCase;
+import android.test.suitebuilder.annotation.Suppress;
 
 import com.novoda.imageloader.core.bitmap.BitmapUtil;
 
@@ -12,7 +13,8 @@ public class BitmapUtilsInstrumentationTest extends InstrumentationTestCase {
 		super();
 		setName(name);
 	}
-	
+
+    @Suppress
 	public void testScaleBitmap(){
 		Bitmap bmOriginal = BitmapFactory.decodeResource(getInstrumentation().getContext().getResources(), R.drawable.icon);
 		assertTrue(bmOriginal.getHeight() <= 72);

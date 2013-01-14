@@ -15,11 +15,11 @@
  */
 package com.novoda.imageloader.core.cache;
 
+import android.graphics.Bitmap;
+
 import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.Map;
-
-import android.graphics.Bitmap;
 
 /**
  * Very simple version of memory cache using soft reference.
