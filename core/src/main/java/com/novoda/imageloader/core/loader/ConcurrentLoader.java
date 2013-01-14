@@ -94,7 +94,11 @@ public class ConcurrentLoader implements Loader {
 	 */
 
 	private static boolean checkConcurrentTasks(String url, LoaderTask oldTask) {
-		if (oldTask == null || (!url.equals(oldTask.getUrl()))) {
+		if (oldTask == null) {
+			return true;
+		}
+
+		if ((!url.equals(oldTask.getUrl()))) {
 			return false;
 		}
 		// task != null && url == task.getUrl
