@@ -18,25 +18,18 @@ package com.novoda.imageloader.core;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.test.mock.MockContext;
 import android.widget.ImageView;
+
 import com.novoda.imageloader.core.bitmap.BitmapUtil;
 import com.novoda.imageloader.core.cache.CacheManager;
 import com.novoda.imageloader.core.file.FileManager;
-import com.novoda.imageloader.core.file.util.FileUtil;
 import com.novoda.imageloader.core.network.NetworkManager;
-import com.novoda.imageloader.core.network.UrlNetworkManager;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.ref.WeakReference;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;

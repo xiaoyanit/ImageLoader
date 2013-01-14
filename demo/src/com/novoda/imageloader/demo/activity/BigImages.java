@@ -91,7 +91,7 @@ public class BigImages extends SingleTableBaseListActivity implements OnImageLoa
 	}
 
 	@Override
-	public void OnImageLoaded(ImageView imageView) {
+	public void onImageLoaded(ImageView imageView) {
 		Log.v(TAG, "OnImageLoaded");
 		Log.i(TAG, "ImageView URL : " + ((ImageTag) imageView.getTag()).getUrl());
 	}

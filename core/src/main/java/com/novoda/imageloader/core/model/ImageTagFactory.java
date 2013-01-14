@@ -20,6 +20,7 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 
 public final class ImageTagFactory {
 
@@ -204,8 +205,10 @@ public final class ImageTagFactory {
         this.saveThumbnail = saveThumbnail;
     }
 
-
     public void setAnimation(Animation animation) {
+        if (animation == null) {
+            animation = new AnimationSet(false);
+        }
         this.animation = animation;
     }
 

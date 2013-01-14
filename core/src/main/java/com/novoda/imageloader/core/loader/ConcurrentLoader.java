@@ -93,16 +93,20 @@ public class ConcurrentLoader implements Loader {
 	 * @return true if there is no other concurrent task running
 	 */
 
-	private static boolean checkConcurrentTasks(String url, LoaderTask oldTask) {
-		if (oldTask == null || (!url.equals(oldTask.getUrl()))) {
-			return false;
-		}
-		// task != null && url == task.getUrl
-		// there is already a concurrent task fetching the image
-		oldTask.cancel(true);
+    private static boolean checkConcurrentTasks(String url, LoaderTask oldTask) {
+        if (oldTask == null) {
+            return true;
+        }
 
-		return true;
-	}
+        if ((!url.equals(oldTask.getUrl()))) {
+            return false;
+        }
+        // task != null && url == task.getUrl
+        // there is already a concurrent task fetching the image
+        oldTask.cancel(true);
+
+        return true;
+    }
 
 	private void setResource(ImageWrapper w, int resId) {
 		Bitmap b = loaderContext.getResBitmapCache().get("" + resId, w.getWidth(), w.getHeight());
