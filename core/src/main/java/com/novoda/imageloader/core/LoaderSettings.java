@@ -15,17 +15,18 @@
  */
 package com.novoda.imageloader.core;
 
-import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.Map;
-
 import android.content.Context;
 import android.os.Build;
 
 import com.novoda.imageloader.core.cache.CacheManager;
 import com.novoda.imageloader.core.file.util.AndroidFileContext;
 import com.novoda.imageloader.core.file.util.FileUtil;
+
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * LoaderSettings is the main class used to customize the behavior of the imageLoader.
@@ -122,7 +123,7 @@ public class LoaderSettings {
     }
     
     public Map<String, String> getHeaders() {
-        return headers;
+        return Collections.unmodifiableMap(headers);
     }
 
     public void addHeader(String key, String value) {
