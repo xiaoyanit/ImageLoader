@@ -236,6 +236,21 @@ h3. Eclipse
 
 Here are some simple steps to set up the project in Eclipse: 
 
+Option 1:
+
+* use Eclipse Juno + m2e plugin
+* from the command line clone the repo "git clone https://github.com/novoda/ImageLoader.git"
+* In eclipse in your package explorer, right click > import
+* scroll down to Maven > existing Maven Projects
+* select 'Browse' and goto the directory you cloned the repo into and 'Ok' (it will then analyze the poms)
+* <i>optional</i> Tick 'add project(s) to working set' and create yourself a 'Library_ImageLoader' working set
+* Hit 'Finish' wait for Eclipse to do it's thing
+* You will have to create a project.properties in the acceptance & demo projects (New > File)
+* Right click on 'imageloader-acceptance' > Properties > Android and tick 'Android 4.1.2' 
+* Right click on 'imageloader-demo' > Properties > Android and tick 'Android 4.1.2'
+
+Option 2:
+
 * Run <code>mvn clean install -Peclipse</code>. This command copies the dependencies to libs for working in Eclipse. The demo and acceptance projects should be configured as Android projects.
 * Import the core project as a Maven project
 * Create a new Android project from source and target the demo directory.

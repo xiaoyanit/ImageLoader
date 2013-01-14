@@ -15,28 +15,34 @@
  */
 package com.novoda.imageloader.core.file;
 
+import com.novoda.imageloader.core.util.WhatOS;
+
 import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 
 import java.io.File;
 
 public class FileTestCase {
-    
-    private static final String FOLDER_FOR_TEST_TMP_FILES = "target/unit-test/tmp";
 
-    protected File cacheDir;
-    
-    protected void createCacheDir() {
-        cacheDir = new File(FOLDER_FOR_TEST_TMP_FILES);
-        cacheDir.mkdirs();
-    }
-    
-    protected void deleteCacheDir() {
-        try { 
-            FileUtils.deleteDirectory(cacheDir);
-        } catch (Exception e) {
-            Assert.fail("Problem deleting the cachedir : " + e.getMessage());
-        }
-    }
-    
+	private static final String FOLDER_FOR_TEST_TMP_FILES = "target/unit-test/tmp";
+
+	protected File cacheDir;
+
+	protected void createCacheDir() {
+		cacheDir = new File(FOLDER_FOR_TEST_TMP_FILES);
+		cacheDir.mkdirs();
+	}
+
+	protected void deleteCacheDir() {
+		try {
+			FileUtils.deleteDirectory(cacheDir);
+		} catch (Exception e) {
+			if (WhatOS.isWindows()) {
+				System.err.println("Problem deleting the cachedir : " + e.getMessage());
+			} else {
+				Assert.fail("Problem deleting the cachedir : " + e.getMessage());
+			}
+		}
+	}
+
 }

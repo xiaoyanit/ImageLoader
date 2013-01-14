@@ -16,8 +16,8 @@
 package com.novoda.imageloader.core.loader;
 
 import android.graphics.Bitmap;
-import android.view.animation.Animation;
 import android.widget.ImageView;
+
 import com.novoda.imageloader.core.LoaderContext;
 import com.novoda.imageloader.core.exception.ImageNotFoundException;
 import com.novoda.imageloader.core.loader.util.BitmapDisplayer;
@@ -28,82 +28,81 @@ import java.io.File;
 
 public class SimpleLoader implements Loader {
 
-    private LoaderContext loaderContext;
-    private SingleThreadedLoader singleThreadedLoader;
+	private LoaderContext loaderContext;
+	private SingleThreadedLoader singleThreadedLoader;
 
-    public SimpleLoader(LoaderContext loaderContext) {
-        this.loaderContext = loaderContext;
-        this.singleThreadedLoader = new SingleThreadedLoader() {
-            @Override
-            protected Bitmap loadMissingBitmap(ImageWrapper iw) {
-                return getBitmap(iw.getUrl(), iw.getWidth(), iw.getHeight());
-            }
+	public SimpleLoader(LoaderContext loaderContext) {
+		this.loaderContext = loaderContext;
+		this.singleThreadedLoader = new SingleThreadedLoader() {
+			@Override
+			protected Bitmap loadMissingBitmap(ImageWrapper iw) {
+				return getBitmap(iw.getUrl(), iw.getWidth(), iw.getHeight());
+			}
 
-            @Override
-            protected void onBitmapLoaded(ImageWrapper iw, Bitmap bmp) {
-                new BitmapDisplayer(bmp, iw).runOnUiThread();
-                SimpleLoader.this.loaderContext.getCache().put(iw.getUrl(), bmp);
-            }
-        };
-    }
+			@Override
+			protected void onBitmapLoaded(ImageWrapper iw, Bitmap bmp) {
+				new BitmapDisplayer(bmp, iw).runOnUiThread();
+				SimpleLoader.this.loaderContext.getCache().put(iw.getUrl(), bmp);
+			}
+		};
+	}
 
-    @Override
-    public void load(ImageView imageView) {
-        ImageWrapper w = new ImageWrapper(imageView);
+	@Override
+	public void load(ImageView imageView) {
+		ImageWrapper w = new ImageWrapper(imageView);
 
-        try {
-            Bitmap b = loaderContext.getCache().get(w.getUrl(), w.getWidth(), w.getHeight());
-            if (b != null && !b.isRecycled()) {
-                w.setBitmap(b);
-                return;
-            }
-            String thumbUrl = w.getPreviewUrl();
-            if(thumbUrl != null) {
-                b = loaderContext.getCache().get(thumbUrl, w.getPreviewHeight(), w.getPreviewWidth());
-                if (b != null && !b.isRecycled()) {
-                    w.setBitmap(b);
-                } else {
-                    setResource(w, w.getLoadingResourceId());
-                }
-            } else {
-                setResource(w, w.getLoadingResourceId());
-            }
-            if (w.isUseCacheOnly()) {
-                return;
-            }
-            singleThreadedLoader.push(w);
-        } catch (ImageNotFoundException inf) {
-            setResource(w, w.getNotFoundResourceId());
-        } catch (Throwable t) {
-            setResource(w, w.getNotFoundResourceId());
-        }
-    }
+		try {
+			Bitmap b = loaderContext.getCache().get(w.getUrl(), w.getWidth(), w.getHeight());
+			if (b != null && !b.isRecycled()) {
+				w.setBitmap(b);
+				return;
+			}
+			String thumbUrl = w.getPreviewUrl();
+			if (thumbUrl != null) {
+				b = loaderContext.getCache().get(thumbUrl, w.getPreviewHeight(), w.getPreviewWidth());
+				if (b != null && !b.isRecycled()) {
+					w.setBitmap(b);
+				} else {
+					setResource(w, w.getLoadingResourceId());
+				}
+			} else {
+				setResource(w, w.getLoadingResourceId());
+			}
+			if (w.isUseCacheOnly()) {
+				return;
+			}
+			singleThreadedLoader.push(w);
+		} catch (ImageNotFoundException inf) {
+			setResource(w, w.getNotFoundResourceId());
+		} catch (Throwable t) {
+			setResource(w, w.getNotFoundResourceId());
+		}
+	}
 
-    private Bitmap getBitmap(String url, int width, int height) {
-        if (url != null && url.length() >= 0) {
-            File f = loaderContext.getFileManager().getFile(url);
-            if (f.exists()) {
-                Bitmap b = loaderContext.getBitmapUtil().decodeFileAndScale(f, width, height, loaderContext.getSettings().isAllowUpsampling());
-                if (b != null && !b.isRecycled()) {
-                    return b;
-                }
-            }
-            loaderContext.getNetworkManager().retrieveImage(url, f);
-            return loaderContext.getBitmapUtil().decodeFileAndScale(f, width, height, loaderContext.getSettings().isAllowUpsampling());
-        }
-        return null;
-    }
+	private Bitmap getBitmap(String url, int width, int height) {
+		if (url != null && url.length() >= 0) {
+			File f = loaderContext.getFileManager().getFile(url);
+			if (f.exists()) {
+				Bitmap b = loaderContext.getBitmapUtil().decodeFileAndScale(f, width, height, loaderContext.getSettings().isAllowUpsampling());
+				if (b != null && !b.isRecycled()) {
+					return b;
+				}
+			}
+			loaderContext.getNetworkManager().retrieveImage(url, f);
+			return loaderContext.getBitmapUtil().decodeFileAndScale(f, width, height, loaderContext.getSettings().isAllowUpsampling());
+		}
+		return null;
+	}
 
-    private void setResource(ImageWrapper w, int resId) {
-        Bitmap b = loaderContext.getResBitmapCache().get("" + resId, w.getWidth(), w.getHeight());
-        if (b != null) {
-            w.setBitmap(b);
-            return;
-        }
-        b = loaderContext.getBitmapUtil().decodeResourceBitmapAndScale(w, resId, loaderContext.getSettings().isAllowUpsampling());
-        loaderContext.getResBitmapCache().put("" + resId, b);
-        w.setBitmap(b);
-    }
-
+	private void setResource(ImageWrapper w, int resId) {
+		Bitmap b = loaderContext.getResBitmapCache().get("" + resId, w.getWidth(), w.getHeight());
+		if (b != null) {
+			w.setBitmap(b);
+			return;
+		}
+		b = loaderContext.getBitmapUtil().decodeResourceBitmapAndScale(w, resId, loaderContext.getSettings().isAllowUpsampling());
+		loaderContext.getResBitmapCache().put("" + resId, b);
+		w.setBitmap(b);
+	}
 
 }

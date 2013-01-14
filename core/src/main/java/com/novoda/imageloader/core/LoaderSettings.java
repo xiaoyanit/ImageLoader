@@ -16,6 +16,9 @@
 package com.novoda.imageloader.core;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Map;
 
 import android.content.Context;
 import android.os.Build;
@@ -43,6 +46,7 @@ public class LoaderSettings {
     private File cacheDir;
     private int connectionTimeout;
     private int readTimeout;
+    private Map<String, String> headers = null;
     private long expirationPeriod;
     private boolean isQueryIncludedInHash;
     private boolean disconnectOnEveryCall;
@@ -115,6 +119,17 @@ public class LoaderSettings {
 
     public void setReadTimeout(int readTimeout) {
         this.readTimeout = readTimeout;
+    }
+    
+    public Map<String, String> getHeaders() {
+        return headers;
+    }
+
+    public void addHeader(String key, String value) {
+        try {
+            headers.put(key, URLEncoder.encode(value, "UTF8"));
+        } catch (UnsupportedEncodingException e) {
+        }
     }
 
     public boolean getDisconnectOnEveryCall() {
@@ -226,6 +241,11 @@ public class LoaderSettings {
 
         public SettingsBuilder withReadTimeout(int readTimeout) {
             settings.setReadTimeout(readTimeout);
+            return this;
+        }
+        
+        public SettingsBuilder addHeader(String key, String value) {
+        	settings.addHeader(key, value);
             return this;
         }
 
