@@ -8,35 +8,32 @@ import com.novoda.imageloader.core.bitmap.BitmapUtil;
 
 public class BitmapUtilsInstrumentationTest extends InstrumentationTestCase {
 
-	public BitmapUtilsInstrumentationTest(String name) {
+    private final int scaledBitmapSize = 200;
+    private final boolean allowUpSampling = true;
+
+    public BitmapUtilsInstrumentationTest(String name) {
 		super();
 		setName(name);
 	}
 	
-	public void testScaleBitmap(){
+	public void test_bitmaputil_scales_bitmaps_to_specified_size(){
 		Bitmap bmOriginal = BitmapFactory.decodeResource(getInstrumentation().getContext().getResources(), R.drawable.icon);
-		assertTrue(bmOriginal.getHeight() <= 72);
-		assertTrue(bmOriginal.getWidth() <= 72);
-		
-		Bitmap bm = new BitmapUtil().decodeResourceBitmapAndScale(getInstrumentation().getContext(), 200, 200, R.drawable.icon, true);		
-		
-		assertEquals(200, bm.getHeight());
-		assertEquals(200, bm.getWidth());
-		
-		bm = new BitmapUtil().decodeResourceBitmapAndScale(getInstrumentation().getContext(), 200, 200, R.drawable.icon, false);		
+		assertFalse(bmOriginal.getHeight() == scaledBitmapSize);
+		assertFalse(bmOriginal.getWidth() == scaledBitmapSize);
 
-		assertEquals(bmOriginal.getHeight(), bm.getHeight());
-		assertEquals(bmOriginal.getWidth(), bm.getWidth());
-
-		bm = new BitmapUtil().scaleBitmap(bmOriginal, 200, 200, false);		
-		assertEquals(bmOriginal, bm);
+		Bitmap bm = new BitmapUtil().scaleBitmap(bmOriginal, scaledBitmapSize, scaledBitmapSize, allowUpSampling);
 		
-		bm = new BitmapUtil().scaleBitmap(bmOriginal, 200, 200, true);		
-		assertNotSame(bmOriginal, bm);
-		assertEquals(200, bm.getHeight());
-		assertEquals(200, bm.getWidth());
-
+		assertEquals(scaledBitmapSize, bm.getHeight());
+		assertEquals(scaledBitmapSize, bm.getWidth());
 	}
+
+    public void test_bitmaputil_creates_bitmaps__of_a_specified_size() {
+        Bitmap bm = new BitmapUtil().decodeResourceBitmapAndScale(getInstrumentation().getContext(),
+                scaledBitmapSize, scaledBitmapSize, R.drawable.icon, allowUpSampling);
+
+        assertTrue(bm.getHeight() == scaledBitmapSize);
+        assertTrue(bm.getWidth() == scaledBitmapSize);
+    }
 
 	
 }
