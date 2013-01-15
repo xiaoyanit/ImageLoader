@@ -4,6 +4,8 @@ import android.app.ListActivity;
 import android.database.Cursor;
 import android.net.Uri;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.SimpleCursorAdapter;
 import android.widget.SimpleCursorAdapter.ViewBinder;
@@ -43,8 +45,7 @@ public abstract class SingleTableBaseListActivity extends ListActivity implement
     }
 
     private Cursor getCursor() {
-        return managedQuery(Uri.parse("content://com.novoda.imageloader.demo/" + getTableName()), null, null, null,
-                null);
+        return managedQuery(Uri.parse("content://com.novoda.imageloader.demo/" + getTableName()), null, null, null, null);
     }
 
     protected void initButtons() {
@@ -75,11 +76,18 @@ public abstract class SingleTableBaseListActivity extends ListActivity implement
         }
     }
 
+    protected Animation getAnimationFromIntent() {
+        if (getIntent().hasExtra("animated")) {
+            return AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        }
+        return null;
+    }
+
     protected void refreshData(){
         adapter.notifyDataSetChanged();
     }
 
-    protected ImageTag getTag(ImageTagFactory imageTagFactory, String url) {
+    protected ImageTag buildTagWithButtonOptions(ImageTagFactory imageTagFactory, String url) {
         if (null_tag) {
             return null;
         }
@@ -88,6 +96,5 @@ public abstract class SingleTableBaseListActivity extends ListActivity implement
         }
         return imageTagFactory.build(url);
     }
-
 
 }
