@@ -67,6 +67,7 @@ public class UrlNetworkManager implements NetworkManager {
         } catch (FileNotFoundException fnfe) {
             throw new ImageNotFoundException();
         } catch (Throwable ex) {
+            ex.printStackTrace();
             // TODO
         } finally {
             if (conn != null && settings.getDisconnectOnEveryCall()) {
