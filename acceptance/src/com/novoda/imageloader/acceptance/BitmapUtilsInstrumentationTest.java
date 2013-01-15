@@ -35,5 +35,4 @@ public class BitmapUtilsInstrumentationTest extends InstrumentationTestCase {
         assertTrue(bm.getWidth() == scaledBitmapSize);
     }
 
-	
 }
