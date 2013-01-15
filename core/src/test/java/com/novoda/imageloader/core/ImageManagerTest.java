@@ -18,11 +18,11 @@ package com.novoda.imageloader.core;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.widget.ImageView;
 
 import com.novoda.imageloader.core.bitmap.BitmapUtil;
 import com.novoda.imageloader.core.cache.CacheManager;
 import com.novoda.imageloader.core.file.FileManager;
+import com.novoda.imageloader.core.loader.ConcurrentLoader;
 import com.novoda.imageloader.core.network.NetworkManager;
 
 import java.io.File;
@@ -45,6 +45,7 @@ public class ImageManagerTest {
     public void beforeEveryTest() {
         loaderSettings = mock(LoaderSettings.class);
         when(loaderSettings.isCleanOnSetup()).thenReturn(false);
+        when(loaderSettings.getLoader()).thenReturn(new ConcurrentLoader(loaderSettings));
         context = mock(Context.class);
     }
 
@@ -52,20 +53,14 @@ public class ImageManagerTest {
     public void shouldComplaingIfInternetPermissionIsNotSet() {
         disableManifestPermission(Manifest.permission.INTERNET);
 
-        new ImageManager(context, loaderSettings) {
-            protected void setLoader(LoaderSettings settings) {
-            };
-        };
+        new ImageManager(context, loaderSettings);
     }
 
     @Test(expected = RuntimeException.class)
     public void shouldComplainIfWriteExternalStoragePermissionIsNotSet() {
         disableManifestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
-        new ImageManager(context, loaderSettings) {
-            protected void setLoader(LoaderSettings settings) {
-            };
-        };
+        new ImageManager(context, loaderSettings);
     }
 
     private void disableManifestPermission(String permission) {
@@ -77,8 +72,8 @@ public class ImageManagerTest {
 
     @Test
     public void shouldRegisterOnImageLoadedListener() {
-        setUpImageManager();
-        OnImageLoadedListener listener = createOnImageLoadedListener();
+        OnImageLoadedListener listener = mock(OnImageLoadedListener.class);
+        imageManager = new ImageManager(loaderSettings);
         imageManager.setOnImageLoadedListener(listener);
 
         WeakReference listenerReference = new WeakReference<OnImageLoadedListener>(listener);
@@ -90,7 +85,7 @@ public class ImageManagerTest {
     @Test
     public void shouldUnregisterOnImageLoadedListener() {
         setUpImageManager();
-        OnImageLoadedListener listener = createOnImageLoadedListener();
+        OnImageLoadedListener listener = mock(OnImageLoadedListener.class);
         imageManager.setOnImageLoadedListener(listener);
 
         WeakReference listenerReference = new WeakReference<OnImageLoadedListener>(listener);
@@ -112,7 +107,7 @@ public class ImageManagerTest {
 
         final BitmapUtil bmUtil = mock(BitmapUtil.class);
         when(bmUtil.decodeFile(file, 100, 100)).thenReturn(null);
-        LoaderContext loaderContext = new LoaderContext(){
+        LoaderSettings loaderSettings = new LoaderSettings() {
             public BitmapUtil getBitmapUtil(){
                 return bmUtil;
             }
@@ -120,15 +115,14 @@ public class ImageManagerTest {
 
         NetworkManager nm = mock(NetworkManager.class);
 
-        loaderContext.setNetworkManager(nm);
-        loaderContext.setFileManager(fm);
+        loaderSettings.setNetworkManager(nm);
+        loaderSettings.setFileManager(fm);
 
 
         CacheManager cache = mock(CacheManager.class);
-        loaderContext.setCache(cache);
-        loaderContext.setSettings(new LoaderSettings());
+        loaderSettings.setCacheManager(cache);
 
-        imageManager = new ImageManager(context, loaderContext);
+        imageManager = new ImageManager(context, loaderSettings);
 
         imageManager.cacheImage("http://king.com/img.png", 100, 100);
         // file decode failed, therefore nothing in cache
@@ -146,15 +140,6 @@ public class ImageManagerTest {
         when(pm.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, null)).thenReturn(PackageManager.PERMISSION_GRANTED);
         when(pm.checkPermission(Manifest.permission.INTERNET, null)).thenReturn(PackageManager.PERMISSION_GRANTED);
         when(context.getPackageManager()).thenReturn(pm);
-    }
-
-    private OnImageLoadedListener createOnImageLoadedListener() {
-        OnImageLoadedListener listener = new OnImageLoadedListener() {
-            @Override
-            public void onImageLoaded(ImageView imageView) {
-            }
-        };
-        return listener;
     }
 
 

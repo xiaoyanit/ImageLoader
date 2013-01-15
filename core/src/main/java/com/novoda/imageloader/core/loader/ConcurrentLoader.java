@@ -19,18 +19,23 @@ import android.graphics.Bitmap;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.novoda.imageloader.core.LoaderContext;
+import com.novoda.imageloader.core.LoaderSettings;
+import com.novoda.imageloader.core.OnImageLoadedListener;
 import com.novoda.imageloader.core.exception.ImageNotFoundException;
 import com.novoda.imageloader.core.loader.util.LoaderTask;
 import com.novoda.imageloader.core.model.ImageWrapper;
 
+import java.lang.ref.WeakReference;
+
 public class ConcurrentLoader implements Loader {
 
-	private final LoaderContext loaderContext;
+	private final LoaderSettings loaderSettings;
 
-	public ConcurrentLoader(LoaderContext loaderContext) {
-		this.loaderContext = loaderContext;
-	}
+    private WeakReference<OnImageLoadedListener> onImageLoadedListener;
+
+    public ConcurrentLoader(LoaderSettings loaderSettings) {
+        this.loaderSettings = loaderSettings;
+    }
 
 	@Override
 	public void load(ImageView imageView) {
@@ -47,16 +52,17 @@ public class ConcurrentLoader implements Loader {
 			try {
 
 				// get bitmap from cache
-				Bitmap b = loaderContext.getCache().get(w.getUrl(), w.getHeight(), w.getWidth());
+				Bitmap b = loaderSettings.getCacheManager().get(w.getUrl(), w.getHeight(), w.getWidth());
 				if (b != null && !b.isRecycled()) {
 					w.setBitmap(b);
 					return;
 				}
 
+
 				// get preview or loading image
 				String thumbUrl = w.getPreviewUrl();
 				if (thumbUrl != null) {
-					b = loaderContext.getCache().get(thumbUrl, w.getPreviewHeight(), w.getPreviewWidth());
+					b = loaderSettings.getCacheManager().get(thumbUrl, w.getPreviewHeight(), w.getPreviewWidth());
 					if (b != null && !b.isRecycled()) {
 						w.setBitmap(b);
 					} else {
@@ -71,7 +77,7 @@ public class ConcurrentLoader implements Loader {
 				}
 
 				// spin off a new task for this url
-				LoaderTask task = new LoaderTask(imageView, loaderContext);
+                LoaderTask task = createTask(imageView);
 				w.setLoaderTask(task);
 				task.execute();
 
@@ -83,9 +89,19 @@ public class ConcurrentLoader implements Loader {
 		}
 	}
 
-	/**
+    private LoaderTask createTask(ImageView imageView) {
+        return onImageLoadedListener == null ? new LoaderTask(imageView, loaderSettings) :
+                new LoaderTask(imageView, loaderSettings, onImageLoadedListener);
+    }
+
+    @Override
+    public void setLoadListener(WeakReference<OnImageLoadedListener> onImageLoadedListener) {
+        this.onImageLoadedListener = onImageLoadedListener;
+    }
+
+    /**
 	 * checks whether a previous task is loading the same url
-	 * 
+	 *
 	 * @param url
 	 *            url of the image to be fetched
 	 * @param oldTask
@@ -109,13 +125,13 @@ public class ConcurrentLoader implements Loader {
     }
 
 	private void setResource(ImageWrapper w, int resId) {
-		Bitmap b = loaderContext.getResBitmapCache().get("" + resId, w.getWidth(), w.getHeight());
+		Bitmap b = loaderSettings.getResCacheManager().get("" + resId, w.getWidth(), w.getHeight());
 		if (b != null) {
 			w.setBitmap(b);
 			return;
 		}
-		b = loaderContext.getBitmapUtil().decodeResourceBitmapAndScale(w, resId, loaderContext.getSettings().isAllowUpsampling());
-		loaderContext.getResBitmapCache().put(String.valueOf(resId), b);
+		b = loaderSettings.getBitmapUtil().decodeResourceBitmapAndScale(w, resId, loaderSettings.isAllowUpsampling());
+		loaderSettings.getResCacheManager().put(String.valueOf(resId), b);
 		w.setBitmap(b);
 	}
 

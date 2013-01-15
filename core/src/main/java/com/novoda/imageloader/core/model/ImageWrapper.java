@@ -27,7 +27,10 @@ import com.novoda.imageloader.core.loader.util.LoaderTask;
 public class ImageWrapper {
 
 	private static final String URL_ERROR = "_url_error";
-	private String url;
+
+    private final ImageView imageView;
+
+    private String url;
 	private String previewUrl;
 	private int width;
 	private int height;
@@ -36,17 +39,16 @@ public class ImageWrapper {
 	private int loadingResourceId;
 	private int notFoundResourceId;
 	private boolean isUseCacheOnly;
-	private ImageView imageView;
 	private boolean saveThumbnail;
 
 	private Animation animation;
 
 	public ImageWrapper(ImageView imageView) {
-		initWrapper(imageView);
+        this.imageView = imageView;
+        initWrapper(imageView);
 	}
 
 	private void initWrapper(ImageView imageView) {
-		this.imageView = imageView;
 		ImageTag tag = (ImageTag) imageView.getTag();
 		if (tag == null) {
 			return;
@@ -87,6 +89,10 @@ public class ImageWrapper {
 	public int getHeight() {
 		return height;
 	}
+
+    public ImageView getImageView() {
+        return imageView;
+    }
 
 	public void runOnUiThread(BitmapDisplayer displayer) {
 		Activity a = (Activity) imageView.getContext();

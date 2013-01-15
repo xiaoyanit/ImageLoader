@@ -19,7 +19,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.animation.Animation;
 import android.widget.ImageView;
-import com.novoda.imageloader.core.LoaderContext;
+
+import com.novoda.imageloader.core.LoaderSettings;
+import com.novoda.imageloader.core.OnImageLoadedListener;
 import com.novoda.imageloader.core.exception.ImageNotFoundException;
 import com.novoda.imageloader.core.model.ImageTag;
 import com.novoda.imageloader.core.model.ImageWrapper;
@@ -29,8 +31,10 @@ import java.lang.ref.WeakReference;
 
 public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
 
-    private WeakReference<ImageView> imageViewReference;
-    private LoaderContext loaderContext;
+    private final WeakReference<ImageView> imageViewReference;
+    private final LoaderSettings loaderSettings;
+    private final WeakReference<OnImageLoadedListener> onImageLoadedListener;
+
     private String url;
     private boolean saveScaledImage;
     private boolean useCacheOnly;
@@ -39,9 +43,14 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
     private int notFoundResourceId;
     private Animation animation;
 
-    public LoaderTask(ImageView imageView, LoaderContext loaderContext) {
+    public LoaderTask(ImageView imageView, LoaderSettings loaderSettings) {
+        this(imageView, loaderSettings, null);
+    }
+
+    public LoaderTask(ImageView imageView, LoaderSettings loaderSettings, WeakReference<OnImageLoadedListener> onImageLoadedListener) {
         this.imageViewReference = new WeakReference<ImageView>(imageView);
-        this.loaderContext = loaderContext;
+        this.loaderSettings = loaderSettings;
+        this.onImageLoadedListener = onImageLoadedListener;
     }
 
     @Override
@@ -62,7 +71,7 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
         if (hasImageViewUrlChanged(imageView)) {
             return null;
         }
-        Bitmap b = loaderContext.getCache().get(url, width, height);
+        Bitmap b = loaderSettings.getCacheManager().get(url, width, height);
         if (b != null && !b.isRecycled()) {
             return b;
         }
@@ -72,7 +81,7 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
                 return null;
             }
             try {
-                loaderContext.getNetworkManager().retrieveImage(url, imageFile);
+                loaderSettings.getNetworkManager().retrieveImage(url, imageFile);
             } catch (ImageNotFoundException inf) {
                 return getNotFoundImage(imageWrapper.getContext());
             }
@@ -85,10 +94,10 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
 
     private Bitmap getImageFromFile(File imageFile) {
         Bitmap b;
-        if (loaderContext.getSettings().isAlwaysUseOriginalSize()) {
-            b = loaderContext.getBitmapUtil().decodeFile(imageFile, width, height);
+        if (loaderSettings.isAlwaysUseOriginalSize()) {
+            b = loaderSettings.getBitmapUtil().decodeFile(imageFile, width, height);
         } else {
-            b = loaderContext.getBitmapUtil().decodeFileAndScale(imageFile, width, height, loaderContext.getSettings().isAllowUpsampling());
+            b = loaderSettings.getBitmapUtil().decodeFileAndScale(imageFile, width, height, loaderSettings.isAllowUpsampling());
         }
 
         if (b == null) {
@@ -99,7 +108,7 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
         if (saveScaledImage) {
             saveScaledImage(imageFile, b);
         }
-        loaderContext.getCache().put(url, b);
+        loaderSettings.getCacheManager().put(url, b);
         return b;
     }
 
@@ -115,16 +124,16 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
     }
 
     private void saveScaledImage(File imageFile, Bitmap b) {
-        loaderContext.getFileManager().saveBitmap(imageFile.getAbsolutePath(), b, width, height);
+        loaderSettings.getFileManager().saveBitmap(imageFile.getAbsolutePath(), b, width, height);
     }
 
     private File getImageFile(ImageWrapper imageWrapper) {
         File imageFile = null;
         if (imageWrapper.isSaveThumbnail()) {
-            imageFile = loaderContext.getFileManager().getFile(url, width, height);
+            imageFile = loaderSettings.getFileManager().getFile(url, width, height);
         }
         if (imageFile == null || !imageFile.exists()) {
-            imageFile = loaderContext.getFileManager().getFile(url);
+            imageFile = loaderSettings.getFileManager().getFile(url);
             if (imageWrapper.isSaveThumbnail()) {
                 saveScaledImage = true;
             }
@@ -172,25 +181,23 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
     }
 
     private void listenerCallback(ImageView imageView) {
-        if (loaderContext != null && loaderContext.getListener() != null &&
-                loaderContext.getListener().get() != null) {
-            loaderContext.getListener().get().onImageLoaded(imageView);
-            return;
+        if (onImageLoadedListener != null && onImageLoadedListener.get() != null) {
+            onImageLoadedListener.get().onImageLoaded(imageView);
         }
     }
 
     private Bitmap getNotFoundImage(Context c) {
         String key = "resource" + notFoundResourceId + width + height;
-        Bitmap b = loaderContext.getResBitmapCache().get(key, width, height);
+        Bitmap b = loaderSettings.getResCacheManager().get(key, width, height);
         if (b != null) {
             return b;
         }
-        if (loaderContext.getSettings().isAlwaysUseOriginalSize()) {
-            b = loaderContext.getBitmapUtil().decodeResourceBitmap(c, width, height, notFoundResourceId);
+        if (loaderSettings.isAlwaysUseOriginalSize()) {
+            b = loaderSettings.getBitmapUtil().decodeResourceBitmap(c, width, height, notFoundResourceId);
         } else {
-            b = loaderContext.getBitmapUtil().decodeResourceBitmapAndScale(c, width, height, notFoundResourceId, loaderContext.getSettings().isAllowUpsampling());
+            b = loaderSettings.getBitmapUtil().decodeResourceBitmapAndScale(c, width, height, notFoundResourceId, loaderSettings.isAllowUpsampling());
         }
-        loaderContext.getResBitmapCache().put(key, b);
+        loaderSettings.getResCacheManager().put(key, b);
         return b;
     }
 

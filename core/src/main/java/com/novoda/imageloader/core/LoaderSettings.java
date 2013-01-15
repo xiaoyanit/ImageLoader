@@ -18,9 +18,18 @@ package com.novoda.imageloader.core;
 import android.content.Context;
 import android.os.Build;
 
+import com.novoda.imageloader.core.bitmap.BitmapUtil;
 import com.novoda.imageloader.core.cache.CacheManager;
+import com.novoda.imageloader.core.cache.SoftMapCache;
+import com.novoda.imageloader.core.file.BasicFileManager;
+import com.novoda.imageloader.core.file.FileManager;
 import com.novoda.imageloader.core.file.util.AndroidFileContext;
 import com.novoda.imageloader.core.file.util.FileUtil;
+import com.novoda.imageloader.core.loader.ConcurrentLoader;
+import com.novoda.imageloader.core.loader.Loader;
+import com.novoda.imageloader.core.loader.SimpleLoader;
+import com.novoda.imageloader.core.network.NetworkManager;
+import com.novoda.imageloader.core.network.UrlNetworkManager;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -45,6 +54,14 @@ public class LoaderSettings {
     private static final boolean DEFAULT_ALLOW_UPSAMPLING = false;
     private static final boolean DEFAULT_ALWAYS_USE_ORIGINAL_SIZE = false;
 
+    private final BitmapUtil bitmapUtil = new BitmapUtil();
+
+    private CacheManager cacheManager;
+    private CacheManager resCacheManager;
+    private FileManager fileManager;
+    private NetworkManager networkManager;
+    private Loader loader;
+
     private File cacheDir;
     private int connectionTimeout;
     private int readTimeout;
@@ -53,7 +70,6 @@ public class LoaderSettings {
     private boolean isQueryIncludedInHash;
     private boolean disconnectOnEveryCall;
     private String sdkVersion;
-    private CacheManager cacheManager;
     private boolean useAsyncTasks;
     private boolean allowUpsampling;
     private boolean alwaysUseOriginalSize;
@@ -70,6 +86,10 @@ public class LoaderSettings {
         this.setUseAsyncTasks(DEFAULT_USE_ASYNC_TASKS);
         this.setAllowUpsampling(DEFAULT_ALLOW_UPSAMPLING);
         this.setAlwaysUseOriginalSize(DEFAULT_ALWAYS_USE_ORIGINAL_SIZE);
+    }
+
+    public BitmapUtil getBitmapUtil() {
+        return bitmapUtil;
     }
 
     public File getCacheDir() {
@@ -151,11 +171,47 @@ public class LoaderSettings {
     }
 
     public CacheManager getCacheManager() {
+        if (cacheManager == null) {
+            cacheManager = new SoftMapCache();
+        }
         return cacheManager;
     }
 
     public void setCacheManager(CacheManager cacheManager) {
         this.cacheManager = cacheManager;
+    }
+
+    public CacheManager getResCacheManager() {
+        if (resCacheManager == null) {
+            resCacheManager = new SoftMapCache();
+        }
+        return resCacheManager;
+    }
+
+    public void setResCacheManager(CacheManager resCacheManager) {
+        this.resCacheManager = resCacheManager;
+    }
+
+    public NetworkManager getNetworkManager() {
+        if (networkManager == null) {
+            networkManager = new UrlNetworkManager(this);
+        }
+        return networkManager;
+    }
+
+    public void setNetworkManager(NetworkManager networkManager) {
+        this.networkManager = networkManager;
+    }
+
+    public FileManager getFileManager() {
+        if (fileManager == null) {
+            fileManager = new BasicFileManager(this);
+        }
+        return fileManager;
+    }
+
+    public void setFileManager(FileManager fileManager) {
+        this.fileManager = fileManager;
     }
 
     public boolean isUseAsyncTasks() {
@@ -165,7 +221,22 @@ public class LoaderSettings {
     public void setUseAsyncTasks(boolean useAsyncTasks) {
         this.useAsyncTasks = useAsyncTasks;
     }
-    
+
+    private void setLoader(Loader loader) {
+        this.loader = loader;
+    }
+
+    public Loader getLoader() {
+        if (loader == null) {
+            if (isUseAsyncTasks()) {
+                this.loader = new ConcurrentLoader(this);
+            } else {
+                this.loader = new SimpleLoader(this);
+            }
+        }
+        return loader;
+    }
+
     public boolean isCleanOnSetup() {
         return true;
     }       
@@ -199,8 +270,6 @@ public class LoaderSettings {
 	public void setAlwaysUseOriginalSize(boolean alwaysUseOriginalSize) {
 		this.alwaysUseOriginalSize = alwaysUseOriginalSize;
 	}
-
-
 
 	/**
      * Builder for the LoaderSettings.
@@ -261,6 +330,11 @@ public class LoaderSettings {
             return this;
         }
 
+        public SettingsBuilder withResCacheManager(CacheManager resCacheManager) {
+            settings.setResCacheManager(resCacheManager);
+            return this;
+        }
+
         public SettingsBuilder withAsyncTasks(boolean useAsyncTasks) {
             settings.setUseAsyncTasks(useAsyncTasks);
             return this;
@@ -294,6 +368,21 @@ public class LoaderSettings {
         public SettingsBuilder withoutResizing(boolean alwaysUseOriginalSize ){
         	settings.setAlwaysUseOriginalSize(alwaysUseOriginalSize);
         	return this;
+        }
+
+        public SettingsBuilder withFileManager(FileManager fileManager) {
+            settings.setFileManager(fileManager);
+            return this;
+        }
+
+        public SettingsBuilder withNetworkManager(NetworkManager networkManager) {
+            settings.setNetworkManager(networkManager);
+            return this;
+        }
+
+        public SettingsBuilder withLoader(Loader loader) {
+            settings.setLoader(loader);
+            return this;
         }
 
         public LoaderSettings build(Context context) {

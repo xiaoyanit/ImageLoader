@@ -22,10 +22,7 @@ public class ImageManagerInstrumentationTest extends InstrumentationTestCase {
 
 		LoaderSettings settings = new LoaderSettings();
 
-		LoaderContext loaderContext = new LoaderContext();
-		loaderContext.setSettings(settings);
-
-		ImageManager imageManager = new ImageManager(getInstrumentation().getTargetContext(), loaderContext);
+		ImageManager imageManager = new ImageManager(getInstrumentation().getTargetContext(), settings);
 		imageManager.cacheImage("http://king.com/img.png", 100, 100);
 
 	}
