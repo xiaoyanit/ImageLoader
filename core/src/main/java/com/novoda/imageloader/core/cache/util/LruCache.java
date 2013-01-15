@@ -167,8 +167,8 @@ public class LruCache<K, V> {
 	 */
 	private void trimToSize(int maxSize) {
 		while (true) {
-			K key;
-			V value;
+			K key = null;
+			V value = null;
 			synchronized (this) {
 				if (size < 0 || (map.isEmpty() && size != 0)) {
 					throw new IllegalStateException(getClass().getName() + ".sizeOf() is reporting inconsistent results!");
@@ -178,16 +178,19 @@ public class LruCache<K, V> {
 					break;
 				}
 				// Change
-				Map.Entry<K, V> toEvict = map.entrySet().iterator().next();
-				if (toEvict == null) {
-					break;
-				}
 
-				key = toEvict.getKey();
-				value = toEvict.getValue();
-				map.remove(key);
-				size -= safeSizeOf(key, value);
-				evictionCount++;
+                if (map.entrySet().iterator().hasNext()) {
+                    Map.Entry<K, V> toEvict = map.entrySet().iterator().next();
+                    if (toEvict == null) {
+                        break;
+                    }
+
+                    key = toEvict.getKey();
+                    value = toEvict.getValue();
+                    map.remove(key);
+                    size -= safeSizeOf(key, value);
+                    evictionCount++;
+                }
 			}
 
 			entryRemoved(true, key, value, null);
