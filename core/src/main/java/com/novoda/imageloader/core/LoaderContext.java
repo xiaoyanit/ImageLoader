@@ -30,6 +30,7 @@ import java.util.Map;
  * 
  * This class is supposed to be used internally.
  */
+@Deprecated
 public class LoaderContext {
 	private FileManager fileManager;
 	private NetworkManager networkManager;
