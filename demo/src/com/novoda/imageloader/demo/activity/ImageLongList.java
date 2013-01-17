@@ -52,7 +52,7 @@ public class ImageLongList extends SingleTableBaseListActivity {
         imageTagFactory = ImageTagFactory.newInstance(SIZE, SIZE, R.drawable.bg_img_loading);
         imageTagFactory.setErrorImageId(R.drawable.bg_img_notfound);
         imageTagFactory.setSaveThumbnail(true);
-        imageTagFactory.setAnimation(getAnimationFromIntent());
+        setAnimationFromIntent(imageTagFactory);
     }
 
     /**

@@ -41,7 +41,6 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
     private int width;
     private int height;
     private int notFoundResourceId;
-    private Animation animation;
 
     public LoaderTask(ImageView imageView, LoaderSettings loaderSettings) {
         this(imageView, loaderSettings, null);
@@ -119,7 +118,6 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
         height = imageWrapper.getHeight();
         notFoundResourceId = imageWrapper.getNotFoundResourceId();
         useCacheOnly = imageWrapper.isUseCacheOnly();
-        animation = imageWrapper.getAnimation();
         return imageWrapper;
     }
 
@@ -161,18 +159,31 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
         if (imageViewReference == null) {
             return;
         }
-        ImageView imageView = imageViewReference.get();
-        if (!imageViewIsValid(imageView)) {
-            return;
-        }
-        listenerCallback(imageView);
 
-        // ImageWrapper.setBitmap is not available here, therefore, copy the code.
-        imageView.setImageBitmap(bitmap);
-        imageView.startAnimation(animation);
+        ImageView imageView = imageViewReference.get();
+        if (validateImageView(imageView)) {
+            listenerCallback(imageView);
+            stopExistingAnimation(imageView);
+            imageView.setImageBitmap(bitmap);
+            startImageViewAnimation(imageView);
+        }
     }
 
-    private boolean imageViewIsValid(ImageView imageView) {
+    private void startImageViewAnimation(ImageView imageView) {
+        Animation animation = ((ImageTag) imageView.getTag()).getAnimation();
+        if (animation != null) {
+            imageView.startAnimation(animation);
+        }
+    }
+
+    private void stopExistingAnimation(ImageView imageView) {
+        Animation old = imageView.getAnimation();
+        if (old != null && !old.hasEnded()) {
+            old.cancel();
+        }
+    }
+
+    private boolean validateImageView(ImageView imageView) {
         if (imageView == null || hasImageViewUrlChanged(imageView) ||
                 ((ImageTag) imageView.getTag()).getLoaderTask() != this) {
             return false;

@@ -16,6 +16,9 @@
 package com.novoda.imageloader.core.model;
 
 import android.view.Display;
+
+import com.novoda.imageloader.core.util.AnimationHelper;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,6 +34,8 @@ public class ImageTagFactoryTest {
     private int width = 9;
     private int defaultResourceId = 1;
     private String url = "google.com";
+
+    private final AnimationHelper animationHelper = mock(AnimationHelper.class);
     
     @Before
     public void beforeEachTest() {
@@ -39,7 +44,7 @@ public class ImageTagFactoryTest {
     
     @Test
     public void shouldSetNormalPropertiesOnTheImageTag() {
-        ImageTag imageTag = imageTagFactory.build(url);
+        ImageTag imageTag = buildTag();
         
         assertEquals(defaultResourceId, imageTag.getLoadingResourceId());
         assertEquals(defaultResourceId, imageTag.getNotFoundResourceId());
@@ -47,13 +52,13 @@ public class ImageTagFactoryTest {
         assertEquals(width, imageTag.getWidth());
         assertEquals(url, imageTag.getUrl());
     }
-    
+
     @Test
     public void shouldSetPreviewProperties() {
         int previewHeight = 1;
         int previewWidth = 2;
         imageTagFactory.usePreviewImage(previewWidth, previewHeight, true);
-        ImageTag imageTag = imageTagFactory.build(url);
+        ImageTag imageTag = buildTag();
         
         assertEquals(previewHeight, imageTag.getPreviewHeight());
         assertEquals(previewWidth, imageTag.getPreviewWidth());
@@ -62,7 +67,7 @@ public class ImageTagFactoryTest {
     @Test
     public void shouldUseTheSameUrlForPreview() {
         imageTagFactory.usePreviewImage(1, 1, true);
-        ImageTag imageTag = imageTagFactory.build(url);
+        ImageTag imageTag = buildTag();
         
         assertEquals(url, imageTag.getPreviewUrl());
     }
@@ -70,7 +75,7 @@ public class ImageTagFactoryTest {
     @Test
     public void shouldNotUseTheSameUrlForPreview() {
         imageTagFactory.usePreviewImage(1, 1, false);
-        ImageTag imageTag = imageTagFactory.build(url);
+        ImageTag imageTag = buildTag();
         
         assertNull(imageTag.getPreviewUrl());
     }
@@ -81,7 +86,7 @@ public class ImageTagFactoryTest {
         when(display.getHeight()).thenReturn(21);
         when(display.getWidth()).thenReturn(12);
         imageTagFactory = ImageTagFactory.getInstance(display.getWidth(), display.getHeight(), 1);
-        ImageTag imageTag = imageTagFactory.build(url);
+        ImageTag imageTag = buildTag();
 
         assertEquals(21, imageTag.getHeight());
         assertEquals(12, imageTag.getWidth());
@@ -90,7 +95,11 @@ public class ImageTagFactoryTest {
     @Test (expected = RuntimeException.class)
     public void shouldComplainAboutUnsetParameters() {
         imageTagFactory = ImageTagFactory.getInstance();
-        imageTagFactory.build(url);
+        buildTag();
+    }
+
+    private ImageTag buildTag() {
+        return imageTagFactory.build(url, animationHelper);
     }
 
 }

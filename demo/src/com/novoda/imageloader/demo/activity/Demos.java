@@ -46,25 +46,25 @@ public class Demos extends Activity implements OnItemClickListener {
             startActivity(new Intent(Demos.this, ImageLongList.class));
             break;
         case 1:
-            startActivity(new Intent(Demos.this, ImageLongList.class).putExtra("animated", true));
+            startActivity(new Intent(Demos.this, ImageLongList.class).putExtra("animated", R.anim.fade_in));
             break;
         case 2:
             startActivity(new Intent(Demos.this, LongSmallImageList.class));
             break;
         case 3:
-            startActivity(new Intent(Demos.this, LongSmallImageList.class).putExtra("animated", true));
+            startActivity(new Intent(Demos.this, LongSmallImageList.class).putExtra("animated", R.anim.fade_in));
             break;
         case 4:
             startActivity(new Intent(Demos.this, BigImages.class));
             break;
         case 5:
-            startActivity(new Intent(Demos.this, BigImages.class).putExtra("animated", true));
+            startActivity(new Intent(Demos.this, BigImages.class).putExtra("animated", R.anim.fade_in));
             break;
         case 6:
             startActivity(new Intent(Demos.this, DirectLoading.class));
             break;
         case 7:
-            startActivity(new Intent(Demos.this, DirectLoading.class).putExtra("animated", true));
+            startActivity(new Intent(Demos.this, DirectLoading.class).putExtra("animated", R.anim.fade_in));
             break;
         }
     }

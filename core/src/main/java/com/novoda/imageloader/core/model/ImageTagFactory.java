@@ -19,8 +19,8 @@ import android.content.Context;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
+
+import com.novoda.imageloader.core.util.AnimationHelper;
 
 public final class ImageTagFactory {
 
@@ -33,7 +33,7 @@ public final class ImageTagFactory {
     private boolean useOnlyCache;
     private boolean saveThumbnail;
     private boolean useSameUrlForPreviewImage;
-    private Animation animation;
+    private int animationRes = AnimationHelper.ANIMATION_DISABLED;
 
 
     private ImageTagFactory() {
@@ -205,12 +205,10 @@ public final class ImageTagFactory {
         this.saveThumbnail = saveThumbnail;
     }
 
-    public void setAnimation(Animation animation) {
-        if (animation == null) {
-            animation = new AnimationSet(false);
-        }
-        this.animation = animation;
+    public void setAnimation(int animationRes) {
+        this.animationRes = animationRes;
     }
+
 
     /**
      * Creates a new ImageTag for the given iamge url. It uses the previously set parameters.
@@ -221,18 +219,28 @@ public final class ImageTagFactory {
      * @return an ImageTag to be used as tag property of the ImageView.
      *
      */
-    public ImageTag build(String url) {
+    public ImageTag build(String url, Context context) {
+        return build(url, new AnimationHelper(context));
+    }
+
+    ImageTag build(String url, AnimationHelper animationHelper) {
         checkValidTagParameters();
         ImageTag it = new ImageTag(url, defaultImageResId, errorImageResId, width, height);
         it.setUseOnlyCache(useOnlyCache);
         it.setSaveThumbnail(saveThumbnail);
-        if(useSameUrlForPreviewImage) {
+        if (useSameUrlForPreviewImage) {
             it.setPreviewUrl(url);
         }
         it.setPreviewHeight(previewImageHeight);
         it.setPreviewWidth(previewImageWidth);
-        it.setAnimation(animation);
+        setTagAnimation(animationHelper, it);
         return it;
+    }
+
+    private void setTagAnimation(AnimationHelper animationHelper, ImageTag it) {
+        if (animationRes != AnimationHelper.ANIMATION_DISABLED) {
+            it.setAnimation(animationHelper.loadAnimation(animationRes));
+        }
     }
 
     private void checkValidTagParameters() {

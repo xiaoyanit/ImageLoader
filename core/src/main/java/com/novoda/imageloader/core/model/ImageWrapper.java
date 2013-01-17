@@ -105,10 +105,21 @@ public class ImageWrapper {
 
 	public void setBitmap(Bitmap bitmap) {
 		imageView.setImageBitmap(bitmap);
-		imageView.startAnimation(animation);
+
+        stopExistingAnimation();
+        if (animation != null) {
+            imageView.startAnimation(animation);
+        }
 	}
 
-	public boolean isCorrectUrl(String url) {
+    private void stopExistingAnimation() {
+        Animation old = imageView.getAnimation();
+        if (old != null && !old.hasEnded()) {
+            old.cancel();
+        }
+    }
+
+    public boolean isCorrectUrl(String url) {
 		return url.equals(getUrl());
 	}
 

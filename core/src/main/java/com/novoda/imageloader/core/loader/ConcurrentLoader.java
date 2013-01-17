@@ -46,23 +46,18 @@ public class ConcurrentLoader implements Loader {
 			return;
 		}
 
-		if (checkConcurrentTasks(w.getUrl(), w.getLoaderTask())) {
+		if (!isTaskAlreadyRunning(w)) {
 			// only continue if a concurrent task has not yet been started
 
 			try {
-
-				// get bitmap from cache
-				Bitmap b = loaderSettings.getCacheManager().get(w.getUrl(), w.getHeight(), w.getWidth());
-				if (b != null && !b.isRecycled()) {
-					w.setBitmap(b);
-					return;
-				}
-
+                if (isBitmapAlreadyInCache(w)) {
+                    return;
+                }
 
 				// get preview or loading image
 				String thumbUrl = w.getPreviewUrl();
 				if (thumbUrl != null) {
-					b = loaderSettings.getCacheManager().get(thumbUrl, w.getPreviewHeight(), w.getPreviewWidth());
+					Bitmap b = loaderSettings.getCacheManager().get(thumbUrl, w.getPreviewHeight(), w.getPreviewWidth());
 					if (b != null && !b.isRecycled()) {
 						w.setBitmap(b);
 					} else {
@@ -89,6 +84,15 @@ public class ConcurrentLoader implements Loader {
 		}
 	}
 
+    private boolean isBitmapAlreadyInCache(ImageWrapper w) {
+        Bitmap b = loaderSettings.getCacheManager().get(w.getUrl(), w.getHeight(), w.getWidth());
+        if (b != null && !b.isRecycled()) {
+            w.setBitmap(b);
+            return true;
+        }
+        return false;
+    }
+
     private LoaderTask createTask(ImageView imageView) {
         return onImageLoadedListener == null ? new LoaderTask(imageView, loaderSettings) :
                 new LoaderTask(imageView, loaderSettings, onImageLoadedListener);
@@ -102,26 +106,27 @@ public class ConcurrentLoader implements Loader {
     /**
 	 * checks whether a previous task is loading the same url
 	 *
-	 * @param url
+	 * @param imageWrapper
 	 *            url of the image to be fetched
-	 * @param oldTask
 	 *            task that might already fetching an image, might be null
-	 * @return true if there is no other concurrent task running
+	 * @return false if there is no other concurrent task running
 	 */
 
-    private static boolean checkConcurrentTasks(String url, LoaderTask oldTask) {
+    private static boolean isTaskAlreadyRunning(ImageWrapper imageWrapper) {
+        LoaderTask oldTask = imageWrapper.getLoaderTask();
         if (oldTask == null) {
-            return true;
+            return false;
         }
 
+        String url = imageWrapper.getUrl();
         if ((!url.equals(oldTask.getUrl()))) {
-            return false;
+            return true;
         }
         // task != null && url == task.getUrl
         // there is already a concurrent task fetching the image
         oldTask.cancel(true);
 
-        return true;
+        return false;
     }
 
 	private void setResource(ImageWrapper w, int resId) {

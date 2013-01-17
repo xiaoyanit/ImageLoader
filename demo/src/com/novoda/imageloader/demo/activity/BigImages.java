@@ -53,7 +53,7 @@ public class BigImages extends SingleTableBaseListActivity implements OnImageLoa
         imageManager = DemoApplication.getImageLoader();
         imageTagFactory = ImageTagFactory.newInstance(this, R.drawable.bg_img_loading);
         imageTagFactory.setErrorImageId(R.drawable.bg_img_notfound);
-        imageTagFactory.setAnimation(getAnimationFromIntent());
+        setAnimationFromIntent(imageTagFactory);
     }
 
     @Override

@@ -54,7 +54,7 @@ public class LongSmallImageList extends SingleTableBaseListActivity {
     private void initImageLoader() {
         imageManager = DemoApplication.getImageLoader();
         imageTagFactory = createImageTagFactory();
-        imageTagFactory.setAnimation(getAnimationFromIntent());
+        setAnimationFromIntent(imageTagFactory);
     }
 
     private ImageTagFactory createImageTagFactory() {

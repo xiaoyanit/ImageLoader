@@ -4,13 +4,13 @@ import android.app.ListActivity;
 import android.database.Cursor;
 import android.net.Uri;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.SimpleCursorAdapter;
 import android.widget.SimpleCursorAdapter.ViewBinder;
+
 import com.novoda.imageloader.core.model.ImageTag;
 import com.novoda.imageloader.core.model.ImageTagFactory;
+import com.novoda.imageloader.core.util.AnimationHelper;
 import com.novoda.imageloader.demo.R;
 
 public abstract class SingleTableBaseListActivity extends ListActivity implements View.OnClickListener {
@@ -76,11 +76,10 @@ public abstract class SingleTableBaseListActivity extends ListActivity implement
         }
     }
 
-    protected Animation getAnimationFromIntent() {
+    protected void setAnimationFromIntent(ImageTagFactory imageTagFactory) {
         if (getIntent().hasExtra("animated")) {
-            return AnimationUtils.loadAnimation(this, R.anim.fade_in);
+            imageTagFactory.setAnimation(getIntent().getIntExtra("animated", AnimationHelper.ANIMATION_DISABLED));
         }
-        return null;
     }
 
     protected void refreshData(){
@@ -92,9 +91,9 @@ public abstract class SingleTableBaseListActivity extends ListActivity implement
             return null;
         }
         if (null_url) {
-            return imageTagFactory.build(null);
+            return imageTagFactory.build(null, this);
         }
-        return imageTagFactory.build(url);
+        return imageTagFactory.build(url, this);
     }
 
 }
