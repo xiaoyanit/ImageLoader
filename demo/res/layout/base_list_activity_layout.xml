@@ -13,21 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Refresh" />
+        android:text="Notify Dataset" />
 
     <Button
-      android:id="@+id/null_tag_button"
+      android:id="@+id/cache_mode_button"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_weight="1"
-      android:text="Null Tag" />
-
-    <Button
-      android:id="@+id/null_url_button"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_weight="1"
-      android:text="Null URL" />
+      android:text="Use Cache only" />
 
   </LinearLayout>
 
