@@ -17,13 +17,11 @@ package com.novoda.imageloader.core.loader.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.view.animation.Animation;
-import android.widget.ImageView;
+import android.util.Log;
 
 import com.novoda.imageloader.core.LoaderSettings;
 import com.novoda.imageloader.core.OnImageLoadedListener;
 import com.novoda.imageloader.core.exception.ImageNotFoundException;
-import com.novoda.imageloader.core.model.ImageTag;
 import com.novoda.imageloader.core.model.ImageWrapper;
 
 import java.io.File;
@@ -31,7 +29,8 @@ import java.lang.ref.WeakReference;
 
 public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
 
-    private final WeakReference<ImageView> imageViewReference;
+//    private final WeakReference<ImageWrapper> imageViewReference;
+    private final ImageWrapper imageWrapper;
     private final LoaderSettings loaderSettings;
     private final WeakReference<OnImageLoadedListener> onImageLoadedListener;
 
@@ -42,38 +41,36 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
     private int height;
     private int notFoundResourceId;
 
-    public LoaderTask(ImageView imageView, LoaderSettings loaderSettings) {
-        this(imageView, loaderSettings, null);
+    public LoaderTask(ImageWrapper imageWrapper, LoaderSettings loaderSettings) {
+        this(imageWrapper, loaderSettings, null);
     }
 
-    public LoaderTask(ImageView imageView, LoaderSettings loaderSettings, WeakReference<OnImageLoadedListener> onImageLoadedListener) {
-        this.imageViewReference = new WeakReference<ImageView>(imageView);
+    public LoaderTask(ImageWrapper imageWrapper, LoaderSettings loaderSettings, WeakReference<OnImageLoadedListener> onImageLoadedListener) {
+//        this.imageViewReference = new WeakReference<ImageWrapper>(imageWrapper);
+        this.imageWrapper = imageWrapper;
         this.loaderSettings = loaderSettings;
         this.onImageLoadedListener = onImageLoadedListener;
     }
 
     @Override
-    protected Bitmap doInBackground(String... arg0) {
-        if (imageViewReference == null) {
+    protected Bitmap doInBackground(String... args) {
+//        ImageWrapper imageWrapper = imageViewReference.get();
+        if (imageWrapper == null) {
+            Log.e("XXXXXX", "ImageWrapper is null");
             return null;
         }
-        ImageView imageView = imageViewReference.get();
-        if (imageView == null) {
-            return null;
-        }
-        ImageWrapper imageWrapper = setAndValidateTagInformation(imageView);
+
+        setTagInformation(imageWrapper);
 
         if (url == null || url.length() <= 0 || url.equals("_url_error")) {
             return getNotFoundImage(imageWrapper.getContext());
         }
 
-        if (hasImageViewUrlChanged(imageView)) {
+        if (hasImageViewUrlChanged(imageWrapper)) {
+            Log.e("XXXXXX", "ImageWrapper url has changed");
             return null;
         }
-        Bitmap b = loaderSettings.getCacheManager().get(url, width, height);
-        if (b != null && !b.isRecycled()) {
-            return b;
-        }
+
         File imageFile = getImageFile(imageWrapper);
         if (!imageFile.exists()) {
             if (useCacheOnly) {
@@ -81,11 +78,12 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
             }
             try {
                 loaderSettings.getNetworkManager().retrieveImage(url, imageFile);
+                Log.e("XXXXXX", "Image fetched from network : " + imageWrapper.getUrl());
             } catch (ImageNotFoundException inf) {
                 return getNotFoundImage(imageWrapper.getContext());
             }
         }
-        if (hasImageViewUrlChanged(imageView)) {
+        if (hasImageViewUrlChanged(imageWrapper)) {
             return null;
         }
         return getImageFromFile(imageFile);
@@ -101,6 +99,7 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
 
         if (b == null) {
             // decoding failed
+            Log.e("XXXXXX", "Bitmap decoding failed");
             return b;
         }
 
@@ -111,14 +110,12 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
         return b;
     }
 
-    private ImageWrapper setAndValidateTagInformation(ImageView imageView) {
-        ImageWrapper imageWrapper = new ImageWrapper(imageView);
+    private void setTagInformation(ImageWrapper imageWrapper) {
         url = imageWrapper.getUrl();
         width = imageWrapper.getWidth();
         height = imageWrapper.getHeight();
         notFoundResourceId = imageWrapper.getNotFoundResourceId();
         useCacheOnly = imageWrapper.isUseCacheOnly();
-        return imageWrapper;
     }
 
     private void saveScaledImage(File imageFile, Bitmap b) {
@@ -139,11 +136,11 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
         return imageFile;
     }
 
-    private boolean hasImageViewUrlChanged(ImageView imageView) {
+    private boolean hasImageViewUrlChanged(ImageWrapper imageWrapper) {
         if (url == null) {
             return false;
         } else {
-            return !url.equals(new ImageWrapper(imageView).getCurrentUrl());
+            return !url.equals(imageWrapper.getCurrentUrl());
         }
     }
 
@@ -154,46 +151,33 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
         }
         if (isCancelled()) {
             bitmap = null;
+            Log.e("XXXXXX", "onPostExecute isCancelled");
             return;
         }
-        if (imageViewReference == null) {
-            return;
-        }
+//        if (imageViewReference == null) {
+//            Log.e("XXXXXX", "onPostExecute ImageWrapper reference is null");
+//            return;
+//        }
 
-        ImageView imageView = imageViewReference.get();
-        if (validateImageView(imageView)) {
-            listenerCallback(imageView);
-            stopExistingAnimation(imageView);
-            imageView.setImageBitmap(bitmap);
-            startImageViewAnimation(imageView);
-        }
-    }
-
-    private void startImageViewAnimation(ImageView imageView) {
-        Animation animation = ((ImageTag) imageView.getTag()).getAnimation();
-        if (animation != null) {
-            imageView.startAnimation(animation);
+//        ImageWrapper imageWrapper = imageViewReference.get();
+        if (validateImageView(imageWrapper)) {
+            listenerCallback(imageWrapper);
+            imageWrapper.setBitmap(bitmap);
+        } else {
+            Log.e("XXXXXX", "onPostExecute ImageWrapper invalid");
         }
     }
 
-    private void stopExistingAnimation(ImageView imageView) {
-        Animation old = imageView.getAnimation();
-        if (old != null && !old.hasEnded()) {
-            old.cancel();
-        }
-    }
-
-    private boolean validateImageView(ImageView imageView) {
-        if (imageView == null || hasImageViewUrlChanged(imageView) ||
-                ((ImageTag) imageView.getTag()).getLoaderTask() != this) {
+    private boolean validateImageView(ImageWrapper imageWrapper) {
+        if (imageWrapper == null || hasImageViewUrlChanged(imageWrapper) || imageWrapper.getLoaderTask() != this) {
             return false;
         }
         return true;
     }
 
-    private void listenerCallback(ImageView imageView) {
+    private void listenerCallback(ImageWrapper imageWrapper) {
         if (onImageLoadedListener != null && onImageLoadedListener.get() != null) {
-            onImageLoadedListener.get().onImageLoaded(imageView);
+            onImageLoadedListener.get().onImageLoaded(imageWrapper.getImageView());
         }
     }
 

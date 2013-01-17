@@ -40,7 +40,6 @@ public class ImageWrapper {
 	private int notFoundResourceId;
 	private boolean isUseCacheOnly;
 	private boolean saveThumbnail;
-
 	private Animation animation;
 
 	public ImageWrapper(ImageView imageView) {
@@ -157,14 +156,6 @@ public class ImageWrapper {
 
 	public int getPreviewHeight() {
 		return previewHeight;
-	}
-
-	public Animation getAnimation() {
-		return animation;
-	}
-
-	public void setAnimation(Animation animation) {
-		this.animation = animation;
 	}
 
 	public LoaderTask getLoaderTask() {
