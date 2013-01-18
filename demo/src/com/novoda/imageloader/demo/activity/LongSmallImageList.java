@@ -9,14 +9,14 @@ import android.widget.SimpleCursorAdapter.ViewBinder;
 import com.novoda.imageloader.core.model.ImageTagFactory;
 import com.novoda.imageloader.demo.DemoApplication;
 import com.novoda.imageloader.demo.R;
-import com.novoda.imageloader.demo.activity.base.ImageLoaderBaseListActivity;
+import com.novoda.imageloader.demo.activity.base.ImageLoaderBaseActivity;
 
 import java.util.Locale;
 
 /**
  * Very similar to imageLongList example.
  */
-public class LongSmallImageList extends ImageLoaderBaseListActivity {
+public class LongSmallImageList extends ImageLoaderBaseActivity {
 
 	private static final int SIZE = 80;
 

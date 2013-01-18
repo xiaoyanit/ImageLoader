@@ -1,12 +1,11 @@
 package com.novoda.imageloader.demo.activity.base;
 
-import android.app.ListActivity;
+import android.app.Activity;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.SimpleCursorAdapter;
+import android.widget.*;
 import android.widget.SimpleCursorAdapter.ViewBinder;
 
 import com.novoda.imageloader.core.ImageManager;
@@ -14,7 +13,7 @@ import com.novoda.imageloader.core.model.ImageTagFactory;
 import com.novoda.imageloader.core.util.AnimationHelper;
 import com.novoda.imageloader.demo.R;
 
-public abstract class ImageLoaderBaseListActivity extends ListActivity implements View.OnClickListener {
+public abstract class ImageLoaderBaseActivity extends Activity implements View.OnClickListener {
 
     private static final String[] CURSOR_FROM = new String[]{"url"};
     private static final int[] CURSOR_TO = new int[]{R.id.list_item_image};
@@ -25,12 +24,33 @@ public abstract class ImageLoaderBaseListActivity extends ListActivity implement
     private boolean useCacheFlag;
     private Button cacheModeButton;
 
+    private AbsListView view;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.base_list_activity_layout);
+        initView();
         initButtons();
         setAdapter();
+    }
+
+    private void initView() {
+        view = getListTypeFromIntent();
+        view.setVisibility(View.VISIBLE);
+
+    }
+
+    private AbsListView getListTypeFromIntent() {
+        if (intentIsGrid()) {
+            return (GridView) findViewById(R.id.grid_view);
+        } else {
+            return (ListView) findViewById(R.id.list_view);
+        }
+    }
+
+    private boolean intentIsGrid() {
+        return getIntent().hasExtra("grid") && getIntent().getBooleanExtra("grid", false);
     }
 
     private void initButtons() {
@@ -46,7 +66,7 @@ public abstract class ImageLoaderBaseListActivity extends ListActivity implement
         if (binder != null) {
             adapter.setViewBinder(binder);
         }
-        getListView().setAdapter(adapter);
+        view.setAdapter(adapter);
     }
 
     protected abstract ViewBinder getViewBinder();
@@ -80,7 +100,7 @@ public abstract class ImageLoaderBaseListActivity extends ListActivity implement
     }
 
     private void refreshData() {
-        ((SimpleCursorAdapter) getListView().getAdapter()).notifyDataSetChanged();
+        ((SimpleCursorAdapter) view.getAdapter()).notifyDataSetChanged();
     }
 
     private void setCacheModeText() {
@@ -92,9 +112,14 @@ public abstract class ImageLoaderBaseListActivity extends ListActivity implement
     }
 
     protected void setAnimationFromIntent(ImageTagFactory imageTagFactory) {
-        if (getIntent().hasExtra("animated")) {
+        if (intentHasAnimation()) {
             imageTagFactory.setAnimation(getIntent().getIntExtra("animated", AnimationHelper.ANIMATION_DISABLED));
         }
+    }
+
+    private boolean intentHasAnimation() {
+        return getIntent().hasExtra("animated") &&
+                getIntent().getIntExtra("animated", AnimationHelper.ANIMATION_DISABLED) != AnimationHelper.ANIMATION_DISABLED;
     }
 
 }

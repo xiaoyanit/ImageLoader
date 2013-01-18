@@ -12,14 +12,14 @@ import com.novoda.imageloader.core.model.ImageTag;
 import com.novoda.imageloader.core.model.ImageTagFactory;
 import com.novoda.imageloader.demo.DemoApplication;
 import com.novoda.imageloader.demo.R;
-import com.novoda.imageloader.demo.activity.base.ImageLoaderBaseListActivity;
+import com.novoda.imageloader.demo.activity.base.ImageLoaderBaseActivity;
 
 import java.util.Locale;
 
 /**
  * This is an example using really big images and see how the image loader can keep up with the memory limitations of android.
  */
-public class BigImages extends ImageLoaderBaseListActivity implements OnImageLoadedListener {
+public class BigImages extends ImageLoaderBaseActivity implements OnImageLoadedListener {
 
 	private static final String TAG = DemoApplication.class.getSimpleName().toLowerCase(Locale.UK);
 

@@ -9,7 +9,7 @@ import android.widget.SimpleCursorAdapter.ViewBinder;
 import com.novoda.imageloader.core.model.ImageTagFactory;
 import com.novoda.imageloader.demo.DemoApplication;
 import com.novoda.imageloader.demo.R;
-import com.novoda.imageloader.demo.activity.base.ImageLoaderBaseListActivity;
+import com.novoda.imageloader.demo.activity.base.ImageLoaderBaseActivity;
 
 import java.util.Locale;
 
@@ -17,7 +17,7 @@ import java.util.Locale;
  * Example of setting a specific image size. Not that you can ask the imageLoader to store the small image as files. In this way you don't need to scale images
  * every time
  */
-public class ImageLongList extends ImageLoaderBaseListActivity {
+public class ImageLongList extends ImageLoaderBaseActivity {
 
 	private static final int SIZE = 400;
 

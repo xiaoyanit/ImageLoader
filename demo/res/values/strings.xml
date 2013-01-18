@@ -8,7 +8,9 @@
   <string name="direct_loader">Direct Loader</string>
 
   <string name="long_list_animated">Long List With Animated</string>
+  <string name="long_grid_list_animated">Long Grid List With Animated</string>
   <string name="long_small_list_animated">Long Small Image List Animated</string>
+  <string name="long_small_grid_list_animated">Long Small Grid Image List Animated</string>
   <string name="large_list_animated">Large Images Animated</string>
   <string name="direct_loader_animated">Direct Loader Animated</string>
 
