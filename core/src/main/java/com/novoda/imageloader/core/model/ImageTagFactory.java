@@ -34,7 +34,7 @@ public final class ImageTagFactory {
     private boolean saveThumbnail;
     private boolean useSameUrlForPreviewImage;
     private int animationRes = AnimationHelper.ANIMATION_DISABLED;
-    private String discription;
+    private String description;
 
     private ImageTagFactory() {
     }
@@ -210,7 +210,7 @@ public final class ImageTagFactory {
     }
 
     public void setDescription(String description) {
-        this.discription = description;
+        this.description = description;
 
     }
 
@@ -238,7 +238,7 @@ public final class ImageTagFactory {
         }
         it.setPreviewHeight(previewImageHeight);
         it.setPreviewWidth(previewImageWidth);
-        it.setDescription(discription);
+        it.setDescription(description);
         setTagAnimation(animationHelper, it);
         return it;
     }
