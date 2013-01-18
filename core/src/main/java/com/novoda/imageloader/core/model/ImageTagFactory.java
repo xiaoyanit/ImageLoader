@@ -34,7 +34,7 @@ public final class ImageTagFactory {
     private boolean saveThumbnail;
     private boolean useSameUrlForPreviewImage;
     private int animationRes = AnimationHelper.ANIMATION_DISABLED;
-
+    private String discription;
 
     private ImageTagFactory() {
     }
@@ -209,6 +209,11 @@ public final class ImageTagFactory {
         this.animationRes = animationRes;
     }
 
+    public void setDescription(String description) {
+        this.discription = description;
+
+    }
+
 
     /**
      * Creates a new ImageTag for the given iamge url. It uses the previously set parameters.
@@ -233,6 +238,7 @@ public final class ImageTagFactory {
         }
         it.setPreviewHeight(previewImageHeight);
         it.setPreviewWidth(previewImageWidth);
+        it.setDescription(discription);
         setTagAnimation(animationHelper, it);
         return it;
     }

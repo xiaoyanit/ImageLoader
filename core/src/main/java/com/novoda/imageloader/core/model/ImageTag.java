@@ -35,11 +35,13 @@ public class ImageTag {
 	private final int notFoundResourceId;
 	private final int height;
 	private final int width;
+
 	private int previewHeight;
 	private int previewWidth;
 	private boolean useOnlyCache;
 	private boolean saveThumbnail;
 	private Animation animation;
+    private String description;
 	private WeakReference<LoaderTask> loaderTaskReference;
 
 	public ImageTag(String url, int loadingResourceId, int notFoundResourceId, int width, int height) {
@@ -48,7 +50,6 @@ public class ImageTag {
 		this.notFoundResourceId = notFoundResourceId;
 		this.width = width;
 		this.height = height;
-		this.setPreviewUrl(previewUrl);
 	}
 
 	public String getUrl() {
@@ -129,4 +130,13 @@ public class ImageTag {
 		}
 		return null;
 	}
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
 }
