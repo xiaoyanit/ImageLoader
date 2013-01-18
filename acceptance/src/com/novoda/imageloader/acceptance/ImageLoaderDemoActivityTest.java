@@ -1,7 +1,7 @@
 package com.novoda.imageloader.acceptance;
 
 import android.test.ActivityInstrumentationTestCase2;
-import android.widget.ListView;
+import android.widget.AbsListView;
 
 import com.jayway.android.robotium.solo.Solo;
 import com.novoda.imageloader.demo.activity.ImageLongList;
@@ -9,7 +9,7 @@ import com.novoda.imageloader.demo.activity.ImageLongList;
 public class ImageLoaderDemoActivityTest extends ActivityInstrumentationTestCase2<ImageLongList> {
 
 	private Solo solo;
-	private ListView list;
+	private AbsListView list;
 
 	public ImageLoaderDemoActivityTest() {
 		super("com.novoda.imageloader.demo", ImageLongList.class);

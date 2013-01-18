@@ -122,4 +122,7 @@ public abstract class ImageLoaderBaseActivity extends Activity implements View.O
                 getIntent().getIntExtra("animated", AnimationHelper.ANIMATION_DISABLED) != AnimationHelper.ANIMATION_DISABLED;
     }
 
+    public AbsListView getListView() {
+        return view;
+    }
 }
