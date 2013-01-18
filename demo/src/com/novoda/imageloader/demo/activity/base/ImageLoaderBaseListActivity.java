@@ -85,9 +85,9 @@ public abstract class ImageLoaderBaseListActivity extends ListActivity implement
 
     private void setCacheModeText() {
         if (useCacheFlag) {
-            cacheModeButton.setText("Turn off cache only");
+            cacheModeButton.setText(getString(R.string.turn_off_cache_only));
         } else {
-            cacheModeButton.setText("Use Cache only");
+            cacheModeButton.setText(getString(R.string.cache_only));
         }
     }
 

@@ -13,14 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Notify Dataset" />
+        android:text="@string/notify_dataset" />
 
     <Button
       android:id="@+id/cache_mode_button"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_weight="1"
-      android:text="Use Cache only" />
+      android:text="@string/cache_only" />
 
   </LinearLayout>
 

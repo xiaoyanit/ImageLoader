@@ -11,4 +11,8 @@
   <string name="long_small_list_animated">Long Small Image List Animated</string>
   <string name="large_list_animated">Large Images Animated</string>
   <string name="direct_loader_animated">Direct Loader Animated</string>
+
+  <string name="notify_dataset">Notify dataset</string>
+  <string name="cache_only">Use cache only</string>
+  <string name="turn_off_cache_only">Turn off cache only</string>
 </resources>
