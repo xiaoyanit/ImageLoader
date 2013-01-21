@@ -29,7 +29,6 @@ import java.lang.ref.WeakReference;
 
 public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
 
-//    private final WeakReference<ImageWrapper> imageViewReference;
     private final ImageWrapper imageWrapper;
     private final LoaderSettings loaderSettings;
     private final WeakReference<OnImageLoadedListener> onImageLoadedListener;
@@ -46,7 +45,6 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
     }
 
     public LoaderTask(ImageWrapper imageWrapper, LoaderSettings loaderSettings, WeakReference<OnImageLoadedListener> onImageLoadedListener) {
-//        this.imageViewReference = new WeakReference<ImageWrapper>(imageWrapper);
         this.imageWrapper = imageWrapper;
         this.loaderSettings = loaderSettings;
         this.onImageLoadedListener = onImageLoadedListener;
@@ -54,9 +52,7 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
 
     @Override
     protected Bitmap doInBackground(String... args) {
-//        ImageWrapper imageWrapper = imageViewReference.get();
         if (imageWrapper == null) {
-            Log.e("XXXXXX", "ImageWrapper is null");
             return null;
         }
 
@@ -67,7 +63,6 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
         }
 
         if (hasImageViewUrlChanged(imageWrapper)) {
-            Log.e("XXXXXX", "ImageWrapper url has changed");
             return null;
         }
 
@@ -78,7 +73,6 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
             }
             try {
                 loaderSettings.getNetworkManager().retrieveImage(url, imageFile);
-                Log.e("XXXXXX", "Image fetched from network : " + imageWrapper.getUrl());
             } catch (ImageNotFoundException inf) {
                 return getNotFoundImage(imageWrapper.getContext());
             }
@@ -99,7 +93,6 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
 
         if (b == null) {
             // decoding failed
-            Log.e("XXXXXX", "Bitmap decoding failed");
             return b;
         }
 
@@ -151,20 +144,12 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
         }
         if (isCancelled()) {
             bitmap = null;
-            Log.e("XXXXXX", "onPostExecute isCancelled");
             return;
         }
-//        if (imageViewReference == null) {
-//            Log.e("XXXXXX", "onPostExecute ImageWrapper reference is null");
-//            return;
-//        }
 
-//        ImageWrapper imageWrapper = imageViewReference.get();
         if (validateImageView(imageWrapper)) {
             listenerCallback(imageWrapper);
             imageWrapper.setBitmap(bitmap);
-        } else {
-            Log.e("XXXXXX", "onPostExecute ImageWrapper invalid");
         }
     }
 
