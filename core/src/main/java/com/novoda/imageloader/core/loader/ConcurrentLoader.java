@@ -77,10 +77,10 @@ public class ConcurrentLoader implements Loader {
             if (isBitmapAlreadyInCache(getPreviewCachedBitmap(w))) {
                 w.setBitmap(getPreviewCachedBitmap(w));
             } else {
-                w.setBitmap(getResourceAsBitmap(w, w.getLoadingResourceId()));
+                w.setResourceBitmap(getResourceAsBitmap(w, w.getLoadingResourceId()));
             }
         } else {
-            w.setBitmap(getResourceAsBitmap(w, w.getLoadingResourceId()));
+            w.setResourceBitmap(getResourceAsBitmap(w, w.getLoadingResourceId()));
         }
     }
 
@@ -94,9 +94,9 @@ public class ConcurrentLoader implements Loader {
             w.setLoaderTask(task);
             task.execute();
         } catch (ImageNotFoundException inf) {
-            w.setBitmap(getResourceAsBitmap(w, w.getNotFoundResourceId()));
+            w.setResourceBitmap(getResourceAsBitmap(w, w.getNotFoundResourceId()));
         } catch (Throwable t) {
-            w.setBitmap(getResourceAsBitmap(w, w.getNotFoundResourceId()));
+            w.setResourceBitmap(getResourceAsBitmap(w, w.getNotFoundResourceId()));
         }
     }
 

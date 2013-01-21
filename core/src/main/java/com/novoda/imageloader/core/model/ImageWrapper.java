@@ -118,6 +118,10 @@ public class ImageWrapper {
         }
     }
 
+    public void setResourceBitmap(Bitmap resourceAsBitmap) {
+        imageView.setImageBitmap(resourceAsBitmap);
+    }
+
     public boolean isCorrectUrl(String url) {
 		return url.equals(getUrl());
 	}
@@ -167,5 +171,4 @@ public class ImageWrapper {
 		ImageTag tag = (ImageTag) imageView.getTag();
 		tag.setLoaderTask(task);
 	}
-
 }
