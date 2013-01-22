@@ -9,7 +9,7 @@ h2. Recent changes
 
 
 h3. 1.5.8
-* Fixed flickering when dataset is refresh (although the animation will still trigger if one has been set).
+* Fixed flickering when dataset is refreshed (although the animation will still trigger if one has been set).
 * Fixed animations not being asynchronous.
 * Fixed CacheManager.clean() NoSuchElementException.
 * Added ability to set a String on the ImageTag.
