@@ -17,12 +17,10 @@ package com.novoda.imageloader.core.loader.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.view.animation.Animation;
-import android.widget.ImageView;
 
-import com.novoda.imageloader.core.LoaderContext;
+import com.novoda.imageloader.core.LoaderSettings;
+import com.novoda.imageloader.core.OnImageLoadedListener;
 import com.novoda.imageloader.core.exception.ImageNotFoundException;
-import com.novoda.imageloader.core.model.ImageTag;
 import com.novoda.imageloader.core.model.ImageWrapper;
 
 import java.io.File;
@@ -30,173 +28,160 @@ import java.lang.ref.WeakReference;
 
 public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
 
-	private final WeakReference<ImageView> imageViewReference;
-	private final LoaderContext loaderContext;
-	private String url;
-	private boolean saveScaledImage;
-	private boolean useCacheOnly;
-	private int width;
-	private int height;
-	private int notFoundResourceId;
-	private Animation animation;
+    private final ImageWrapper imageWrapper;
+    private final LoaderSettings loaderSettings;
+    private final WeakReference<OnImageLoadedListener> onImageLoadedListener;
 
-	public LoaderTask(ImageView imageView, LoaderContext loaderContext) {
-		this.imageViewReference = new WeakReference<ImageView>(imageView);
-		this.loaderContext = loaderContext;
-	}
+    private String url;
+    private boolean saveScaledImage;
+    private boolean useCacheOnly;
+    private int width;
+    private int height;
+    private int notFoundResourceId;
 
-	@Override
-	protected Bitmap doInBackground(String... arg0) {
-		if (imageViewReference == null) {
-			return null;
-		}
-		ImageView imageView = imageViewReference.get();
-		if (imageView == null) {
-			return null;
-		}
-		ImageWrapper imageWrapper = setAndValidateTagInformation(imageView);
+    public LoaderTask(ImageWrapper imageWrapper, LoaderSettings loaderSettings) {
+        this(imageWrapper, loaderSettings, null);
+    }
 
-		if (url == null || url.length() <= 0 || url.equals("_url_error")) {
-			return getNotFoundImage(imageWrapper.getContext());
-		}
+    public LoaderTask(ImageWrapper imageWrapper, LoaderSettings loaderSettings, WeakReference<OnImageLoadedListener> onImageLoadedListener) {
+        this.imageWrapper = imageWrapper;
+        this.loaderSettings = loaderSettings;
+        this.onImageLoadedListener = onImageLoadedListener;
+    }
 
-		if (hasImageViewUrlChanged(imageView)) {
-			return null;
-		}
-		Bitmap b = loaderContext.getCache().get(url, width, height);
-		if (b != null && !b.isRecycled()) {
-			return b;
-		}
-		File imageFile = getImageFile(imageWrapper);
-		if (!imageFile.exists()) {
-			if (useCacheOnly) {
-				return null;
-			}
-			try {
-				loaderContext.getNetworkManager().retrieveImage(url, imageFile);
-			} catch (ImageNotFoundException inf) {
-				return getNotFoundImage(imageWrapper.getContext());
-			}
-		}
-		if (hasImageViewUrlChanged(imageView)) {
-			return null;
-		}
-		return getImageFromFile(imageFile);
-	}
+    @Override
+    protected Bitmap doInBackground(String... args) {
+        if (imageWrapper == null) {
+            return null;
+        }
 
-	private Bitmap getImageFromFile(File imageFile) {
-		Bitmap b;
-		if (loaderContext.getSettings().isAlwaysUseOriginalSize()) {
-			b = loaderContext.getBitmapUtil().decodeFile(imageFile, width, height);
-		} else {
-			b = loaderContext.getBitmapUtil().decodeFileAndScale(imageFile, width, height, loaderContext.getSettings().isAllowUpsampling());
-		}
+        setTagInformation(imageWrapper);
 
-		if (b == null) {
-			// decoding failed
-			return b;
-		}
+        if (url == null || url.length() <= 0 || url.equals("_url_error")) {
+            return getNotFoundImage(imageWrapper.getContext());
+        }
 
-		if (saveScaledImage) {
-			saveScaledImage(imageFile, b);
-		}
-		loaderContext.getCache().put(url, b);
-		return b;
-	}
+        if (hasImageViewUrlChanged(imageWrapper)) {
+            return null;
+        }
 
-	private ImageWrapper setAndValidateTagInformation(ImageView imageView) {
-		ImageWrapper imageWrapper = new ImageWrapper(imageView);
-		url = imageWrapper.getUrl();
-		width = imageWrapper.getWidth();
-		height = imageWrapper.getHeight();
-		notFoundResourceId = imageWrapper.getNotFoundResourceId();
-		useCacheOnly = imageWrapper.isUseCacheOnly();
-		animation = imageWrapper.getAnimation();
-		return imageWrapper;
-	}
+        File imageFile = getImageFile(imageWrapper);
+        if (!imageFile.exists()) {
+            if (useCacheOnly) {
+                return null;
+            }
+            try {
+                loaderSettings.getNetworkManager().retrieveImage(url, imageFile);
+            } catch (ImageNotFoundException inf) {
+                return getNotFoundImage(imageWrapper.getContext());
+            }
+        }
+        if (hasImageViewUrlChanged(imageWrapper)) {
+            return null;
+        }
+        return getImageFromFile(imageFile);
+    }
 
-	private void saveScaledImage(File imageFile, Bitmap b) {
-		loaderContext.getFileManager().saveBitmap(imageFile.getAbsolutePath(), b, width, height);
-	}
+    private Bitmap getImageFromFile(File imageFile) {
+        Bitmap b;
+        if (loaderSettings.isAlwaysUseOriginalSize()) {
+            b = loaderSettings.getBitmapUtil().decodeFile(imageFile, width, height);
+        } else {
+            b = loaderSettings.getBitmapUtil().decodeFileAndScale(imageFile, width, height, loaderSettings.isAllowUpsampling());
+        }
 
-	private File getImageFile(ImageWrapper imageWrapper) {
-		File imageFile = null;
-		if (imageWrapper.isSaveThumbnail()) {
-			imageFile = loaderContext.getFileManager().getFile(url, width, height);
-		}
-		if (imageFile == null || !imageFile.exists()) {
-			imageFile = loaderContext.getFileManager().getFile(url);
-			if (imageWrapper.isSaveThumbnail()) {
-				saveScaledImage = true;
-			}
-		}
-		return imageFile;
-	}
+        if (b == null) {
+            // decoding failed
+            return b;
+        }
 
-	private boolean hasImageViewUrlChanged(ImageView imageView) {
-		if (url == null) {
-			return false;
-		}
-		return !url.equals(new ImageWrapper(imageView).getCurrentUrl());
-	}
+        if (saveScaledImage) {
+            saveScaledImage(imageFile, b);
+        }
+        loaderSettings.getCacheManager().put(url, b);
+        return b;
+    }
 
-	@Override
-	protected void onPostExecute(Bitmap bitmap) {
-		if (bitmap == null) {
-			return;
-		}
-		if (isCancelled()) {
-			bitmap = null;
-			return;
-		}
-		if (imageViewReference == null) {
-			return;
-		}
-		ImageView imageView = imageViewReference.get();
-		if (!imageViewIsValid(imageView)) {
-			return;
-		}
-		listenerCallback(imageView);
+    private void setTagInformation(ImageWrapper imageWrapper) {
+        url = imageWrapper.getUrl();
+        width = imageWrapper.getWidth();
+        height = imageWrapper.getHeight();
+        notFoundResourceId = imageWrapper.getNotFoundResourceId();
+        useCacheOnly = imageWrapper.isUseCacheOnly();
+    }
 
-		// ImageWrapper.setBitmap is not available here, therefore, copy the code.
-		imageView.setImageBitmap(bitmap);
-		imageView.startAnimation(animation);
-	}
+    private void saveScaledImage(File imageFile, Bitmap b) {
+        loaderSettings.getFileManager().saveBitmap(imageFile.getAbsolutePath(), b, width, height);
+    }
 
-	private boolean imageViewIsValid(ImageView imageView) {
-		if (imageView == null || hasImageViewUrlChanged(imageView) || ((ImageTag) imageView.getTag()).getLoaderTask() != this) {
-			return false;
-		}
-		return true;
-	}
+    private File getImageFile(ImageWrapper imageWrapper) {
+        File imageFile = null;
+        if (imageWrapper.isSaveThumbnail()) {
+            imageFile = loaderSettings.getFileManager().getFile(url, width, height);
+        }
+        if (imageFile == null || !imageFile.exists()) {
+            imageFile = loaderSettings.getFileManager().getFile(url);
+            if (imageWrapper.isSaveThumbnail()) {
+                saveScaledImage = true;
+            }
+        }
+        return imageFile;
+    }
 
-	private void listenerCallback(ImageView imageView) {
-		if (loaderContext != null && loaderContext.getListener() != null) {
-			if (loaderContext.getListener().get() != null) {
-				loaderContext.getListener().get().OnImageLoaded(imageView);
-				return;
-			}
-		}
-	}
+    private boolean hasImageViewUrlChanged(ImageWrapper imageWrapper) {
+        if (url == null) {
+            return false;
+        } else {
+            return !url.equals(imageWrapper.getCurrentUrl());
+        }
+    }
 
-	private Bitmap getNotFoundImage(Context c) {
-		String key = "resource" + notFoundResourceId + width + height;
-		Bitmap b = loaderContext.getResBitmapCache().get(key, width, height);
-		if (b != null) {
-			return b;
-		}
-		if (loaderContext.getSettings().isAlwaysUseOriginalSize()) {
-			b = loaderContext.getBitmapUtil().decodeResourceBitmap(c, width, height, notFoundResourceId);
-		} else {
-			b = loaderContext.getBitmapUtil().decodeResourceBitmapAndScale(c, width, height, notFoundResourceId,
-					loaderContext.getSettings().isAllowUpsampling());
-		}
-		loaderContext.getResBitmapCache().put(key, b);
-		return b;
-	}
+    @Override
+    protected void onPostExecute(Bitmap bitmap) {
+        if (bitmap == null) {
+            return;
+        }
+        if (isCancelled()) {
+            bitmap = null;
+            return;
+        }
 
-	public String getUrl() {
-		return url;
-	}
+        if (validateImageView(imageWrapper)) {
+            listenerCallback(imageWrapper);
+            imageWrapper.setBitmap(bitmap);
+        }
+    }
+
+    private boolean validateImageView(ImageWrapper imageWrapper) {
+        if (imageWrapper == null || hasImageViewUrlChanged(imageWrapper) || imageWrapper.getLoaderTask() != this) {
+            return false;
+        }
+        return true;
+    }
+
+    private void listenerCallback(ImageWrapper imageWrapper) {
+        if (onImageLoadedListener != null && onImageLoadedListener.get() != null) {
+            onImageLoadedListener.get().onImageLoaded(imageWrapper.getImageView());
+        }
+    }
+
+    private Bitmap getNotFoundImage(Context c) {
+        String key = "resource" + notFoundResourceId + width + height;
+        Bitmap b = loaderSettings.getResCacheManager().get(key, width, height);
+        if (b != null) {
+            return b;
+        }
+        if (loaderSettings.isAlwaysUseOriginalSize()) {
+            b = loaderSettings.getBitmapUtil().decodeResourceBitmap(c, width, height, notFoundResourceId);
+        } else {
+            b = loaderSettings.getBitmapUtil().decodeResourceBitmapAndScale(c, width, height, notFoundResourceId, loaderSettings.isAllowUpsampling());
+        }
+        loaderSettings.getResCacheManager().put(key, b);
+        return b;
+    }
+
+    public String getUrl() {
+        return url;
+    }
 
 }

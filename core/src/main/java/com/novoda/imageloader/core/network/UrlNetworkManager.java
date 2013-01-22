@@ -15,19 +15,14 @@
  */
 package com.novoda.imageloader.core.network;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import com.novoda.imageloader.core.LoaderSettings;
 import com.novoda.imageloader.core.exception.ImageNotFoundException;
 import com.novoda.imageloader.core.file.util.FileUtil;
+
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Map;
 
 /**
  * Basic implementation of the NetworkManager using URL connection.
@@ -59,6 +54,9 @@ public class UrlNetworkManager implements NetworkManager {
             conn = openConnection(url);
             conn.setConnectTimeout(settings.getConnectionTimeout());
             conn.setReadTimeout(settings.getReadTimeout());
+
+            handleHeaders(conn);
+
             if (conn.getResponseCode() == TEMP_REDIRECT) {
                 redirectManually(f, conn);
             } else {
@@ -69,6 +67,7 @@ public class UrlNetworkManager implements NetworkManager {
         } catch (FileNotFoundException fnfe) {
             throw new ImageNotFoundException();
         } catch (Throwable ex) {
+            ex.printStackTrace();
             // TODO
         } finally {
             if (conn != null && settings.getDisconnectOnEveryCall()) {
@@ -76,6 +75,15 @@ public class UrlNetworkManager implements NetworkManager {
             }
             fileUtil.closeSilently(is);
             fileUtil.closeSilently(os);
+        }
+    }
+
+    private void handleHeaders(HttpURLConnection conn) {
+        Map<String, String> headers = settings.getHeaders();
+        if(headers != null) {
+            for(String key : headers.keySet()) {
+                conn.setRequestProperty(key, headers.get(key));
+            }
         }
     }
 
@@ -102,7 +110,7 @@ public class UrlNetworkManager implements NetworkManager {
         }
     }
 
-    protected HttpURLConnection openConnection(String url) throws IOException, MalformedURLException {
+    protected HttpURLConnection openConnection(String url) throws IOException {
         return (HttpURLConnection) new URL(url).openConnection();
     }
 

@@ -19,18 +19,17 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+
 import com.novoda.imageloader.core.cache.CacheManager;
-import com.novoda.imageloader.core.cache.SoftMapCache;
 import com.novoda.imageloader.core.exception.ImageNotFoundException;
-import com.novoda.imageloader.core.file.BasicFileManager;
 import com.novoda.imageloader.core.file.FileManager;
-import com.novoda.imageloader.core.loader.ConcurrentLoader;
 import com.novoda.imageloader.core.loader.Loader;
-import com.novoda.imageloader.core.loader.SimpleLoader;
 import com.novoda.imageloader.core.network.NetworkManager;
-import com.novoda.imageloader.core.network.UrlNetworkManager;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * ImageManager has the responsibility to provide a
@@ -44,79 +43,19 @@ import java.io.File;
  */
 public class ImageManager {
 
-    private LoaderContext loaderContext;
-    private Loader loader;
-    private CacheManager cacheManager;
+    private final LoaderSettings loaderSettings;
+    private final Map<Integer, WeakReference<OnImageLoadedListener>> onImageLoadedListeners;
+
+    public ImageManager(LoaderSettings settings) {
+        this(null, settings);
+    }
 
     public ImageManager(Context context, LoaderSettings settings) {
-        this.loaderContext = new LoaderContext();
-        loaderContext.setSettings(settings);
-        loaderContext.setFileManager(new BasicFileManager(settings));
-        loaderContext.setNetworkManager(new UrlNetworkManager(settings));
-        loaderContext.setResBitmapCache(new SoftMapCache());
-        cacheManager = settings.getCacheManager();
-        if (cacheManager == null) {
-            cacheManager = new SoftMapCache();
+        if (context != null) {
+            verifyPermissions(context);
         }
-        loaderContext.setCache(cacheManager);
-        setLoader(settings);
-        verifyPermissions(context);
-    }
-
-    /**
-     * Constructor for advanced use. The loaderContext has to be setup correctly.
-     *
-     * @param context       context where this image manager is used
-     * @param loaderContext pre-configured loader context
-     */
-    public ImageManager(Context context, LoaderContext loaderContext) {
-        assert (loaderContext.getSettings() != null);
-        LoaderSettings settings = loaderContext.getSettings();
-        if (loaderContext.getFileManager() == null) {
-            loaderContext.setFileManager(new BasicFileManager(settings));
-        }
-        if (loaderContext.getNetworkManager() == null) {
-            loaderContext.setNetworkManager(new UrlNetworkManager(settings));
-        }
-        cacheManager = settings.getCacheManager();
-        if (cacheManager == null) {
-            cacheManager = new SoftMapCache();
-        }
-        loaderContext.setCache(cacheManager);
-
-        this.loaderContext = loaderContext;
-
-        setLoader(settings);
-        verifyPermissions(context);
-
-    }
-
-    public Loader getLoader() {
-        return loader;
-    }
-
-    public FileManager getFileManager() {
-        return loaderContext.getFileManager();
-    }
-
-    public NetworkManager getNetworkManager() {
-        return loaderContext.getNetworkManager();
-    }
-
-    public CacheManager getCacheManager() {
-        return cacheManager;
-    }
-
-    public void setCacheManager(CacheManager cacheManager) {
-        this.cacheManager = cacheManager;
-    }
-
-    protected void setLoader(LoaderSettings settings) {
-        if (settings.isUseAsyncTasks()) {
-            this.loader = new ConcurrentLoader(loaderContext);
-        } else {
-            this.loader = new SimpleLoader(loaderContext);
-        }
+        this.loaderSettings = settings;
+        onImageLoadedListeners = new HashMap<Integer, WeakReference<OnImageLoadedListener>>();
     }
 
     private void verifyPermissions(Context context) {
@@ -131,12 +70,29 @@ public class ImageManager {
         }
     }
 
+    public Loader getLoader() {
+        return loaderSettings.getLoader();
+    }
+
+    public FileManager getFileManager() {
+        return loaderSettings.getFileManager();
+    }
+
+    public NetworkManager getNetworkManager() {
+        return loaderSettings.getNetworkManager();
+    }
+
+    public CacheManager getCacheManager() {
+        return loaderSettings.getCacheManager();
+    }
+
     public void setOnImageLoadedListener(OnImageLoadedListener listener) {
-        loaderContext.setListener(listener);
+        onImageLoadedListeners.put(listener.hashCode(), new WeakReference<OnImageLoadedListener>(listener));
+        loaderSettings.getLoader().setLoadListener(onImageLoadedListeners.get(listener.hashCode()));
     }
 
     public void unRegisterOnImageLoadedListener(OnImageLoadedListener listener) {
-        loaderContext.removeOnImageLoadedListener(listener.hashCode());
+        onImageLoadedListeners.remove(listener.hashCode());
     }
 
     /**
@@ -155,24 +111,24 @@ public class ImageManager {
      * @height size of the cached image
      */
     public void cacheImage(String url, int width, int height) {
-        Bitmap bm = loaderContext.getCache().get(url, width, height);
+        Bitmap bm = loaderSettings.getCacheManager().get(url, width, height);
         if (bm == null) {
 
             try {
-                File imageFile = loaderContext.getFileManager().getFile(url, width, height);
+                File imageFile = loaderSettings.getFileManager().getFile(url, width, height);
                 if (!imageFile.exists()) {
-                    loaderContext.getNetworkManager().retrieveImage(url, imageFile);
+                    loaderSettings.getNetworkManager().retrieveImage(url, imageFile);
                 }
                 Bitmap b;
-                if (loaderContext.getSettings().isAlwaysUseOriginalSize()) {
-                    b = loaderContext.getBitmapUtil().decodeFile(imageFile, width, height);
+                if (loaderSettings.isAlwaysUseOriginalSize()) {
+                    b = loaderSettings.getBitmapUtil().decodeFile(imageFile, width, height);
                 } else {
-                    b = loaderContext.getBitmapUtil().decodeFileAndScale(imageFile, width, height, loaderContext.getSettings().isAllowUpsampling());
+                    b = loaderSettings.getBitmapUtil().decodeFileAndScale(imageFile, width, height, loaderSettings.isAllowUpsampling());
                 }
 
                 if (b == null) {
                   // decode failed
-                  loaderContext.getCache().put(url, b);
+                  loaderSettings.getCacheManager().put(url, b);
                 }
 
 

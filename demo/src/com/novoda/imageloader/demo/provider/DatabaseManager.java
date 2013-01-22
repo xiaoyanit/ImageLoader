@@ -13,7 +13,7 @@ import android.util.Log;
 import com.novoda.imageloader.demo.activity.BigImages;
 import com.novoda.imageloader.demo.activity.ImageLongList;
 import com.novoda.imageloader.demo.activity.LongSmallImageList;
-import com.novoda.imageloader.demo.activity.base.SingleTableBaseListActivity;
+import com.novoda.imageloader.demo.activity.base.ImageLoaderBaseActivity;
 
 public class DatabaseManager extends SQLiteOpenHelper {
 
@@ -49,12 +49,12 @@ public class DatabaseManager extends SQLiteOpenHelper {
         exec(db, stms);
     }
 
-    private void addCreateStm(List<String> stms, Class<? extends SingleTableBaseListActivity> clazz) {
+    private void addCreateStm(List<String> stms, Class<? extends ImageLoaderBaseActivity> clazz) {
         String name = clazz.getSimpleName().toLowerCase();
         stms.add("create table if not exists " + name + "(_id integer primary key autoincrement, " + "url text);");
     }
 
-    private void addDropStm(List<String> stms, Class<? extends SingleTableBaseListActivity> clazz) {
+    private void addDropStm(List<String> stms, Class<? extends ImageLoaderBaseActivity> clazz) {
         String name = clazz.getSimpleName().toLowerCase();
         stms.add("drop table if exists " + name + ";");
     }
@@ -67,7 +67,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         exec(db, stms);
     }
 
-    private static final void exec(SQLiteDatabase db, List<String> staments) {
+    private static void exec(SQLiteDatabase db, List<String> staments) {
         for (String stm : staments) {
             Log.v("exec", stm);
             try {

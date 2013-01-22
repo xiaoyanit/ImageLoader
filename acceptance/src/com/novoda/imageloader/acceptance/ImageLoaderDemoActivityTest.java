@@ -1,28 +1,33 @@
 package com.novoda.imageloader.acceptance;
 
 import android.test.ActivityInstrumentationTestCase2;
-import android.widget.ListView;
+import android.widget.AbsListView;
 
 import com.jayway.android.robotium.solo.Solo;
 import com.novoda.imageloader.demo.activity.ImageLongList;
 
 public class ImageLoaderDemoActivityTest extends ActivityInstrumentationTestCase2<ImageLongList> {
 
-	private Solo solo;
-	private ListView list;
+    private static final int LIST_INDEX = 0;
+
+    private Solo solo;
 
 	public ImageLoaderDemoActivityTest() {
 		super("com.novoda.imageloader.demo", ImageLongList.class);
 	}
 
-	public void testOpenTheActivity() {
-		solo = new Solo(getInstrumentation(), getActivity());
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        solo = new Solo(getInstrumentation(), getActivity());
+    }
+
+    public void testOpenTheActivity() {
 		assertNotNull(solo);
 	}
 
 	public void testScrollingThroughList() {
-		solo = new Solo(getInstrumentation(), getActivity());
-		list = getActivity().getListView();
+        AbsListView list = solo.getCurrentListViews().get(LIST_INDEX);
 
 		for (int i = 0; i < Math.max(2, list.getCount()); i++) {
 			solo.scrollDown();

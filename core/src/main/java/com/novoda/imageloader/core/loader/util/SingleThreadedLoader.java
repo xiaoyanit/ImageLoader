@@ -15,16 +15,15 @@
  */
 package com.novoda.imageloader.core.loader.util;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
-
 import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.util.Log;
-
 import com.novoda.imageloader.core.exception.ImageNotFoundException;
 import com.novoda.imageloader.core.model.ImageWrapper;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 
 public abstract class SingleThreadedLoader {
 

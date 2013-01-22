@@ -17,6 +17,10 @@ package com.novoda.imageloader.core.loader;
 
 import android.widget.ImageView;
 
+import com.novoda.imageloader.core.OnImageLoadedListener;
+
+import java.lang.ref.WeakReference;
+
 /**
  * Worker class that retrieves images for {@link ImageView}s. The information about the image have to be stored in the tag attribute as an
  * {@link com.novoda.imageloader.core.model.ImageTag}
@@ -31,5 +35,7 @@ public interface Loader {
 	 *            ImageView with attached image information
 	 */
 	void load(ImageView imageView);
+
+    void setLoadListener(WeakReference<OnImageLoadedListener> onImageLoadedListener);
 
 }

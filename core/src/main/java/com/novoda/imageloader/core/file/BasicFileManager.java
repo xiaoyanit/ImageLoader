@@ -87,7 +87,7 @@ public class BasicFileManager implements FileManager {
     @Override
     public File getFile(String url, int width, int height) {
         url = processUrl(url);
-        String filename = String.valueOf(url.hashCode()) + "-" + width + "x" + height;
+        String filename = url.hashCode() + "-" + width + "x" + height;
         return new File(loaderSettings.getCacheDir(), filename);
     }
 

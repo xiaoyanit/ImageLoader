@@ -18,6 +18,7 @@ package com.novoda.imageloader.core.cache;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.Bitmap;
+
 import com.novoda.imageloader.core.cache.util.LruCache;
 
 /**
@@ -80,20 +81,12 @@ public class LruBitmapCache implements CacheManager {
 
     @Override
     public Bitmap get(String url, int width, int height) {
-        int i = width;
-        if(width < height) {
-            i = height;
-        }
-        return cache.get(url + i);
+        return cache.get(url);
     }
 
     @Override
     public void put(String url, Bitmap bmp) {
-        int i = bmp.getWidth();
-        if(bmp.getWidth() < bmp.getHeight()) {
-            i = bmp.getHeight();
-        }
-        cache.put(url + i, bmp);
+        cache.put(url, bmp);
     }
 
     @Override

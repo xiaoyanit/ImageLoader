@@ -15,10 +15,11 @@
  */
 package com.novoda.imageloader.core.cache;
 
+import android.graphics.Bitmap;
+
 import java.lang.ref.SoftReference;
 import java.util.HashMap;
-
-import android.graphics.Bitmap;
+import java.util.Map;
 
 /**
  * Very simple version of memory cache using soft reference.
@@ -27,7 +28,7 @@ import android.graphics.Bitmap;
  */
 public class SoftMapCache implements CacheManager {
 
-    private HashMap<String, SoftReference<Bitmap>> cache = new HashMap<String, SoftReference<Bitmap>>();
+    private Map<String, SoftReference<Bitmap>> cache = new HashMap<String, SoftReference<Bitmap>>();
 
     @Override
     public Bitmap get(String url, int width, int height) {
