@@ -9,19 +9,21 @@ h2. Recent changes
 
 
 h3. 1.5.8
+* Deprecated LoaderContext, LoaderSettings now contains the logic.
+
 * Fixed flickering when dataset is refreshed (although the animation will still trigger if one has been set).
 * Fixed animations not being asynchronous.
 * Fixed CacheManager.clean() NoSuchElementException.
+
 * Added ability to set a String on the ImageTag.
 * Added grid list to Demo App.
+
 * Merged "addie9000":https://github.com/addie9000 java.lang.IllegalArgumentException when not scaled fix  "#83":https://github.com/novoda/ImageLoader/pull/83
 * Merged "lkorth":https://github.com/lkorth Add optional headers to image request "#87":https://github.com/novoda/ImageLoader/pull/87
-
 
 h3. 1.5.8-SNAPSHOT
 
 * Added the possibility of loading a picture with an Animation
-
 
 h3. 1.5.7
 * ImageTagFactory has now factory methods for writing better tests. 
