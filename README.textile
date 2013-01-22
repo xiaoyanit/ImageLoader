@@ -8,6 +8,16 @@ Image download happens off the UI thread and the images are cached with a two-le
 h2. Recent changes
 
 
+h3. 1.5.8
+* Fixed flickering when dataset is refresh (although the animation will still trigger if one has been set).
+* Fixed animations not being asynchronous.
+* Fixed CacheManager.clean() NoSuchElementException.
+* Added ability to set a String on the ImageTag.
+* Added grid list to Demo App.
+* Merged "addie9000":https://github.com/addie9000 java.lang.IllegalArgumentException when not scaled fix  "#83":https://github.com/novoda/ImageLoader/pull/83
+* Merged "lkorth":https://github.com/lkorth Add optional headers to image request "#87":https://github.com/novoda/ImageLoader/pull/87
+
+
 h3. 1.5.8-SNAPSHOT
 
 * Added the possibility of loading a picture with an Animation
@@ -142,6 +152,7 @@ There are two things you need to add: Permissions and the Service to clean up th
     <action android:name="com.novoda.imageloader.core.action.CLEAN_CACHE" />
   </intent-filter>
 </service>
+</service>
 </code></pre>
 
 h3. Cached preview images (optional)
@@ -263,6 +274,21 @@ Import as a Maven project from the project root.
 h3. Requirements
 
 * Maven 3.0.3+
+
+h2. "Contributors":https://github.com/novoda/ImageLoader/graphs/contributors
+
+* "luigi-agosti":https://github.com/luigi-agosti
+* "ouchadam":https://github.com/ouchadam
+* "jdamcd":https://github.com/jdamcd
+* "friedger":https://github.com/friedger
+* "charroch":https://github.com/charroch
+* "blundell":https://github.com/blundell
+* "gnorsilva":https://github.com/gnorsilva
+* "malmstein":https://github.com/malmstein
+* "lkorth":https://github.com/lkorth
+* "addie9000":https://github.com/addie9000
+* "vipulnsward":https://github.com/vipulnsward
+* "peter-budo":https://github.com/peter-budo
 
 h2. License
 
