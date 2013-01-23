@@ -61,7 +61,7 @@ If that sounds like too much trouble, here are the steps:
 
 h3. Overview
 
-!https://github.com/novoda/ImageLoader/raw/master/core/src/main/resources/documentationImage1.png(General overview)!
+!https://github.com/novoda/ImageLoader/raw/master/extra/documentationImage1.png(General overview)!
 
 h3. In the Application class
 
