@@ -1,4 +1,4 @@
-<a href='http://london.novoda.com:8080/job/ImageLoader/'><img src='http://london.novoda.com:8080/job/ImageLoader/badge/icon'></a>   
+<a href='http://ci.novoda.com/job/ImageLoader/'><img src='http://ci.novoda.com/job/ImageLoader/badge/icon'></a>   
 
 h1. ImageLoader
 
