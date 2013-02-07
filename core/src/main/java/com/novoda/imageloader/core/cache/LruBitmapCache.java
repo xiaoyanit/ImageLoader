@@ -51,7 +51,7 @@ public class LruBitmapCache implements CacheManager {
         if(percentageOfMemoryForCache > 81) {
             percentageOfMemoryForCache = 80;
         }
-        this.capacity = (1024 *1024*(memClass * percentageOfMemoryForCache))/100;
+        this.capacity = (int) ((memClass * percentageOfMemoryForCache * 1024L * 1024L) / 100L);
         if(this.capacity <= 0) {
             this.capacity = 1024*1024*4;
         }
