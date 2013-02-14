@@ -42,22 +42,10 @@ public class LruBitmapCache implements CacheManager {
     public LruBitmapCache(Context context, int percentageOfMemoryForCache) {
         int memClass = ((ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();
 
-        if(memClass == 0) {
-            memClass = DEFAULT_MEMORY_CAPACITY_FOR_DEVICES_OLDER_THAN_API_LEVEL_4;
-        }
-        if(percentageOfMemoryForCache < 0) {
-            percentageOfMemoryForCache = 0;
-        }
-        if(percentageOfMemoryForCache > 81) {
-            percentageOfMemoryForCache = 80;
-        }
-        this.capacity = (int) ((memClass * percentageOfMemoryForCache * 1024L * 1024L) / 100L);
-        if(this.capacity <= 0) {
-            this.capacity = 1024*1024*4;
-        }
+        this.capacity = calculateCacheSize(memClass, percentageOfMemoryForCache);
         reset();
     }
-    
+
     /**
      * Setting the default memory size to 25% percent of the total memory 
      * available of the application.
@@ -65,6 +53,12 @@ public class LruBitmapCache implements CacheManager {
      */
     public LruBitmapCache(Context context) {
         this(context, DEFAULT_MEMORY_CACHE_PERCENTAGE);
+    }
+
+    /**
+     * Empty constructor for testing purposes
+     */
+    protected LruBitmapCache() {
     }
 
     private void reset() {
@@ -94,4 +88,21 @@ public class LruBitmapCache implements CacheManager {
         reset();
     }
 
+    public int calculateCacheSize(int memClass, int percentageOfMemoryForCache) {
+        if(memClass == 0) {
+            memClass = DEFAULT_MEMORY_CAPACITY_FOR_DEVICES_OLDER_THAN_API_LEVEL_4;
+        }
+        if(percentageOfMemoryForCache < 0) {
+            percentageOfMemoryForCache = 0;
+        }
+        if(percentageOfMemoryForCache > 81) {
+            percentageOfMemoryForCache = 80;
+        }
+        int capacity = (int) ((memClass * percentageOfMemoryForCache * 1024L * 1024L) / 100L);
+        if(capacity <= 0) {
+            capacity = 1024*1024*4;
+        }
+
+        return capacity;
+    }
 }
