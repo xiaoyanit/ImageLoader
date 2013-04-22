@@ -15,8 +15,10 @@
  */
 package com.novoda.imageloader.core.loader.util;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.Uri;
 
 import com.novoda.imageloader.core.LoaderSettings;
 import com.novoda.imageloader.core.OnImageLoadedListener;
@@ -70,10 +72,20 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
             if (useCacheOnly) {
                 return null;
             }
-            try {
-                loaderSettings.getNetworkManager().retrieveImage(url, imageFile);
-            } catch (ImageNotFoundException inf) {
-                return getNotFoundImage(imageWrapper.getContext());
+            Uri uri = Uri.parse(url);
+            if (uri.getScheme().equalsIgnoreCase(ContentResolver.SCHEME_FILE)) {
+                File image = new File(uri.getPath());
+                if (image.exists()) {
+                    return getImageFromFile(image);
+                } else {
+                    return getNotFoundImage(imageWrapper.getContext());
+                }
+            } else {
+                try {
+                    loaderSettings.getNetworkManager().retrieveImage(uri.getPath(), imageFile);
+                } catch (ImageNotFoundException inf) {
+                    return getNotFoundImage(imageWrapper.getContext());
+                }
             }
         }
         if (hasImageViewUrlChanged(imageWrapper)) {
