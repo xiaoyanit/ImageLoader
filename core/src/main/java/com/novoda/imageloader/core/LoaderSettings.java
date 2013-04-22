@@ -32,8 +32,6 @@ import com.novoda.imageloader.core.network.NetworkManager;
 import com.novoda.imageloader.core.network.UrlNetworkManager;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +39,7 @@ import java.util.Map;
 /**
  * LoaderSettings is the main class used to customize the behavior of the imageLoader.
  * To provide a more user friendly way to set different parameters it is possible to use
- * a builder : SettingsBuilder. 
+ * a builder : SettingsBuilder.
  */
 public class LoaderSettings {
 
@@ -101,7 +99,8 @@ public class LoaderSettings {
     }
 
     /**
-     * Time period in millis how long cached images should be kept in the file storage. 
+     * Time period in millis how long cached images should be kept in the file storage.
+     *
      * @return
      */
     public long getExpirationPeriod() {
@@ -114,9 +113,9 @@ public class LoaderSettings {
 
     /**
      * Flag indicating whether queries of image urls should be used as part of the cache key.
-     * If set to false the cache returns the same image e.g. 
+     * If set to false the cache returns the same image e.g.
      * for <code>http://king.com/img.png?v=1</code> and <code>http://king.com/img.png?v=2</code>
-     *  
+     *
      * @return true if urls with different queries refer to different images.
      */
     public boolean isQueryIncludedInHash() {
@@ -142,16 +141,13 @@ public class LoaderSettings {
     public void setReadTimeout(int readTimeout) {
         this.readTimeout = readTimeout;
     }
-    
+
     public Map<String, String> getHeaders() {
         return Collections.unmodifiableMap(headers);
     }
 
     public void addHeader(String key, String value) {
-        try {
-            headers.put(key, URLEncoder.encode(value, "UTF8"));
-        } catch (UnsupportedEncodingException e) {
-        }
+        headers.put(key, value);
     }
 
     public boolean getDisconnectOnEveryCall() {
@@ -239,39 +235,39 @@ public class LoaderSettings {
 
     public boolean isCleanOnSetup() {
         return true;
-    }       
+    }
 
     /**
      * Flag to enable upsampling for small images.
-     * If true and the image is smaller than the requested size the image is resized to a larger image.  
+     * If true and the image is smaller than the requested size the image is resized to a larger image.
      * Default is false.
-     * 
-     * @return true if 
+     *
+     * @return true if
      */
     public boolean isAllowUpsampling() {
-		return allowUpsampling;
-	}
+        return allowUpsampling;
+    }
 
-	public void setAllowUpsampling(boolean allowUpsampling) {
-		this.allowUpsampling = allowUpsampling;
-	}
+    public void setAllowUpsampling(boolean allowUpsampling) {
+        this.allowUpsampling = allowUpsampling;
+    }
 
-	/**
-	 * Flag to disable image resizing.
-	 * Set this flag to true if you want to avoid bitmap resizing
-	 * Default is false.
-	 * 
-	 * @return true if images are always cached in the original size
-	 */
-	public boolean isAlwaysUseOriginalSize() {
-		return alwaysUseOriginalSize;
-	}
+    /**
+     * Flag to disable image resizing.
+     * Set this flag to true if you want to avoid bitmap resizing
+     * Default is false.
+     *
+     * @return true if images are always cached in the original size
+     */
+    public boolean isAlwaysUseOriginalSize() {
+        return alwaysUseOriginalSize;
+    }
 
-	public void setAlwaysUseOriginalSize(boolean alwaysUseOriginalSize) {
-		this.alwaysUseOriginalSize = alwaysUseOriginalSize;
-	}
+    public void setAlwaysUseOriginalSize(boolean alwaysUseOriginalSize) {
+        this.alwaysUseOriginalSize = alwaysUseOriginalSize;
+    }
 
-	/**
+    /**
      * Builder for the LoaderSettings.
      */
     public static class SettingsBuilder {
@@ -284,20 +280,20 @@ public class LoaderSettings {
 
         /**
          * Change setting of time period before cached images are removed from file storage.
-         *  
+         *
          * @param timePeriodInMillis time period in milli seconds
          * @return this SettingsBuilder
          */
         public SettingsBuilder withExpirationPeriod(long timePeriodInMillis) {
-        	settings.setExpirationPeriod(timePeriodInMillis);
-        	return this;
+            settings.setExpirationPeriod(timePeriodInMillis);
+            return this;
         }
-        
+
         /**
-         * Change flag indicating whether queries of image urls should be used as part of the cache key. 
+         * Change flag indicating whether queries of image urls should be used as part of the cache key.
          * If set to false the cache returns the same image e.g. for <code>http://king.com/img.png?v=1</code> and <code>http://king.com/img.png?v=2</code>
-         * 
-         * @param enableQueryInHashGeneration set to false if querys in urls should be ignored. 
+         *
+         * @param enableQueryInHashGeneration set to false if querys in urls should be ignored.
          * @return this SettingsBuilder.
          */
         public SettingsBuilder withEnableQueryInHashGeneration(boolean enableQueryInHashGeneration) {
@@ -314,9 +310,9 @@ public class LoaderSettings {
             settings.setReadTimeout(readTimeout);
             return this;
         }
-        
+
         public SettingsBuilder addHeader(String key, String value) {
-        	settings.addHeader(key, value);
+            settings.addHeader(key, value);
             return this;
         }
 
@@ -339,35 +335,35 @@ public class LoaderSettings {
             settings.setUseAsyncTasks(useAsyncTasks);
             return this;
         }
-        
+
         public SettingsBuilder withCacheDir(File file) {
             settings.setCacheDir(file);
             return this;
         }
-        
+
         /**
-         * Changes flag to enable upsampling for small images. 
-         * If true and the image is smaller than the requested size 
+         * Changes flag to enable upsampling for small images.
+         * If true and the image is smaller than the requested size
          * the image is resized to a larger image. Default is false.
-         * 
+         *
          * @param allowUpsampling set to true if you want to enlarge small images
          * @return this SettingsBuilder
          */
-        public SettingsBuilder withUpsampling(boolean allowUpsampling){
-        	settings.setAllowUpsampling(allowUpsampling);
-        	return this;
+        public SettingsBuilder withUpsampling(boolean allowUpsampling) {
+            settings.setAllowUpsampling(allowUpsampling);
+            return this;
         }
-        
+
         /**
-         * Changes flag to disable image resizing. 
+         * Changes flag to disable image resizing.
          * Set the flag to true if you want to avoid bitmap resizing. Default is false.
-         * 
-         * @param alwaysUseOriginalSize set to true if you want to avoid bitmap resizing 
+         *
+         * @param alwaysUseOriginalSize set to true if you want to avoid bitmap resizing
          * @return this SettingsBuilder
          */
-        public SettingsBuilder withoutResizing(boolean alwaysUseOriginalSize ){
-        	settings.setAlwaysUseOriginalSize(alwaysUseOriginalSize);
-        	return this;
+        public SettingsBuilder withoutResizing(boolean alwaysUseOriginalSize) {
+            settings.setAlwaysUseOriginalSize(alwaysUseOriginalSize);
+            return this;
         }
 
         public SettingsBuilder withFileManager(FileManager fileManager) {
