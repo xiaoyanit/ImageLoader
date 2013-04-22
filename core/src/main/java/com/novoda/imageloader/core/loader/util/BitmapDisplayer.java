@@ -39,6 +39,6 @@ public class BitmapDisplayer implements Runnable {
     if(imageWrapper.isUrlChanged()) {
   		return;
   	}
-    imageWrapper.setBitmap(bitmap);
+    imageWrapper.setBitmap(bitmap, false);
   }
 }

@@ -102,11 +102,11 @@ public class ImageWrapper {
 		return imageView.getContext();
 	}
 
-	public void setBitmap(Bitmap bitmap) {
+	public void setBitmap(Bitmap bitmap, boolean animated) {
 		imageView.setImageBitmap(bitmap);
 
         stopExistingAnimation();
-        if (animation != null) {
+        if (animation != null && animated) {
             imageView.startAnimation(animation);
         }
 	}

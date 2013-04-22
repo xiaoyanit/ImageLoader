@@ -64,14 +64,14 @@ public class SimpleLoader implements Loader {
 		try {
 			Bitmap b = loaderSettings.getCacheManager().get(w.getUrl(), w.getWidth(), w.getHeight());
 			if (b != null && !b.isRecycled()) {
-				w.setBitmap(b);
+				w.setBitmap(b, false);
 				return;
 			}
 			String thumbUrl = w.getPreviewUrl();
 			if (thumbUrl != null) {
 				b = loaderSettings.getCacheManager().get(thumbUrl, w.getPreviewHeight(), w.getPreviewWidth());
 				if (b != null && !b.isRecycled()) {
-					w.setBitmap(b);
+					w.setBitmap(b, false);
 				} else {
 					setResource(w, w.getLoadingResourceId());
 				}
@@ -112,12 +112,12 @@ public class SimpleLoader implements Loader {
 	private void setResource(ImageWrapper w, int resId) {
 		Bitmap b = loaderSettings.getResCacheManager().get("" + resId, w.getWidth(), w.getHeight());
 		if (b != null) {
-			w.setBitmap(b);
+			w.setBitmap(b, false);
 			return;
 		}
 		b = loaderSettings.getBitmapUtil().decodeResourceBitmapAndScale(w, resId, loaderSettings.isAllowUpsampling());
 		loaderSettings.getResCacheManager().put("" + resId, b);
-		w.setBitmap(b);
+		w.setBitmap(b, false);
 	}
 
 }

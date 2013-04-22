@@ -45,7 +45,7 @@ public class BitmapDisplayerTest {
         bitmapDisplayer = new BitmapDisplayer(null, imageWrapper);
         bitmapDisplayer.run();
         
-        verify(imageWrapper, never()).setBitmap(null);
+        verify(imageWrapper, never()).setBitmap(null, false);
     }
     
     @Test
@@ -54,7 +54,7 @@ public class BitmapDisplayerTest {
         bitmapDisplayer = new BitmapDisplayer(bitmap, imageWrapper);
         bitmapDisplayer.run();
         
-        verify(imageWrapper, never()).setBitmap(null);
+        verify(imageWrapper, never()).setBitmap(null, false);
     }
     
     @Test
@@ -63,7 +63,7 @@ public class BitmapDisplayerTest {
         bitmapDisplayer = new BitmapDisplayer(bitmap, imageWrapper);
         bitmapDisplayer.run();
         
-        verify(imageWrapper).setBitmap(bitmap);
+        verify(imageWrapper).setBitmap(bitmap, false);
     }
 
 }

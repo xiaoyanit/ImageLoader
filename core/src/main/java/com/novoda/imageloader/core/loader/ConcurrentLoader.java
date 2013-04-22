@@ -54,7 +54,7 @@ public class ConcurrentLoader implements Loader {
         if (!isTaskAlreadyRunning(w)) {
             if (isBitmapAlreadyInCache(getCachedBitmap(w))) {
                 Bitmap cachedBitmap = getCachedBitmap(w);
-                w.setBitmap(cachedBitmap);
+                w.setBitmap(cachedBitmap, false);
                 return;
             }
             setDefaultImage(w);
@@ -75,7 +75,7 @@ public class ConcurrentLoader implements Loader {
     private void setDefaultImage(ImageWrapper w) {
         if (hasPreviewUrl(w.getPreviewUrl())) {
             if (isBitmapAlreadyInCache(getPreviewCachedBitmap(w))) {
-                w.setBitmap(getPreviewCachedBitmap(w));
+                w.setBitmap(getPreviewCachedBitmap(w), false);
             } else {
                 w.setResourceBitmap(getResourceAsBitmap(w, w.getLoadingResourceId()));
             }

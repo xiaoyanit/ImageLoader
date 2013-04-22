@@ -82,6 +82,7 @@ public class ImageTagFactoryTest {
     
     @Test
     public void shouldUseDisplaySizes() {
+        //TODO: Test failing when targeting API 17 because of the final Display class
         final Display display = mock(Display.class);
         when(display.getHeight()).thenReturn(21);
         when(display.getWidth()).thenReturn(12);

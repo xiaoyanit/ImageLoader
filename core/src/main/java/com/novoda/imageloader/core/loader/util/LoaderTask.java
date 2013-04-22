@@ -148,7 +148,7 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
 
         if (validateImageView(imageWrapper)) {
             listenerCallback(imageWrapper);
-            imageWrapper.setBitmap(bitmap);
+            imageWrapper.setBitmap(bitmap, true);
         }
     }
 
