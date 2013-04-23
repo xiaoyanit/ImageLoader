@@ -81,16 +81,8 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
         return getImageFromFile(imageFile);
     }
 
-    private Bitmap getNetworkImage(File imageFile, Uri uri) {
-        try {
-            loaderSettings.getNetworkManager().retrieveImage(uri.getPath(), imageFile);
-        } catch (ImageNotFoundException inf) {
-            return getNotFoundImage(imageWrapper.getContext());
-        }
-        if (hasImageViewUrlChanged(imageWrapper)) {
-            return null;
-        }
-        return getImageFromFile(imageFile);
+    private boolean isFromFileSystem(Uri uri) {
+        return uri.getScheme().equalsIgnoreCase(ContentResolver.SCHEME_FILE);
     }
 
     private Bitmap getLocalImage(Uri uri) {
@@ -102,8 +94,16 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
         }
     }
 
-    private boolean isFromFileSystem(Uri uri) {
-        return uri.getScheme().equalsIgnoreCase(ContentResolver.SCHEME_FILE);
+    private Bitmap getNetworkImage(File imageFile, Uri uri) {
+        try {
+            loaderSettings.getNetworkManager().retrieveImage(uri.getPath(), imageFile);
+        } catch (ImageNotFoundException inf) {
+            return getNotFoundImage(imageWrapper.getContext());
+        }
+        if (hasImageViewUrlChanged(imageWrapper)) {
+            return null;
+        }
+        return getImageFromFile(imageFile);
     }
 
     private Bitmap getImageFromFile(File imageFile) {
