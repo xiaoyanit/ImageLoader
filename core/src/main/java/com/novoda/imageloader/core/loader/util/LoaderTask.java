@@ -63,35 +63,47 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
             return getNotFoundImage(imageWrapper.getContext());
         }
 
-        if (hasImageViewUrlChanged(imageWrapper)) {
-            return null;
-        }
-
         File imageFile = getImageFile(imageWrapper);
         if (!imageFile.exists()) {
             if (useCacheOnly) {
                 return null;
             }
             Uri uri = Uri.parse(url);
-            if (uri.getScheme().equalsIgnoreCase(ContentResolver.SCHEME_FILE)) {
-                File image = new File(uri.getPath());
-                if (image.exists()) {
-                    return getImageFromFile(image);
-                } else {
-                    return getNotFoundImage(imageWrapper.getContext());
-                }
+            if (isFromFileSystem(uri)) {
+                return getLocalImage(uri);
             } else {
-                try {
-                    loaderSettings.getNetworkManager().retrieveImage(uri.getPath(), imageFile);
-                } catch (ImageNotFoundException inf) {
-                    return getNotFoundImage(imageWrapper.getContext());
-                }
+                return getNetworkImage(imageFile, uri);
             }
         }
         if (hasImageViewUrlChanged(imageWrapper)) {
             return null;
         }
         return getImageFromFile(imageFile);
+    }
+
+    private Bitmap getNetworkImage(File imageFile, Uri uri) {
+        try {
+            loaderSettings.getNetworkManager().retrieveImage(uri.getPath(), imageFile);
+        } catch (ImageNotFoundException inf) {
+            return getNotFoundImage(imageWrapper.getContext());
+        }
+        if (hasImageViewUrlChanged(imageWrapper)) {
+            return null;
+        }
+        return getImageFromFile(imageFile);
+    }
+
+    private Bitmap getLocalImage(Uri uri) {
+        File image = new File(uri.getPath());
+        if (image.exists()) {
+            return getImageFromFile(image);
+        } else {
+            return getNotFoundImage(imageWrapper.getContext());
+        }
+    }
+
+    private boolean isFromFileSystem(Uri uri) {
+        return uri.getScheme().equalsIgnoreCase(ContentResolver.SCHEME_FILE);
     }
 
     private Bitmap getImageFromFile(File imageFile) {
