@@ -21,22 +21,22 @@ import java.util.Locale;
  */
 public class BigImages extends ImageLoaderBaseActivity implements OnImageLoadedListener {
 
-	private static final String TAG = DemoApplication.class.getSimpleName().toLowerCase(Locale.UK);
+    private static final String TAG = DemoApplication.class.getSimpleName().toLowerCase(Locale.UK);
 
-	@Override
-	protected String getTableName() {
-		return BigImages.class.getSimpleName().toLowerCase(Locale.UK);
-	}
+    @Override
+    protected String getTableName() {
+        return BigImages.class.getSimpleName().toLowerCase(Locale.UK);
+    }
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         /**
          * TODO Need to prepare imageLoader and imageTagFactory, generally we keep and instance of ImageManager and ImageTagFactory
          */
         initImageLoader();
-	}
+    }
 
     private void initImageLoader() {
         imageManager = DemoApplication.getImageLoader();
@@ -46,16 +46,16 @@ public class BigImages extends ImageLoaderBaseActivity implements OnImageLoadedL
     }
 
     @Override
-	protected void onResume() {
-		super.onResume();
-		imageManager.setOnImageLoadedListener(this);
-	}
+    protected void onResume() {
+        super.onResume();
+        imageManager.setOnImageLoadedListener(this);
+    }
 
-	@Override
-	protected void onPause() {
-		super.onPause();
-		imageManager.unRegisterOnImageLoadedListener(this);
-	}
+    @Override
+    protected void onPause() {
+        super.onPause();
+        imageManager.unRegisterOnImageLoadedListener(this);
+    }
 
     @Override
     public void onImageLoaded(ImageView imageView) {

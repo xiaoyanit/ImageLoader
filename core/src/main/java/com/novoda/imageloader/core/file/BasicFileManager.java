@@ -15,15 +15,15 @@
  */
 package com.novoda.imageloader.core.file;
 
-import java.io.File;
-import java.io.FileOutputStream;
-
 import android.graphics.Bitmap;
 
 import com.novoda.imageloader.core.LoaderSettings;
 import com.novoda.imageloader.core.file.util.FileUtil;
 import com.novoda.imageloader.core.network.UrlUtil;
 import com.novoda.imageloader.core.util.Log;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 /**
  * This is a basic implementation for the file manager.
@@ -36,7 +36,7 @@ public class BasicFileManager implements FileManager {
 
     public BasicFileManager(LoaderSettings settings) {
         this.loaderSettings = settings;
-        if(settings.isCleanOnSetup()) {
+        if (settings.isCleanOnSetup()) {
             cleanOldFiles();
         }
     }
@@ -50,7 +50,7 @@ public class BasicFileManager implements FileManager {
     }
 
     /**
-     * CleanOldFile is removing all the files in the cache directory where the 
+     * CleanOldFile is removing all the files in the cache directory where the
      * timestamp is older then the expiration time.
      */
     @Override
@@ -97,7 +97,7 @@ public class BasicFileManager implements FileManager {
         }
         return new UrlUtil().removeQuery(url);
     }
-    
+
     private void deleteOldFiles(final long expirationPeriod) {
         final String cacheDir = loaderSettings.getCacheDir().getAbsolutePath();
         Thread cleaner = new Thread(new Runnable() {
@@ -109,7 +109,7 @@ public class BasicFileManager implements FileManager {
                     // Don't have to fail in case there
                 }
             }
-          });
+        });
         cleaner.setPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
         cleaner.start();
     }

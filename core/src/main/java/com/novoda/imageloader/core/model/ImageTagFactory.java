@@ -41,16 +41,18 @@ public final class ImageTagFactory {
 
     /**
      * Use newInstance instead
+     *
      * @return
      */
     @Deprecated
     public static ImageTagFactory getInstance() {
-    	return newInstance();
+        return newInstance();
     }
 
     /**
      * Use newInstance instead.
      * private
+     *
      * @param width
      * @param height
      * @param defaultImageResId
@@ -58,22 +60,24 @@ public final class ImageTagFactory {
      */
     @Deprecated
     public static ImageTagFactory getInstance(int width, int height, int defaultImageResId) {
-    	return newInstance(width, height, defaultImageResId);
+        return newInstance(width, height, defaultImageResId);
     }
 
     /**
      * Use newInstance instead.
+     *
      * @param context
      * @param defaultImageResId
      * @return
      */
     @Deprecated
     public static ImageTagFactory getInstance(Context context, int defaultImageResId) {
-    	return newInstance(context, defaultImageResId);
+        return newInstance(context, defaultImageResId);
     }
 
     /**
      * Creates a new ImageTagFactory without any further initialization.
+     *
      * @return
      */
     public static ImageTagFactory newInstance() {
@@ -83,8 +87,8 @@ public final class ImageTagFactory {
     /**
      * Creates a new ImageTagFactory using the given size and default placeholder image for all ImageTags.
      *
-     * @param width width of the image to be shown.
-     * @param height height of the image to be shown.
+     * @param width             width of the image to be shown.
+     * @param height            height of the image to be shown.
      * @param defaultImageResId resource id of an placeholder image to be used while the original image is loaded or as an error image.
      * @return
      */
@@ -98,7 +102,7 @@ public final class ImageTagFactory {
     /**
      * Creates a new ImageTagFactory using the size of device display and the default placeholder image for all ImageTags.
      *
-     * @param context Context used to access the device display
+     * @param context           Context used to access the device display
      * @param defaultImageResId resource id of an placeholder image to be used while the original image is loaded  or as an error image.
      * @return
      */
@@ -132,6 +136,7 @@ public final class ImageTagFactory {
     /**
      * Sets the default image to be used while the original image is loaded.
      * Affects ImageWrapper.loadingResourceId
+     *
      * @param defaultImageResId resource id of an placeholder image
      */
     public void setDefaultImageResId(int defaultImageResId) {
@@ -141,6 +146,7 @@ public final class ImageTagFactory {
     /**
      * Set the width of the images
      * Affects directly ImageWrapper.width
+     *
      * @param width width of the original image
      */
     public void setWidth(int width) {
@@ -150,6 +156,7 @@ public final class ImageTagFactory {
     /**
      * Set the height of the images
      * Affects directly ImageWrapper.height
+     *
      * @param height height of the original image
      */
     public void setHeight(int height) {
@@ -159,6 +166,7 @@ public final class ImageTagFactory {
     /**
      * Sets the error image to be used when an error (e.g. network error) occurred during downloading the image.
      * Affects ImageWrapper.notFoundResourceId
+     *
      * @param errorImageResId resource id of an placeholder image.
      */
     public void setErrorImageId(int errorImageResId) {
@@ -169,8 +177,8 @@ public final class ImageTagFactory {
      * Prepares this factory for using preview images (thumbnails).
      * Affects directly ImageWrapper.previewHeight, ImageWrapper.previewWidth and indirectly ImageWrapper.previewUrl
      *
-     * @param previewImageWidth width of the preview image (thumbnail)
-     * @param previewImageHeight height of the preview image (thumbnail)
+     * @param previewImageWidth         width of the preview image (thumbnail)
+     * @param previewImageHeight        height of the preview image (thumbnail)
      * @param useSameUrlForPreviewImage if true ImageTags are built with the same url for preview images as for the original images.
      */
     public void usePreviewImage(int previewImageWidth, int previewImageHeight, boolean useSameUrlForPreviewImage) {
@@ -182,7 +190,7 @@ public final class ImageTagFactory {
     /**
      * Sets a flag indicating whether only the cache should be used for image retrieval.
      * Affects directly ImageWrapper.useOnlyCache
-     *
+     * <p/>
      * If true the Loader must not start downloading the image.
      * It depends on the loader what image is shown if the original image was not found in the cache.
      *
@@ -195,7 +203,7 @@ public final class ImageTagFactory {
     /**
      * Sets a flag indicating whether scaled images should be stored as file.
      * Affects directly ImageWrapper.saveThumbnail
-     *
+     * <p/>
      * If true the image is scaled and stored as file and the image is loaded from the file system first if not found in the cache.
      *
      * @param saveThumbnail if true the image is scaled and saved
@@ -213,15 +221,13 @@ public final class ImageTagFactory {
 
     }
 
-
     /**
      * Creates a new ImageTag for the given iamge url. It uses the previously set parameters.
-     *
+     * <p/>
      * If useSameUrlForPreviewImage is set to false the preview url has to be set after building the ImageTag.
      *
      * @param url url of original image to be shown in a ImageView
      * @return an ImageTag to be used as tag property of the ImageView.
-     *
      */
     public ImageTag build(String url, Context context) {
         return build(url, new AnimationHelper(context));

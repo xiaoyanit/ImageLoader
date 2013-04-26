@@ -27,80 +27,80 @@ import java.util.Map;
 /**
  * LoaderContext provides a generic context for the imageLoader where different objects can access different levels of caching, the BitmapUtil, and all the
  * customized settings.
- * 
+ * <p/>
  * This class is supposed to be used internally.
  */
 @Deprecated
 public class LoaderContext {
-	private FileManager fileManager;
-	private NetworkManager networkManager;
-	private CacheManager cache;
-	private CacheManager resBitmapCache;
-	private LoaderSettings settings;
-	private final BitmapUtil bitmapUtil = new BitmapUtil();
-	private final Map<Integer, WeakReference<OnImageLoadedListener>> weakListeners;
-	private int listenerKey;
+    private FileManager fileManager;
+    private NetworkManager networkManager;
+    private CacheManager cache;
+    private CacheManager resBitmapCache;
+    private LoaderSettings settings;
+    private final BitmapUtil bitmapUtil = new BitmapUtil();
+    private final Map<Integer, WeakReference<OnImageLoadedListener>> weakListeners;
+    private int listenerKey;
 
-	public LoaderContext() {
-		weakListeners = new HashMap<Integer, WeakReference<OnImageLoadedListener>>();
-	}
+    public LoaderContext() {
+        weakListeners = new HashMap<Integer, WeakReference<OnImageLoadedListener>>();
+    }
 
-	public FileManager getFileManager() {
-		return fileManager;
-	}
+    public FileManager getFileManager() {
+        return fileManager;
+    }
 
-	public void setFileManager(FileManager fileManager) {
-		this.fileManager = fileManager;
-	}
+    public void setFileManager(FileManager fileManager) {
+        this.fileManager = fileManager;
+    }
 
-	public NetworkManager getNetworkManager() {
-		return networkManager;
-	}
+    public NetworkManager getNetworkManager() {
+        return networkManager;
+    }
 
-	public void setNetworkManager(NetworkManager networkManager) {
-		this.networkManager = networkManager;
-	}
+    public void setNetworkManager(NetworkManager networkManager) {
+        this.networkManager = networkManager;
+    }
 
-	public LoaderSettings getSettings() {
-		return settings;
-	}
+    public LoaderSettings getSettings() {
+        return settings;
+    }
 
-	public void setSettings(LoaderSettings settings) {
-		this.settings = settings;
-	}
+    public void setSettings(LoaderSettings settings) {
+        this.settings = settings;
+    }
 
-	public CacheManager getResBitmapCache() {
-		return resBitmapCache;
-	}
+    public CacheManager getResBitmapCache() {
+        return resBitmapCache;
+    }
 
-	public void setResBitmapCache(CacheManager resBitmapCache) {
-		this.resBitmapCache = resBitmapCache;
-	}
+    public void setResBitmapCache(CacheManager resBitmapCache) {
+        this.resBitmapCache = resBitmapCache;
+    }
 
-	public CacheManager getCache() {
-		return cache;
-	}
+    public CacheManager getCache() {
+        return cache;
+    }
 
-	public void setCache(CacheManager cache) {
-		this.cache = cache;
-	}
+    public void setCache(CacheManager cache) {
+        this.cache = cache;
+    }
 
-	public BitmapUtil getBitmapUtil() {
-		return bitmapUtil;
-	}
+    public BitmapUtil getBitmapUtil() {
+        return bitmapUtil;
+    }
 
-	public void setListener(OnImageLoadedListener listener) {
-		listenerKey = listener.hashCode();
-		WeakReference<OnImageLoadedListener> weakReference = new WeakReference<OnImageLoadedListener>(listener);
-		weakListeners.put(listenerKey, weakReference);
-	}
+    public void setListener(OnImageLoadedListener listener) {
+        listenerKey = listener.hashCode();
+        WeakReference<OnImageLoadedListener> weakReference = new WeakReference<OnImageLoadedListener>(listener);
+        weakListeners.put(listenerKey, weakReference);
+    }
 
-	public WeakReference<OnImageLoadedListener> getListener() {
-		return weakListeners.get(listenerKey);
-	}
+    public WeakReference<OnImageLoadedListener> getListener() {
+        return weakListeners.get(listenerKey);
+    }
 
-	public void removeOnImageLoadedListener(int listenerKey) {
-		weakListeners.remove(listenerKey);
-	}
+    public void removeOnImageLoadedListener(int listenerKey) {
+        weakListeners.remove(listenerKey);
+    }
 
 }

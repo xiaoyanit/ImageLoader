@@ -16,7 +16,9 @@
 package com.novoda.imageloader.core.loader.util;
 
 import android.graphics.Bitmap;
+
 import com.novoda.imageloader.core.model.ImageWrapper;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,42 +29,42 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import static org.mockito.Mockito.*;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ Bitmap.class })
+@PrepareForTest({Bitmap.class})
 public class BitmapDisplayerTest {
 
     private BitmapDisplayer bitmapDisplayer;
     private Bitmap bitmap;
     private ImageWrapper imageWrapper;
-    
+
     @Before
     public void beforeEachTest() {
         bitmap = PowerMockito.mock(Bitmap.class);
         imageWrapper = mock(ImageWrapper.class);
     }
-    
+
     @Test
     public void shouldNotSetNullBitmap() {
         bitmapDisplayer = new BitmapDisplayer(null, imageWrapper);
         bitmapDisplayer.run();
-        
+
         verify(imageWrapper, never()).setBitmap(null, false);
     }
-    
+
     @Test
     public void shouldNotSetBitmapIfTheUrlHasChanged() {
         when(imageWrapper.isUrlChanged()).thenReturn(true);
         bitmapDisplayer = new BitmapDisplayer(bitmap, imageWrapper);
         bitmapDisplayer.run();
-        
+
         verify(imageWrapper, never()).setBitmap(null, false);
     }
-    
+
     @Test
     public void shouldSetBitmap() {
         when(imageWrapper.isUrlChanged()).thenReturn(false);
         bitmapDisplayer = new BitmapDisplayer(bitmap, imageWrapper);
         bitmapDisplayer.run();
-        
+
         verify(imageWrapper).setBitmap(bitmap, false);
     }
 

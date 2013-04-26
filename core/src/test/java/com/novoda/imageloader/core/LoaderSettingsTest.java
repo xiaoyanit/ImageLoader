@@ -9,7 +9,7 @@ import static org.junit.Assert.assertThat;
 public class LoaderSettingsTest {
 
     @Test
-    public void should_successfully_add_header(){
+    public void should_successfully_add_header() {
         LoaderSettings settings = new LoaderSettings();
         settings.addHeader("encoding", "Encoding-Type");
         settings.addHeader("referer", "Referer");

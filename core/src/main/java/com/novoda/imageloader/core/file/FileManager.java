@@ -15,9 +15,9 @@
  */
 package com.novoda.imageloader.core.file;
 
-import java.io.File;
-
 import android.graphics.Bitmap;
+
+import java.io.File;
 
 /**
  * FileManager is an interface marking all the implementation of file cache managers.
@@ -25,50 +25,50 @@ import android.graphics.Bitmap;
  */
 public interface FileManager {
 
-    /**    
-     * Removes all the files in the cache directory.     
+    /**
+     * Removes all the files in the cache directory.
      */
     void clean();
 
     /**
-     * Removes the files in the cache directory where the 
+     * Removes the files in the cache directory where the
      * timestamp is older then the expiration time.
      */
     void cleanOldFiles();
 
     /**
      * Returns the absolute path of the cached content for the given url.
-     *  
-     * @param url original url of the content 
+     *
+     * @param url original url of the content
      * @return the absolute path as a string or null if there is no cached file
      */
     String getFilePath(String url);
 
     /**
      * Returns the file handle of the cached content for the given url.
-     * 
+     *
      * @param url original of the content
      * @return file handle of the cached content
      */
     File getFile(String url);
 
     /**
-     * Stores the given bitmap. The width and height of the bitmap are used for naming only. 
-     * This helper method uses the same naming convention for resized images as getFile(String, width, height)  
-     * 
-     * @param fileName Absolute path where the image will be stored.  
-     * @param b bitmap that should be stored.
-     * @param width width of the bitmap
-     * @param height height of new bitmap
+     * Stores the given bitmap. The width and height of the bitmap are used for naming only.
+     * This helper method uses the same naming convention for resized images as getFile(String, width, height)
+     *
+     * @param fileName Absolute path where the image will be stored.
+     * @param b        bitmap that should be stored.
+     * @param width    width of the bitmap
+     * @param height   height of new bitmap
      */
     void saveBitmap(String fileName, Bitmap b, int width, int height);
 
     /**
      * Returns the file handle of the cached content for the given url with a specified size.
      * Dimensions are only used for naming. The resized content is not created by calling this method.
-     *  
-     * @param url original url of the content
-     * @param width width of image
+     *
+     * @param url    original url of the content
+     * @param width  width of image
      * @param height height of image
      * @return file handle of cached resized content, must not return null
      */

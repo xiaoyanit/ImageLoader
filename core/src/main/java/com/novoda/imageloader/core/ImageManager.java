@@ -99,11 +99,11 @@ public class ImageManager {
      * Loads an image into the cache, it does not bind the image to any view.
      * This method can be used for pre-fetching images.
      * If the image is already cached, the image is not fetched from the net.
-     *
+     * <p/>
      * <p/>
      * This method runs in the same thread as the caller method.
      * Hence, make sure that this method is not called from the main thread.
-     *
+     * <p/>
      * If the image could be retrieved and decoded the resulting bitmap is cached.
      *
      * @param url Url of image to be pre-fetched
@@ -127,10 +127,9 @@ public class ImageManager {
                 }
 
                 if (b == null) {
-                  // decode failed
-                  loaderSettings.getCacheManager().put(url, b);
+                    // decode failed
+                    loaderSettings.getCacheManager().put(url, b);
                 }
-
 
             } catch (ImageNotFoundException inf) {
                 // no-op

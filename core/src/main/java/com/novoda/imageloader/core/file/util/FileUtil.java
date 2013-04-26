@@ -15,19 +15,13 @@
  */
 package com.novoda.imageloader.core.file.util;
 
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 import com.novoda.imageloader.core.exception.ImageCopyException;
 import com.novoda.imageloader.core.util.Log;
 
+import java.io.*;
+
 /**
- * This class is internal to the imageLoader. 
+ * This class is internal to the imageLoader.
  * If you want to used it make sure to prepare for changes to the interface.
  */
 public class FileUtil {
@@ -62,7 +56,6 @@ public class FileUtil {
         }
     }
 
-    
     public boolean deleteFileCache(String cacheDirFullPath) {
         return reduceFileCache(cacheDirFullPath, -1);
     }

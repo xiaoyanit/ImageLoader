@@ -36,6 +36,7 @@ public class LruBitmapCache implements CacheManager {
 
     /**
      * It is possible to set a specific percentage of memory to be used only for images.
+     *
      * @param context
      * @param percentageOfMemoryForCache 1-80
      */
@@ -47,8 +48,9 @@ public class LruBitmapCache implements CacheManager {
     }
 
     /**
-     * Setting the default memory size to 25% percent of the total memory 
+     * Setting the default memory size to 25% percent of the total memory
      * available of the application.
+     *
      * @param context
      */
     public LruBitmapCache(Context context) {
@@ -68,7 +70,7 @@ public class LruBitmapCache implements CacheManager {
         cache = new LruCache<String, Bitmap>(capacity) {
             @Override
             protected int sizeOf(String key, Bitmap bitmap) {
-                return bitmap.getRowBytes()*bitmap.getHeight();
+                return bitmap.getRowBytes() * bitmap.getHeight();
             }
         };
     }
@@ -89,18 +91,18 @@ public class LruBitmapCache implements CacheManager {
     }
 
     public int calculateCacheSize(int memClass, int percentageOfMemoryForCache) {
-        if(memClass == 0) {
+        if (memClass == 0) {
             memClass = DEFAULT_MEMORY_CAPACITY_FOR_DEVICES_OLDER_THAN_API_LEVEL_4;
         }
-        if(percentageOfMemoryForCache < 0) {
+        if (percentageOfMemoryForCache < 0) {
             percentageOfMemoryForCache = 0;
         }
-        if(percentageOfMemoryForCache > 81) {
+        if (percentageOfMemoryForCache > 81) {
             percentageOfMemoryForCache = 80;
         }
         int capacity = (int) ((memClass * percentageOfMemoryForCache * 1024L * 1024L) / 100L);
-        if(capacity <= 0) {
-            capacity = 1024*1024*4;
+        if (capacity <= 0) {
+            capacity = 1024 * 1024 * 4;
         }
 
         return capacity;

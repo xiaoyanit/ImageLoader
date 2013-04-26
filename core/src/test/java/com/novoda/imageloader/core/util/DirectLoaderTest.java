@@ -16,8 +16,10 @@
 package com.novoda.imageloader.core.util;
 
 import android.graphics.Bitmap;
+
 import com.novoda.imageloader.core.bitmap.BitmapUtil;
 import com.novoda.imageloader.core.network.NetworkManager;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,31 +34,31 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ Bitmap.class })
+@PrepareForTest({Bitmap.class})
 public class DirectLoaderTest {
-    
+
     private DirectLoader directLoader;
     private NetworkManager networkManager;
     private BitmapUtil bitmapUtil;
     private String url = "http://www.google.com";
-    
+
     @Before
     public void beforeEachTest() {
         networkManager = Mockito.mock(NetworkManager.class);
         bitmapUtil = Mockito.mock(BitmapUtil.class);
         directLoader = new DirectLoader(networkManager, bitmapUtil);
     }
-    
+
     @Test
     public void shouldReturnNullIfUrlIsNull() {
         assertNull(directLoader.download(null));
     }
-    
+
     @Test
     public void shouldReturnNullIfUrlIsEmpty() {
         assertNull(directLoader.download(""));
     }
-    
+
     @Test
     public void shouldReturnNullIfIsNotPossibleToGetAnInputStreamFromNetwrokResource() {
         Mockito.when(networkManager.retrieveInputStream(url)).thenReturn(null);
@@ -68,7 +70,7 @@ public class DirectLoaderTest {
         InputStream is = Mockito.mock(InputStream.class);
         Mockito.when(networkManager.retrieveInputStream(url)).thenReturn(is);
         Bitmap expectedBitmap = PowerMockito.mock(Bitmap.class);
-        PowerMockito.when(bitmapUtil.decodeInputStream(is)).thenReturn(expectedBitmap);        
+        PowerMockito.when(bitmapUtil.decodeInputStream(is)).thenReturn(expectedBitmap);
         Bitmap actualBitmap = directLoader.download(url);
         assertEquals(expectedBitmap, actualBitmap);
     }

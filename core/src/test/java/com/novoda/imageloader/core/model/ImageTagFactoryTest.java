@@ -28,7 +28,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class ImageTagFactoryTest {
-    
+
     private ImageTagFactory imageTagFactory;
     private int height = 12;
     private int width = 9;
@@ -36,16 +36,16 @@ public class ImageTagFactoryTest {
     private String url = "google.com";
 
     private final AnimationHelper animationHelper = mock(AnimationHelper.class);
-    
+
     @Before
     public void beforeEachTest() {
         imageTagFactory = ImageTagFactory.getInstance(9, 12, 1);
     }
-    
+
     @Test
     public void shouldSetNormalPropertiesOnTheImageTag() {
         ImageTag imageTag = buildTag();
-        
+
         assertEquals(defaultResourceId, imageTag.getLoadingResourceId());
         assertEquals(defaultResourceId, imageTag.getNotFoundResourceId());
         assertEquals(height, imageTag.getHeight());
@@ -59,27 +59,27 @@ public class ImageTagFactoryTest {
         int previewWidth = 2;
         imageTagFactory.usePreviewImage(previewWidth, previewHeight, true);
         ImageTag imageTag = buildTag();
-        
+
         assertEquals(previewHeight, imageTag.getPreviewHeight());
         assertEquals(previewWidth, imageTag.getPreviewWidth());
     }
-    
+
     @Test
     public void shouldUseTheSameUrlForPreview() {
         imageTagFactory.usePreviewImage(1, 1, true);
         ImageTag imageTag = buildTag();
-        
+
         assertEquals(url, imageTag.getPreviewUrl());
     }
-    
+
     @Test
     public void shouldNotUseTheSameUrlForPreview() {
         imageTagFactory.usePreviewImage(1, 1, false);
         ImageTag imageTag = buildTag();
-        
+
         assertNull(imageTag.getPreviewUrl());
     }
-    
+
     @Test
     public void shouldUseDisplaySizes() {
         //TODO: Test failing when targeting API 17 because of the final Display class
@@ -93,7 +93,7 @@ public class ImageTagFactoryTest {
         assertEquals(12, imageTag.getWidth());
     }
 
-    @Test (expected = RuntimeException.class)
+    @Test(expected = RuntimeException.class)
     public void shouldComplainAboutUnsetParameters() {
         imageTagFactory = ImageTagFactory.getInstance();
         buildTag();

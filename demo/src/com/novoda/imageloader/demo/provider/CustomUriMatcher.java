@@ -42,6 +42,6 @@ public class CustomUriMatcher extends UriMatcher {
     }
 
     public static final String[] getIdSelectionArgumentsFromUri(Uri uri) {
-        return new String[] { uri.getPathSegments().get(1) };
+        return new String[]{uri.getPathSegments().get(1)};
     }
 }

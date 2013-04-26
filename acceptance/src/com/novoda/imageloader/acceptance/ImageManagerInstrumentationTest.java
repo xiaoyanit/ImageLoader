@@ -10,20 +10,20 @@ import com.novoda.imageloader.core.*;
  */
 public class ImageManagerInstrumentationTest extends InstrumentationTestCase {
 
-	public ImageManagerInstrumentationTest(String name) {
-		super();
-		setName(name);
-	}
+    public ImageManagerInstrumentationTest(String name) {
+        super();
+        setName(name);
+    }
 
-	@Suppress()
-	// XXX No assertions so not running - gives NPE
-	public void testCacheImage() {
-		// Bitmap bmOriginal = BitmapFactory.decodeResource(getInstrumentation().getContext().getResources(), R.drawable.icon); // unused
+    @Suppress()
+    // XXX No assertions so not running - gives NPE
+    public void testCacheImage() {
+        // Bitmap bmOriginal = BitmapFactory.decodeResource(getInstrumentation().getContext().getResources(), R.drawable.icon); // unused
 
-		LoaderSettings settings = new LoaderSettings();
+        LoaderSettings settings = new LoaderSettings();
 
-		ImageManager imageManager = new ImageManager(getInstrumentation().getTargetContext(), settings);
-		imageManager.cacheImage("http://king.com/img.png", 100, 100);
+        ImageManager imageManager = new ImageManager(getInstrumentation().getTargetContext(), settings);
+        imageManager.cacheImage("http://king.com/img.png", 100, 100);
 
-	}
+    }
 }

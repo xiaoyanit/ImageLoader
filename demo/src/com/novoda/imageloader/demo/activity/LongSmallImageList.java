@@ -18,26 +18,26 @@ import java.util.Locale;
  */
 public class LongSmallImageList extends ImageLoaderBaseActivity {
 
-	private static final int SIZE = 80;
+    private static final int SIZE = 80;
 
-	@Override
-	protected String getTableName() {
-		return LongSmallImageList.class.getSimpleName().toLowerCase(Locale.UK);
-	}
+    @Override
+    protected String getTableName() {
+        return LongSmallImageList.class.getSimpleName().toLowerCase(Locale.UK);
+    }
 
-	@Override
-	protected int getImageItemLayout() {
-		return R.layout.small_image_item;
-	}
+    @Override
+    protected int getImageItemLayout() {
+        return R.layout.small_image_item;
+    }
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         /**
          * TODO Need to prepare imageLoader and imageTagFactory, generally we keep and instance of ImageManager and ImageTagFactory
          */
         initImageLoader();
-	}
+    }
 
     private void initImageLoader() {
         imageManager = DemoApplication.getImageLoader();
@@ -46,31 +46,31 @@ public class LongSmallImageList extends ImageLoaderBaseActivity {
     }
 
     private ImageTagFactory createImageTagFactory() {
-		ImageTagFactory imageTagFactory = ImageTagFactory.newInstance();
-		imageTagFactory.setHeight(SIZE);
-		imageTagFactory.setWidth(SIZE);
-		imageTagFactory.setDefaultImageResId(R.drawable.bg_img_loading);
-		imageTagFactory.setErrorImageId(R.drawable.bg_img_notfound);
-		imageTagFactory.setSaveThumbnail(true);
-		return imageTagFactory;
-	}
+        ImageTagFactory imageTagFactory = ImageTagFactory.newInstance();
+        imageTagFactory.setHeight(SIZE);
+        imageTagFactory.setWidth(SIZE);
+        imageTagFactory.setDefaultImageResId(R.drawable.bg_img_loading);
+        imageTagFactory.setErrorImageId(R.drawable.bg_img_notfound);
+        imageTagFactory.setSaveThumbnail(true);
+        return imageTagFactory;
+    }
 
-	/**
-	 * TODO Generally you will have a binder where you have to set the tag and load the image.
-	 */
-	@Override
-	protected ViewBinder getViewBinder() {
-		return new ViewBinder() {
-			@Override
-			public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-				String url = cursor.getString(columnIndex);
+    /**
+     * TODO Generally you will have a binder where you have to set the tag and load the image.
+     */
+    @Override
+    protected ViewBinder getViewBinder() {
+        return new ViewBinder() {
+            @Override
+            public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+                String url = cursor.getString(columnIndex);
                 setImageTag((ImageView) view, url);
                 loadImage((ImageView) view);
                 return true;
-			}
+            }
 
-		};
-	}
+        };
+    }
 
     private void setImageTag(ImageView view, String url) {
         view.setTag(imageTagFactory.build(url, this));

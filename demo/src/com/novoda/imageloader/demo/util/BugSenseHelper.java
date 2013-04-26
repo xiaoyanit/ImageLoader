@@ -1,6 +1,7 @@
 package com.novoda.imageloader.demo.util;
 
 import android.content.Context;
+
 import com.bugsense.trace.BugSenseHandler;
 
 import java.io.IOException;
@@ -29,8 +30,8 @@ public class BugSenseHelper {
     }
 
     private void initBugSenseIfKeyIsAvailable() throws IOException {
-            String key = getApiKeyFromAssets();
-            BugSenseHandler.initAndStartSession(context, key);
+        String key = getApiKeyFromAssets();
+        BugSenseHandler.initAndStartSession(context, key);
     }
 
     private String getApiKeyFromAssets() throws IOException {
@@ -42,7 +43,7 @@ public class BugSenseHelper {
     private String readInputStream(InputStream in) throws IOException {
         StringBuffer stream = new StringBuffer();
         byte[] b = new byte[4096];
-        for (int n; (n = in.read(b)) != -1;) {
+        for (int n; (n = in.read(b)) != -1; ) {
             stream.append(new String(b, 0, n));
         }
 
@@ -54,6 +55,5 @@ public class BugSenseHelper {
             BugSenseHandler.closeSession(context);
         }
     }
-
 
 }

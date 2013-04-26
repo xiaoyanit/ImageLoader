@@ -19,22 +19,22 @@ import java.util.Locale;
  */
 public class ImageLongList extends ImageLoaderBaseActivity {
 
-	private static final int SIZE = 400;
+    private static final int SIZE = 400;
 
-	@Override
-	protected String getTableName() {
-		return ImageLongList.class.getSimpleName().toLowerCase(Locale.UK);
-	}
+    @Override
+    protected String getTableName() {
+        return ImageLongList.class.getSimpleName().toLowerCase(Locale.UK);
+    }
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         /**
          * TODO Need to prepare imageLoader and imageTagFactory, generally we keep and instance of ImageManager and ImageTagFactory
          */
         initImageLoader();
-	}
+    }
 
     private void initImageLoader() {
         imageManager = DemoApplication.getImageLoader();

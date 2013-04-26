@@ -39,7 +39,7 @@ public class SqlFile {
                 continue;
             }
 
-            if (inComment){
+            if (inComment) {
                 continue;
             }
 

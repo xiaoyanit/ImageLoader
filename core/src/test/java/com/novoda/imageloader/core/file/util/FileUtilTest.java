@@ -35,139 +35,139 @@ import junitx.framework.FileAssert;
 
 public class FileUtilTest extends FileTestCase {
 
-	private final FileUtil fileUtil = new FileUtil();
+    private final FileUtil fileUtil = new FileUtil();
 
-	@Before
-	public void beforeEachTest() {
-		createCacheDir();
-	}
+    @Before
+    public void beforeEachTest() {
+        createCacheDir();
+    }
 
-	@After
-	public void afterEachTest() {
-		deleteCacheDir();
-	}
+    @After
+    public void afterEachTest() {
+        deleteCacheDir();
+    }
 
-	@Test
-	public void shouldDeleteAllFiles() {
-		File f1 = createFile("1");
-		File f2 = createFile("2");
+    @Test
+    public void shouldDeleteAllFiles() {
+        File f1 = createFile("1");
+        File f2 = createFile("2");
 
-		assertTrue(fileUtil.deleteFileCache(cacheDir.getAbsolutePath()));
+        assertTrue(fileUtil.deleteFileCache(cacheDir.getAbsolutePath()));
 
-		assertFalse(f1.exists());
-		assertFalse(f2.exists());
-	}
+        assertFalse(f1.exists());
+        assertFalse(f2.exists());
+    }
 
-	@Test
-	public void shouldReduceFiles() {
-		File f1 = createFile("1", 10000);
-		File f2 = createFile("2");
-		File f3 = createFile("3", 105000);
-		File f4 = createFile("4", System.currentTimeMillis());
+    @Test
+    public void shouldReduceFiles() {
+        File f1 = createFile("1", 10000);
+        File f2 = createFile("2");
+        File f3 = createFile("3", 105000);
+        File f4 = createFile("4", System.currentTimeMillis());
 
-		assertTrue(fileUtil.reduceFileCache(cacheDir.getAbsolutePath(), 24 * 3600 * 1000));
+        assertTrue(fileUtil.reduceFileCache(cacheDir.getAbsolutePath(), 24 * 3600 * 1000));
 
-		assertFalse(f1.exists());
-		assertTrue(f2.exists());
-		assertFalse(f3.exists());
-		assertTrue(f4.exists());
-	}
+        assertFalse(f1.exists());
+        assertTrue(f2.exists());
+        assertFalse(f3.exists());
+        assertTrue(f4.exists());
+    }
 
-	@Test
-	public void shouldCloseNonNullCloseable() throws IOException {
-		Closeable closeable = mock(Closeable.class);
+    @Test
+    public void shouldCloseNonNullCloseable() throws IOException {
+        Closeable closeable = mock(Closeable.class);
 
-		fileUtil.closeSilently(closeable);
+        fileUtil.closeSilently(closeable);
 
-		verify(closeable, atLeastOnce()).close();
-	}
+        verify(closeable, atLeastOnce()).close();
+    }
 
-	@Test
-	public void shouldCloseAvoidNullPointers() {
-		fileUtil.closeSilently(null);
-	}
+    @Test
+    public void shouldCloseAvoidNullPointers() {
+        fileUtil.closeSilently(null);
+    }
 
-	@Test
-	public void shouldCloseFailSilently() throws IOException {
-		Closeable closeable = mock(Closeable.class);
-		doThrow(new IOException()).when(closeable).close();
-		fileUtil.closeSilently(closeable);
-	}
+    @Test
+    public void shouldCloseFailSilently() throws IOException {
+        Closeable closeable = mock(Closeable.class);
+        doThrow(new IOException()).when(closeable).close();
+        fileUtil.closeSilently(closeable);
+    }
 
-	@Test
-	public void shouldCopyStream() throws ImageCopyException, URISyntaxException {
-		URL testFile = ClassLoader.getSystemResource("testFile1");
-		File from = new File(testFile.toURI());
-		assertTrue(from.exists());
-		File to = new File(cacheDir.getAbsolutePath() + "testFile1");
+    @Test
+    public void shouldCopyStream() throws ImageCopyException, URISyntaxException {
+        URL testFile = ClassLoader.getSystemResource("testFile1");
+        File from = new File(testFile.toURI());
+        assertTrue(from.exists());
+        File to = new File(cacheDir.getAbsolutePath() + "testFile1");
 
-		fileUtil.copy(from, to);
+        fileUtil.copy(from, to);
 
-		FileAssert.assertBinaryEquals(from, to);
-	}
+        FileAssert.assertBinaryEquals(from, to);
+    }
 
-	@Test(expected = ImageCopyException.class)
-	public void shouldCopyStreamFailWithImageCopyException() throws ImageCopyException {
-		File from = new File("src/test/resources/testFileThatDoesNotExists");
-		File to = new File(cacheDir.getAbsolutePath() + "testFile2");
+    @Test(expected = ImageCopyException.class)
+    public void shouldCopyStreamFailWithImageCopyException() throws ImageCopyException {
+        File from = new File("src/test/resources/testFileThatDoesNotExists");
+        File to = new File(cacheDir.getAbsolutePath() + "testFile2");
 
-		fileUtil.copy(from, to);
-	}
+        fileUtil.copy(from, to);
+    }
 
-	@Test
-	public void shouldCopyStreams() throws FileNotFoundException, URISyntaxException {
-		URL testFile = ClassLoader.getSystemResource("testFile1");
-		File from = new File(testFile.toURI());
-		assertTrue(from.exists());
-		File to = new File(cacheDir.getAbsolutePath() + "testFile3");
-		InputStream in = new FileInputStream(from);
-		OutputStream out = new FileOutputStream(to);
+    @Test
+    public void shouldCopyStreams() throws FileNotFoundException, URISyntaxException {
+        URL testFile = ClassLoader.getSystemResource("testFile1");
+        File from = new File(testFile.toURI());
+        assertTrue(from.exists());
+        File to = new File(cacheDir.getAbsolutePath() + "testFile3");
+        InputStream in = new FileInputStream(from);
+        OutputStream out = new FileOutputStream(to);
 
-		fileUtil.copyStream(in, out);
+        fileUtil.copyStream(in, out);
 
-		FileAssert.assertBinaryEquals(from, to);
-	}
+        FileAssert.assertBinaryEquals(from, to);
+    }
 
-	@Test
-	public void shouldCopyStreamsFailSilently() throws IOException {
-		InputStream from = mock(InputStream.class);
-		when(from.read(any(byte[].class))).thenThrow(new IOException());
-		File to = new File(cacheDir.getAbsolutePath() + "testFile3");
-		OutputStream out = new FileOutputStream(to);
+    @Test
+    public void shouldCopyStreamsFailSilently() throws IOException {
+        InputStream from = mock(InputStream.class);
+        when(from.read(any(byte[].class))).thenThrow(new IOException());
+        File to = new File(cacheDir.getAbsolutePath() + "testFile3");
+        OutputStream out = new FileOutputStream(to);
 
-		fileUtil.copyStream(from, out);
-	}
+        fileUtil.copyStream(from, out);
+    }
 
-	@Test
-	public void shouldPrepareCacheDirectoryOnFileSystemIfIsMounted() {
-		AndroidFileContext fileContext = mock(AndroidFileContext.class);
-		when(fileContext.isMounted()).thenReturn(true);
-		when(fileContext.getPackageName()).thenReturn("com.something");
-		when(fileContext.getExternalStorageDirectory()).thenReturn(cacheDir);
+    @Test
+    public void shouldPrepareCacheDirectoryOnFileSystemIfIsMounted() {
+        AndroidFileContext fileContext = mock(AndroidFileContext.class);
+        when(fileContext.isMounted()).thenReturn(true);
+        when(fileContext.getPackageName()).thenReturn("com.something");
+        when(fileContext.getExternalStorageDirectory()).thenReturn(cacheDir);
 
-		fileUtil.prepareCacheDirectory(fileContext);
+        fileUtil.prepareCacheDirectory(fileContext);
 
-		File expected = new File(cacheDir.getAbsoluteFile() + "/Android/data/com.something/cache/images");
-		assertTrue(expected.exists());
-		assertTrue(expected.isDirectory());
-	}
+        File expected = new File(cacheDir.getAbsoluteFile() + "/Android/data/com.something/cache/images");
+        assertTrue(expected.exists());
+        assertTrue(expected.isDirectory());
+    }
 
-	private File createFile(String name) {
-		return createFile(name, -1);
-	}
+    private File createFile(String name) {
+        return createFile(name, -1);
+    }
 
-	private File createFile(String name, long lastModified) {
-		try {
-			File f1 = new File(cacheDir, name + ".tmp");
-			FileUtils.write(f1, name);
-			if (lastModified != -1) {
-				f1.setLastModified(lastModified);
-			}
-			return f1;
-		} catch (Exception e) {
-			Assert.fail("Can't crete file for the test" + e.getMessage());
-			throw new RuntimeException("Can't crete file for the test " + e.getMessage());
-		}
-	}
+    private File createFile(String name, long lastModified) {
+        try {
+            File f1 = new File(cacheDir, name + ".tmp");
+            FileUtils.write(f1, name);
+            if (lastModified != -1) {
+                f1.setLastModified(lastModified);
+            }
+            return f1;
+        } catch (Exception e) {
+            Assert.fail("Can't crete file for the test" + e.getMessage());
+            throw new RuntimeException("Can't crete file for the test " + e.getMessage());
+        }
+    }
 
 }

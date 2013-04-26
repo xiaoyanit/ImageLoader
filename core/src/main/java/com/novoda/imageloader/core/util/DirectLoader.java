@@ -17,25 +17,25 @@ public class DirectLoader {
 
     private NetworkManager networkManager;
     private BitmapUtil bitmapUtil;
-    
+
     public DirectLoader() {
         this(new UrlNetworkManager(new LoaderSettings()), new BitmapUtil());
     }
-    
+
     public DirectLoader(NetworkManager networkManager, BitmapUtil bitmapUtil) {
         this.networkManager = networkManager;
         this.bitmapUtil = bitmapUtil;
     }
-    
+
     public Bitmap download(String url) {
-        if(url == null) {
-           return null; 
+        if (url == null) {
+            return null;
         }
-        if(url.length() == 0) {
-            return null; 
+        if (url.length() == 0) {
+            return null;
         }
         InputStream is = networkManager.retrieveInputStream(url);
-        if(is == null) {
+        if (is == null) {
             return null;
         }
         return bitmapUtil.decodeInputStream(is);

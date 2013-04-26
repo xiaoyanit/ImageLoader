@@ -12,20 +12,20 @@ public class BitmapUtilsInstrumentationTest extends InstrumentationTestCase {
     private final boolean allowUpSampling = true;
 
     public BitmapUtilsInstrumentationTest(String name) {
-		super();
-		setName(name);
-	}
-	
-	public void test_bitmaputil_scales_bitmaps_to_specified_size(){
-		Bitmap bmOriginal = BitmapFactory.decodeResource(getInstrumentation().getContext().getResources(), R.drawable.icon);
-		assertFalse(bmOriginal.getHeight() == scaledBitmapSize);
-		assertFalse(bmOriginal.getWidth() == scaledBitmapSize);
+        super();
+        setName(name);
+    }
 
-		Bitmap bm = new BitmapUtil().scaleBitmap(bmOriginal, scaledBitmapSize, scaledBitmapSize, allowUpSampling);
-		
-		assertEquals(scaledBitmapSize, bm.getHeight());
-		assertEquals(scaledBitmapSize, bm.getWidth());
-	}
+    public void test_bitmaputil_scales_bitmaps_to_specified_size() {
+        Bitmap bmOriginal = BitmapFactory.decodeResource(getInstrumentation().getContext().getResources(), R.drawable.icon);
+        assertFalse(bmOriginal.getHeight() == scaledBitmapSize);
+        assertFalse(bmOriginal.getWidth() == scaledBitmapSize);
+
+        Bitmap bm = new BitmapUtil().scaleBitmap(bmOriginal, scaledBitmapSize, scaledBitmapSize, allowUpSampling);
+
+        assertEquals(scaledBitmapSize, bm.getHeight());
+        assertEquals(scaledBitmapSize, bm.getWidth());
+    }
 
     public void test_bitmaputil_creates_bitmaps__of_a_specified_size() {
         Bitmap bm = new BitmapUtil().decodeResourceBitmapAndScale(getInstrumentation().getContext(),

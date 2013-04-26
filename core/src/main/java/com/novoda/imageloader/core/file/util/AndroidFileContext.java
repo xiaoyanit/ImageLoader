@@ -15,23 +15,23 @@
  */
 package com.novoda.imageloader.core.file.util;
 
-import java.io.File;
-
 import android.content.Context;
 
+import java.io.File;
+
 /**
- * Internal class to abstract the dependency to specific implementation 
+ * Internal class to abstract the dependency to specific implementation
  * of android functionalities.
  * This class is for internal usage of the imageLoader.
  */
 public class AndroidFileContext {
-    
+
     private Context context;
-    
+
     public AndroidFileContext(Context context) {
         this.context = context;
     }
-    
+
     protected boolean isMounted() {
         if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
             return true;

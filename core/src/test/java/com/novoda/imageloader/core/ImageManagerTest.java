@@ -98,7 +98,7 @@ public class ImageManagerTest {
     }
 
     @Test
-    public void testCacheImage(){
+    public void testCacheImage() {
         setValidImageManagerPermissions();
 
         File file = mock(File.class);
@@ -108,7 +108,7 @@ public class ImageManagerTest {
         final BitmapUtil bmUtil = mock(BitmapUtil.class);
         when(bmUtil.decodeFile(file, 100, 100)).thenReturn(null);
         LoaderSettings loaderSettings = new LoaderSettings() {
-            public BitmapUtil getBitmapUtil(){
+            public BitmapUtil getBitmapUtil() {
                 return bmUtil;
             }
         };
@@ -117,7 +117,6 @@ public class ImageManagerTest {
 
         loaderSettings.setNetworkManager(nm);
         loaderSettings.setFileManager(fm);
-
 
         CacheManager cache = mock(CacheManager.class);
         loaderSettings.setCacheManager(cache);
@@ -141,6 +140,5 @@ public class ImageManagerTest {
         when(pm.checkPermission(Manifest.permission.INTERNET, null)).thenReturn(PackageManager.PERMISSION_GRANTED);
         when(context.getPackageManager()).thenReturn(pm);
     }
-
 
 }

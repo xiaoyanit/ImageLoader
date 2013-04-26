@@ -30,7 +30,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:smoothScrollbar="true"
-    android:visibility="gone"/>
+    android:visibility="gone" />
 
   <GridView
     android:id="@+id/grid_view"
@@ -39,6 +39,6 @@
     android:columnWidth="90dp"
     android:numColumns="auto_fit"
     android:smoothScrollbar="true"
-    android:visibility="gone"/>
+    android:visibility="gone" />
 
 </LinearLayout>

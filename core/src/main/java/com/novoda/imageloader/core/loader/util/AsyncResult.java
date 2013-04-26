@@ -17,10 +17,14 @@ package com.novoda.imageloader.core.loader.util;
 
 import android.os.Message;
 
-/** @hide */
+/**
+ * @hide
+ */
 public class AsyncResult {
 
-    /*************************** Instance Variables **************************/
+    /**
+     * ************************ Instance Variables *************************
+     */
 
     // Expect either exception or result to be null
     public Object userObj;
@@ -29,7 +33,9 @@ public class AsyncResult {
 
     /***************************** Class Methods *****************************/
 
-    /** Saves and sets m.obj */
+    /**
+     * Saves and sets m.obj
+     */
     public static AsyncResult forMessage(Message m, Object r, Throwable ex) {
         AsyncResult ret;
 
@@ -40,7 +46,9 @@ public class AsyncResult {
         return ret;
     }
 
-    /** Saves and sets m.obj */
+    /**
+     * Saves and sets m.obj
+     */
     public static AsyncResult forMessage(Message m) {
         AsyncResult ret;
 
@@ -51,7 +59,9 @@ public class AsyncResult {
         return ret;
     }
 
-    /** please note, this sets m.obj to be this */
+    /**
+     * please note, this sets m.obj to be this
+     */
     public AsyncResult(Object uo, Object r, Throwable ex) {
         userObj = uo;
         result = r;

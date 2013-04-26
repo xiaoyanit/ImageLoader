@@ -12,9 +12,9 @@ public class ImageLoaderDemoActivityTest extends ActivityInstrumentationTestCase
 
     private Solo solo;
 
-	public ImageLoaderDemoActivityTest() {
-		super("com.novoda.imageloader.demo", ImageLongList.class);
-	}
+    public ImageLoaderDemoActivityTest() {
+        super("com.novoda.imageloader.demo", ImageLongList.class);
+    }
 
     @Override
     public void setUp() throws Exception {
@@ -23,17 +23,17 @@ public class ImageLoaderDemoActivityTest extends ActivityInstrumentationTestCase
     }
 
     public void testOpenTheActivity() {
-		assertNotNull(solo);
-	}
+        assertNotNull(solo);
+    }
 
-	public void testScrollingThroughList() {
+    public void testScrollingThroughList() {
         AbsListView list = solo.getCurrentListViews().get(LIST_INDEX);
 
-		for (int i = 0; i < Math.max(2, list.getCount()); i++) {
-			solo.scrollDown();
-		}
+        for (int i = 0; i < Math.max(2, list.getCount()); i++) {
+            solo.scrollDown();
+        }
 
-		assertEquals(list.getLastVisiblePosition(), list.getSelectedItemPosition());
-	}
+        assertEquals(list.getLastVisiblePosition(), list.getSelectedItemPosition());
+    }
 
 }

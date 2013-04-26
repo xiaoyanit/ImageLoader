@@ -30,7 +30,7 @@ import java.util.Map;
 public class UrlNetworkManager implements NetworkManager {
 
     private static final int TEMP_REDIRECT = 307;
-    
+
     private FileUtil fileUtil;
     private LoaderSettings settings;
     private int manualRedirects;
@@ -80,8 +80,8 @@ public class UrlNetworkManager implements NetworkManager {
 
     private void handleHeaders(HttpURLConnection conn) {
         Map<String, String> headers = settings.getHeaders();
-        if(headers != null) {
-            for(String key : headers.keySet()) {
+        if (headers != null) {
+            for (String key : headers.keySet()) {
                 conn.setRequestProperty(key, headers.get(key));
             }
         }

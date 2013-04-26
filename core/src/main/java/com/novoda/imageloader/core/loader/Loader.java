@@ -27,14 +27,13 @@ import java.lang.ref.WeakReference;
  */
 public interface Loader {
 
-	/**
-	 * Initiates the loading process for the given image view. <code>imageView.getTag()</code> has to be of type
-	 * {@link com.novoda.imageloader.core.model.ImageTag}
-	 * 
-	 * @param imageView
-	 *            ImageView with attached image information
-	 */
-	void load(ImageView imageView);
+    /**
+     * Initiates the loading process for the given image view. <code>imageView.getTag()</code> has to be of type
+     * {@link com.novoda.imageloader.core.model.ImageTag}
+     *
+     * @param imageView ImageView with attached image information
+     */
+    void load(ImageView imageView);
 
     void setLoadListener(WeakReference<OnImageLoadedListener> onImageLoadedListener);
 

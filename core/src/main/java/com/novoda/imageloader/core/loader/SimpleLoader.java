@@ -30,26 +30,26 @@ import java.lang.ref.WeakReference;
 
 public class SimpleLoader implements Loader {
 
-	private LoaderSettings loaderSettings;
-	private SingleThreadedLoader singleThreadedLoader;
+    private LoaderSettings loaderSettings;
+    private SingleThreadedLoader singleThreadedLoader;
     private WeakReference<OnImageLoadedListener> onImageLoadedListener;
 
-	public SimpleLoader(LoaderSettings loaderSettings) {
-		this.loaderSettings = loaderSettings;
-		this.singleThreadedLoader = new SingleThreadedLoader() {
-			@Override
-			protected Bitmap loadMissingBitmap(ImageWrapper iw) {
-				return getBitmap(iw.getUrl(), iw.getWidth(), iw.getHeight());
-			}
+    public SimpleLoader(LoaderSettings loaderSettings) {
+        this.loaderSettings = loaderSettings;
+        this.singleThreadedLoader = new SingleThreadedLoader() {
+            @Override
+            protected Bitmap loadMissingBitmap(ImageWrapper iw) {
+                return getBitmap(iw.getUrl(), iw.getWidth(), iw.getHeight());
+            }
 
-			@Override
-			protected void onBitmapLoaded(ImageWrapper iw, Bitmap bmp) {
-				new BitmapDisplayer(bmp, iw).runOnUiThread();
-				SimpleLoader.this.loaderSettings.getCacheManager().put(iw.getUrl(), bmp);
+            @Override
+            protected void onBitmapLoaded(ImageWrapper iw, Bitmap bmp) {
+                new BitmapDisplayer(bmp, iw).runOnUiThread();
+                SimpleLoader.this.loaderSettings.getCacheManager().put(iw.getUrl(), bmp);
                 onImageLoaded(iw.getImageView());
             }
-		};
-	}
+        };
+    }
 
     private void onImageLoaded(ImageView imageView) {
         if (onImageLoadedListener != null) {
@@ -58,36 +58,36 @@ public class SimpleLoader implements Loader {
     }
 
     @Override
-	public void load(ImageView imageView) {
-		ImageWrapper w = new ImageWrapper(imageView);
+    public void load(ImageView imageView) {
+        ImageWrapper w = new ImageWrapper(imageView);
 
-		try {
-			Bitmap b = loaderSettings.getCacheManager().get(w.getUrl(), w.getWidth(), w.getHeight());
-			if (b != null && !b.isRecycled()) {
-				w.setBitmap(b, false);
-				return;
-			}
-			String thumbUrl = w.getPreviewUrl();
-			if (thumbUrl != null) {
-				b = loaderSettings.getCacheManager().get(thumbUrl, w.getPreviewHeight(), w.getPreviewWidth());
-				if (b != null && !b.isRecycled()) {
-					w.setBitmap(b, false);
-				} else {
-					setResource(w, w.getLoadingResourceId());
-				}
-			} else {
-				setResource(w, w.getLoadingResourceId());
-			}
-			if (w.isUseCacheOnly()) {
-				return;
-			}
-			singleThreadedLoader.push(w);
-		} catch (ImageNotFoundException inf) {
-			setResource(w, w.getNotFoundResourceId());
-		} catch (Throwable t) {
-			setResource(w, w.getNotFoundResourceId());
-		}
-	}
+        try {
+            Bitmap b = loaderSettings.getCacheManager().get(w.getUrl(), w.getWidth(), w.getHeight());
+            if (b != null && !b.isRecycled()) {
+                w.setBitmap(b, false);
+                return;
+            }
+            String thumbUrl = w.getPreviewUrl();
+            if (thumbUrl != null) {
+                b = loaderSettings.getCacheManager().get(thumbUrl, w.getPreviewHeight(), w.getPreviewWidth());
+                if (b != null && !b.isRecycled()) {
+                    w.setBitmap(b, false);
+                } else {
+                    setResource(w, w.getLoadingResourceId());
+                }
+            } else {
+                setResource(w, w.getLoadingResourceId());
+            }
+            if (w.isUseCacheOnly()) {
+                return;
+            }
+            singleThreadedLoader.push(w);
+        } catch (ImageNotFoundException inf) {
+            setResource(w, w.getNotFoundResourceId());
+        } catch (Throwable t) {
+            setResource(w, w.getNotFoundResourceId());
+        }
+    }
 
     @Override
     public void setLoadListener(WeakReference<OnImageLoadedListener> onImageLoadedListener) {
@@ -95,29 +95,29 @@ public class SimpleLoader implements Loader {
     }
 
     private Bitmap getBitmap(String url, int width, int height) {
-		if (url != null && url.length() >= 0) {
-			File f = loaderSettings.getFileManager().getFile(url);
-			if (f.exists()) {
-				Bitmap b = loaderSettings.getBitmapUtil().decodeFileAndScale(f, width, height, loaderSettings.isAllowUpsampling());
-				if (b != null && !b.isRecycled()) {
-					return b;
-				}
-			}
-			loaderSettings.getNetworkManager().retrieveImage(url, f);
-			return loaderSettings.getBitmapUtil().decodeFileAndScale(f, width, height, loaderSettings.isAllowUpsampling());
-		}
-		return null;
-	}
+        if (url != null && url.length() >= 0) {
+            File f = loaderSettings.getFileManager().getFile(url);
+            if (f.exists()) {
+                Bitmap b = loaderSettings.getBitmapUtil().decodeFileAndScale(f, width, height, loaderSettings.isAllowUpsampling());
+                if (b != null && !b.isRecycled()) {
+                    return b;
+                }
+            }
+            loaderSettings.getNetworkManager().retrieveImage(url, f);
+            return loaderSettings.getBitmapUtil().decodeFileAndScale(f, width, height, loaderSettings.isAllowUpsampling());
+        }
+        return null;
+    }
 
-	private void setResource(ImageWrapper w, int resId) {
-		Bitmap b = loaderSettings.getResCacheManager().get("" + resId, w.getWidth(), w.getHeight());
-		if (b != null) {
-			w.setBitmap(b, false);
-			return;
-		}
-		b = loaderSettings.getBitmapUtil().decodeResourceBitmapAndScale(w, resId, loaderSettings.isAllowUpsampling());
-		loaderSettings.getResCacheManager().put("" + resId, b);
-		w.setBitmap(b, false);
-	}
+    private void setResource(ImageWrapper w, int resId) {
+        Bitmap b = loaderSettings.getResCacheManager().get("" + resId, w.getWidth(), w.getHeight());
+        if (b != null) {
+            w.setBitmap(b, false);
+            return;
+        }
+        b = loaderSettings.getBitmapUtil().decodeResourceBitmapAndScale(w, resId, loaderSettings.isAllowUpsampling());
+        loaderSettings.getResCacheManager().put("" + resId, b);
+        w.setBitmap(b, false);
+    }
 
 }

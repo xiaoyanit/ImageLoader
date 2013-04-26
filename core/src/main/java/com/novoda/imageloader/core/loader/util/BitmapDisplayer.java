@@ -16,29 +16,30 @@
 package com.novoda.imageloader.core.loader.util;
 
 import android.graphics.Bitmap;
+
 import com.novoda.imageloader.core.model.ImageWrapper;
 
 public class BitmapDisplayer implements Runnable {
-  private Bitmap bitmap;
-  private ImageWrapper imageWrapper;
+    private Bitmap bitmap;
+    private ImageWrapper imageWrapper;
 
-  public BitmapDisplayer(Bitmap bitmap, ImageWrapper imageWrapper) {
-    this.bitmap = bitmap;
-    this.imageWrapper = imageWrapper;
-  }
-  
-  public void runOnUiThread() {
-  	imageWrapper.runOnUiThread(this);
-  }
-
-  @Override
-  public void run() {
-    if (bitmap == null) {
-      return;
+    public BitmapDisplayer(Bitmap bitmap, ImageWrapper imageWrapper) {
+        this.bitmap = bitmap;
+        this.imageWrapper = imageWrapper;
     }
-    if(imageWrapper.isUrlChanged()) {
-  		return;
-  	}
-    imageWrapper.setBitmap(bitmap, false);
-  }
+
+    public void runOnUiThread() {
+        imageWrapper.runOnUiThread(this);
+    }
+
+    @Override
+    public void run() {
+        if (bitmap == null) {
+            return;
+        }
+        if (imageWrapper.isUrlChanged()) {
+            return;
+        }
+        imageWrapper.setBitmap(bitmap, false);
+    }
 }
