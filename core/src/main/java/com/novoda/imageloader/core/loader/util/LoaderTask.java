@@ -15,8 +15,10 @@
  */
 package com.novoda.imageloader.core.loader.util;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.Uri;
 
 import com.novoda.imageloader.core.LoaderSettings;
 import com.novoda.imageloader.core.OnImageLoadedListener;
@@ -61,20 +63,42 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
             return getNotFoundImage(imageWrapper.getContext());
         }
 
-        if (hasImageViewUrlChanged(imageWrapper)) {
-            return null;
-        }
-
         File imageFile = getImageFile(imageWrapper);
         if (!imageFile.exists()) {
             if (useCacheOnly) {
                 return null;
             }
-            try {
-                loaderSettings.getNetworkManager().retrieveImage(url, imageFile);
-            } catch (ImageNotFoundException inf) {
-                return getNotFoundImage(imageWrapper.getContext());
+            Uri uri = Uri.parse(url);
+            if (isFromFileSystem(uri)) {
+                return getLocalImage(uri);
+            } else {
+                return getNetworkImage(imageFile, uri);
             }
+        }
+        if (hasImageViewUrlChanged(imageWrapper)) {
+            return null;
+        }
+        return getImageFromFile(imageFile);
+    }
+
+    private boolean isFromFileSystem(Uri uri) {
+        return uri.getScheme().equalsIgnoreCase(ContentResolver.SCHEME_FILE);
+    }
+
+    private Bitmap getLocalImage(Uri uri) {
+        File image = new File(uri.getPath());
+        if (image.exists()) {
+            return getImageFromFile(image);
+        } else {
+            return getNotFoundImage(imageWrapper.getContext());
+        }
+    }
+
+    private Bitmap getNetworkImage(File imageFile, Uri uri) {
+        try {
+            loaderSettings.getNetworkManager().retrieveImage(uri.getPath(), imageFile);
+        } catch (ImageNotFoundException inf) {
+            return getNotFoundImage(imageWrapper.getContext());
         }
         if (hasImageViewUrlChanged(imageWrapper)) {
             return null;
