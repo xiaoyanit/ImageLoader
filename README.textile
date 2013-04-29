@@ -8,10 +8,10 @@ Image download happens off the UI thread and the images are cached with a two-le
 h2. Recent changes
 
 h3. 1.5.9
-*Fixed flickering when dataset is refreshed even when an animation has been set #105
-*Fixed the encoding of the request headers as per issue #104
+* Fixed flickering when dataset is refreshed even when an animation has been set "#105" :https://github.com/novoda/ImageLoader/issue/105
+* Fixed the encoding of the request headers as per issue "#104":https://github.com/novoda/ImageLoader/issue/104
 
-*Added ability to use Image loader for local images, just use the Uri path of the file #106
+* Added ability to use Image loader for local images, just use the Uri path of the file "#106":https://github.com/novoda/ImageLoader/issue/106
 
 h3. 1.5.8
 * Deprecated LoaderContext, LoaderSettings now contains the logic.
