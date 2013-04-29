@@ -1,5 +1,3 @@
-<a href='http://ci.novoda.com/job/ImageLoader/'><img src='http://ci.novoda.com/job/ImageLoader/badge/icon'></a>   
-
 h1. ImageLoader
 
 ImageLoader is a simple library that makes it easy to download, display and cache remote images in Android apps. 
@@ -11,7 +9,7 @@ h3. 1.5.9
 * Fixed flickering when dataset is refreshed even when an animation has been set "#105":https://github.com/novoda/ImageLoader/issue/105
 * Fixed the encoding of the request headers as per issue "#104":https://github.com/novoda/ImageLoader/issue/104
 * Added ability to use Image loader for local images, just use the Uri path of the file "#106":https://github.com/novoda/ImageLoader/issue/106
-* Recently there has been some issues with Robotium 3.6 failing with following error `Test failed to run to completion. Reason: 'Instrumentation run failed due to 'java.lang.IllegalAccessError''.`
+* Recently there has been some issues with Robotium 3.6 failing with following error ````Test failed to run to completion. Reason: 'Instrumentation run failed due to 'java.lang.IllegalAccessError''.````
   If you face this problem open module settings in your IDE and make sure that all dependencies scope beside Robotium are "Provided" and only Robotium is "Compile"
 
 h3. 1.5.8
