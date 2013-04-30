@@ -96,7 +96,7 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
 
     private Bitmap getNetworkImage(File imageFile, Uri uri) {
         try {
-            loaderSettings.getNetworkManager().retrieveImage(uri.getPath(), imageFile);
+            loaderSettings.getNetworkManager().retrieveImage(uri.toString(), imageFile);
         } catch (ImageNotFoundException inf) {
             return getNotFoundImage(imageWrapper.getContext());
         }
