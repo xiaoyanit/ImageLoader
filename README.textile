@@ -297,6 +297,7 @@ h2. "Contributors":https://github.com/novoda/ImageLoader/graphs/contributors
 * "vipulnsward":https://github.com/vipulnsward
 * "peter-budo":https://github.com/peter-budo
 * "Dorvaryn":https://github.com/Dorvaryn
+* "acantro1":https://github.com/acantro1
 
 h2. License
 
