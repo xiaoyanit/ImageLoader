@@ -29,18 +29,18 @@ import java.lang.ref.WeakReference;
  */
 public class ImageTag {
 
-	private final String url;
-	private String previewUrl;
-	private final int loadingResourceId;
-	private final int notFoundResourceId;
-	private final int height;
-	private final int width;
+    private String url;
+    private String previewUrl;
+    private final int loadingResourceId;
+    private final int notFoundResourceId;
+    private final int height;
+    private final int width;
 
-	private int previewHeight;
-	private int previewWidth;
-	private boolean useOnlyCache;
-	private boolean saveThumbnail;
-	private Animation animation;
+    private int previewHeight;
+    private int previewWidth;
+    private boolean useOnlyCache;
+    private boolean saveThumbnail;
+    private Animation animation;
     private String description;
 	private WeakReference<LoaderTask> loaderTaskReference;
 
