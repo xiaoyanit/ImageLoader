@@ -28,7 +28,7 @@ import java.lang.ref.WeakReference;
  */
 public class ImageTag {
 
-    private final String url;
+    private String url;
     private String previewUrl;
     private final int loadingResourceId;
     private final int notFoundResourceId;

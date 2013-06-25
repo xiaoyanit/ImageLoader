@@ -49,6 +49,9 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
         this.imageWrapper = imageWrapper;
         this.loaderSettings = loaderSettings;
         this.onImageLoadedListener = onImageLoadedListener;
+        if(imageWrapper != null){
+            setTagInformation(imageWrapper);
+        }
     }
 
     @Override

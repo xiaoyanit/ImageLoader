@@ -50,7 +50,7 @@ public class ConcurrentLoader implements Loader {
         return imageView.getTag() != null;
     }
 
-    private void loadBitmap(ImageWrapper w) {
+    private synchronized void loadBitmap(ImageWrapper w) {
         if (!isTaskAlreadyRunning(w)) {
             if (isBitmapAlreadyInCache(getCachedBitmap(w))) {
                 Bitmap cachedBitmap = getCachedBitmap(w);
@@ -138,7 +138,7 @@ public class ConcurrentLoader implements Loader {
             return false;
         }
 
-        if ((!imageWrapper.getUrl().equals(oldTask.getUrl()))) {
+        if (imageWrapper.getUrl().equals(oldTask.getUrl())) {
             return true;
         }
         oldTask.cancel(true);
