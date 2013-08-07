@@ -27,6 +27,10 @@
       <id>public-mvn-repo-releases</id>
       <url>https://github.com/novoda/public-mvn-repo/raw/master/releases</url>
     </repository>
+    <repository>
+      <id>sonatype-snapshot</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </repository>
   </repositories>
 
   <scm>
