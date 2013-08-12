@@ -116,4 +116,8 @@
     <module name="TodoComment"/>
     <module name="UpperEll"/>
   </module>
+
+  <module name="SuppressionFilter">
+    <property name="file" value="team-props/checkstyle-suppressions.xml" />
+  </module>
 </module>
