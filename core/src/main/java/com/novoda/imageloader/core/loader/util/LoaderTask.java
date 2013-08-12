@@ -85,7 +85,7 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
     }
 
     private boolean isFromFileSystem(Uri uri) {
-        return uri.getScheme().equalsIgnoreCase(ContentResolver.SCHEME_FILE);
+        return uri.getScheme() != null ? uri.getScheme().equalsIgnoreCase(ContentResolver.SCHEME_FILE) : true;
     }
 
     private Bitmap getLocalImage(Uri uri) {
