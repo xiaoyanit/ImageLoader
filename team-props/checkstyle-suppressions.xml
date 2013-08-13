@@ -5,4 +5,9 @@
   <!--MAGIC NUMBER CHECK-->
   <suppress checks="MagicNumberCheck"
     files=".*[/\\]acceptance[/\\]src[/\\]com[/\\]novoda[/\\]imageloader[/\\]acceptance[/\\][^/\\]+" />
+
+
+  <!--METHOD NAME CHECK-->
+  <suppress checks="MethodNameCheck"
+    files=".*[/\\]acceptance[/\\]src[/\\]com[/\\]novoda[/\\]imageloader[/\\]acceptance[/\\][^/\\]+" />
 </suppressions>
