@@ -150,10 +150,10 @@ public abstract class AsyncTask<Params, Progress, Result> {
     private static final BlockingQueue<Runnable> sWorkQueue = new LinkedBlockingQueue<Runnable>();
 
     private static final ThreadFactory sThreadFactory = new ThreadFactory() {
-        private final AtomicInteger mCount = new AtomicInteger(1);
+        private final AtomicInteger count = new AtomicInteger(1);
 
         public Thread newThread(Runnable r) {
-            return new Thread(r, "ImageLoader #" + mCount.getAndIncrement());
+            return new Thread(r, "ImageLoader #" + count.getAndIncrement());
         }
     };
 
@@ -166,10 +166,10 @@ public abstract class AsyncTask<Params, Progress, Result> {
 
     private static final InternalHandler sHandler = new InternalHandler();
 
-    private final WorkerRunnable<Params, Result> mWorker;
-    private final FutureTask<Result> mFuture;
+    private final WorkerRunnable<Params, Result> worker;
+    private final FutureTask<Result> futureTask;
 
-    private volatile Status mStatus = Status.PENDING;
+    private volatile Status status = Status.PENDING;
 
     /**
      * Indicates the current status of the task. Each status will be set only
@@ -195,14 +195,14 @@ public abstract class AsyncTask<Params, Progress, Result> {
      * UI thread.
      */
     public AsyncTask() {
-        mWorker = new WorkerRunnable<Params, Result>() {
+        worker = new WorkerRunnable<Params, Result>() {
             public Result call() throws Exception {
                 android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
-                return doInBackground(mParams);
+                return doInBackground(params);
             }
         };
 
-        mFuture = new FutureTask<Result>(mWorker) {
+        futureTask = new FutureTask<Result>(worker) {
             @SuppressWarnings("unchecked")
             @Override
             protected void done() {
@@ -237,7 +237,7 @@ public abstract class AsyncTask<Params, Progress, Result> {
      * @return The current status.
      */
     public final Status getStatus() {
-        return mStatus;
+        return status;
     }
 
     /**
@@ -306,7 +306,7 @@ public abstract class AsyncTask<Params, Progress, Result> {
      * @see #cancel(boolean)
      */
     public final boolean isCancelled() {
-        return mFuture.isCancelled();
+        return futureTask.isCancelled();
     }
 
     /**
@@ -328,7 +328,7 @@ public abstract class AsyncTask<Params, Progress, Result> {
      * @see #onCancelled()
      */
     public final boolean cancel(boolean mayInterruptIfRunning) {
-        return mFuture.cancel(mayInterruptIfRunning);
+        return futureTask.cancel(mayInterruptIfRunning);
     }
 
     /**
@@ -341,7 +341,7 @@ public abstract class AsyncTask<Params, Progress, Result> {
      * @throws InterruptedException  If the current thread was interrupted while waiting.
      */
     public final Result get() throws InterruptedException, ExecutionException {
-        return mFuture.get();
+        return futureTask.get();
     }
 
     /**
@@ -358,7 +358,7 @@ public abstract class AsyncTask<Params, Progress, Result> {
      */
     public final Result get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException,
             TimeoutException {
-        return mFuture.get(timeout, unit);
+        return futureTask.get(timeout, unit);
     }
 
     /**
@@ -374,25 +374,25 @@ public abstract class AsyncTask<Params, Progress, Result> {
      *                               {@link AsyncTask.Status#FINISHED}.
      */
     public final AsyncTask<Params, Progress, Result> execute(Params... params) {
-        if (mStatus != Status.PENDING) {
-            switch (mStatus) {
+        if (status != Status.PENDING) {
+            switch (status) {
                 case RUNNING:
                     throw new IllegalStateException("Cannot execute task:" + " the task is already running.");
                 case FINISHED:
                     throw new IllegalStateException("Cannot execute task:" + " the task has already been executed "
                             + "(a task can be executed only once)");
                 default:
-                    Log.w(AsyncTask.class.getSimpleName(), "Switch did not deal with following status " + mStatus);
+                    Log.w(AsyncTask.class.getSimpleName(), "Switch did not deal with following status " + status);
                     break;
             }
         }
 
-        mStatus = Status.RUNNING;
+        status = Status.RUNNING;
 
         onPreExecute();
 
-        mWorker.mParams = params;
-        sExecutor.execute(mFuture);
+        worker.params = params;
+        sExecutor.execute(futureTask);
 
         return this;
     }
@@ -416,7 +416,7 @@ public abstract class AsyncTask<Params, Progress, Result> {
             result = null;
         }
         onPostExecute(result);
-        mStatus = Status.FINISHED;
+        status = Status.FINISHED;
     }
 
     private static class InternalHandler extends Handler {
@@ -427,13 +427,13 @@ public abstract class AsyncTask<Params, Progress, Result> {
             switch (msg.what) {
                 case MESSAGE_POST_RESULT:
                     // There is only one result
-                    result.mTask.finish(result.mData[0]);
+                    result.asyncTask.finish(result.data[0]);
                     break;
                 case MESSAGE_POST_PROGRESS:
-                    result.mTask.onProgressUpdate(result.mData);
+                    result.asyncTask.onProgressUpdate(result.data);
                     break;
                 case MESSAGE_POST_CANCEL:
-                    result.mTask.onCancelled();
+                    result.asyncTask.onCancelled();
                     break;
                 default:
                     break;
@@ -442,18 +442,18 @@ public abstract class AsyncTask<Params, Progress, Result> {
     }
 
     private static abstract class WorkerRunnable<Params, Result> implements Callable<Result> {
-        Params[] mParams;
+        Params[] params;
     }
 
     private static class AsyncTaskResult<Data> {
         @SuppressWarnings("rawtypes")
-        final AsyncTask mTask;
-        final Data[] mData;
+        final AsyncTask asyncTask;
+        final Data[] data;
 
         @SuppressWarnings("rawtypes")
         AsyncTaskResult(AsyncTask task, Data... data) {
-            mTask = task;
-            mData = data;
+            asyncTask = task;
+            this.data = data;
         }
     }
 }
