@@ -380,6 +380,8 @@ public abstract class AsyncTask<Params, Progress, Result> {
                 case FINISHED:
                     throw new IllegalStateException("Cannot execute task:" + " the task has already been executed "
                             + "(a task can be executed only once)");
+                default:
+                    break;
             }
         }
 
@@ -430,6 +432,8 @@ public abstract class AsyncTask<Params, Progress, Result> {
                     break;
                 case MESSAGE_POST_CANCEL:
                     result.mTask.onCancelled();
+                    break;
+                default:
                     break;
             }
         }

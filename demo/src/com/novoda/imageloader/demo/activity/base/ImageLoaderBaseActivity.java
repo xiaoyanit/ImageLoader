@@ -96,6 +96,8 @@ public abstract class ImageLoaderBaseActivity extends Activity implements View.O
                 setCacheModeText();
                 imageTagFactory.setUseOnlyCache(useCacheFlag);
                 break;
+            default:
+                break;
         }
     }
 
