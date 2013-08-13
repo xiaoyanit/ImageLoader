@@ -115,8 +115,8 @@ public class ConcurrentLoader implements Loader {
     }
 
     private LoaderTask createTask(ImageWrapper imageWrapper) {
-        return onImageLoadedListener == null ? new LoaderTask(imageWrapper, loaderSettings) :
-                new LoaderTask(imageWrapper, loaderSettings, onImageLoadedListener);
+        return onImageLoadedListener == null ? new LoaderTask(imageWrapper, loaderSettings)
+                : new LoaderTask(imageWrapper, loaderSettings, onImageLoadedListener);
     }
 
     @Override
