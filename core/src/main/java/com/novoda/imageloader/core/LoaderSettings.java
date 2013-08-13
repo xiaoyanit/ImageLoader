@@ -43,7 +43,7 @@ import java.util.Map;
  */
 public class LoaderSettings {
 
-    private static final long DEFAULT_EXPIRATION_PERIOD = 7l * 24l * 3600l * 1000l;
+    private static final long DEFAULT_EXPIRATION_PERIOD = 7L * 24L * 3600L * 1000L;
     private static final boolean DEFAULT_INCLUDE_QUERY_IN_HASH = true;
     private static final int DEFAULT_CONNECTION_TIMEOUT = 10 * 1000;
     private static final int DEFAULT_READ_TIMEOUT = 10 * 1000;
