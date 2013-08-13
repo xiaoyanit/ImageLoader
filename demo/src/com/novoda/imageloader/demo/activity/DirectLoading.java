@@ -48,8 +48,6 @@ public class DirectLoading extends Activity {
                 Bitmap b = dl.download("http://www.asianweek.com/wp-content/uploads/2012/03/microsoft_logo11.jpg");
                 setImageView(b);
             }
-
-            ;
         }.start();
     }
 
