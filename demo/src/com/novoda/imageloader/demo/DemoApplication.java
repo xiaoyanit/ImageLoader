@@ -54,7 +54,7 @@ public class DemoApplication extends Application {
         settingsBuilder.withAsyncTasks(false);
 
         //You can set a specific directory for caching files on the sdcard
-//        settingsBuilder.withCacheDir(new File("/something"));
+        //settingsBuilder.withCacheDir(new File("/something"));
 
         //Setting this to false means that file cache will use the url without the query part
         //for the generation of the hashname

@@ -96,6 +96,8 @@ public abstract class ImageLoaderBaseActivity extends Activity implements View.O
                 setCacheModeText();
                 imageTagFactory.setUseOnlyCache(useCacheFlag);
                 break;
+            default:
+                break;
         }
     }
 
@@ -118,8 +120,7 @@ public abstract class ImageLoaderBaseActivity extends Activity implements View.O
     }
 
     private boolean intentHasAnimation() {
-        return getIntent().hasExtra("animated") &&
-                getIntent().getIntExtra("animated", AnimationHelper.ANIMATION_DISABLED) != AnimationHelper.ANIMATION_DISABLED;
+        return getIntent().hasExtra("animated") && getIntent().getIntExtra("animated", AnimationHelper.ANIMATION_DISABLED) != AnimationHelper.ANIMATION_DISABLED;
     }
 
 }
