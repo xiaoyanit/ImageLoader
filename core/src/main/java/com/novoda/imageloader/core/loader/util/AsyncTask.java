@@ -17,6 +17,7 @@ package com.novoda.imageloader.core.loader.util;
 
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -381,6 +382,7 @@ public abstract class AsyncTask<Params, Progress, Result> {
                     throw new IllegalStateException("Cannot execute task:" + " the task has already been executed "
                             + "(a task can be executed only once)");
                 default:
+                    Log.w(AsyncTask.class.getSimpleName(), "Switch did not deal with following status " + mStatus);
                     break;
             }
         }
