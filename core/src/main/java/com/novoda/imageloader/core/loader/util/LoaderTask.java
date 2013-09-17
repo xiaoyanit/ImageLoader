@@ -33,7 +33,6 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
     private final ImageWrapper imageWrapper;
     private final LoaderSettings loaderSettings;
     private final WeakReference<OnImageLoadedListener> onImageLoadedListener;
-
     private String url;
     private boolean saveScaledImage;
     private boolean useCacheOnly;
@@ -56,7 +55,7 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
 
     @Override
     protected Bitmap doInBackground(String... args) {
-        if (imageWrapper == null) {
+        if (imageWrapper == null || isCancelled()) {
             return null;
         }
 
