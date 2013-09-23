@@ -72,8 +72,9 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
                 return null;
             }
             Uri uri = Uri.parse(url);
-            if( isContactPhoto(uri) )
+            if( isContactPhoto(uri) ) {
                 return getContactPhoto(uri);
+	    }
             else if (isFromFileSystem(uri)) {
                 return getLocalImage(uri);
             } else {
@@ -86,7 +87,8 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
         return getImageFromFile(imageFile);
     }
 
-    private boolean isContactPhoto(Uri uri) {
+    private boolean isContactPhoto(Uri uri) 
+    {
         return uri.toString().startsWith("content://com.android.contacts/");
     }
 
