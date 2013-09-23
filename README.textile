@@ -221,12 +221,12 @@ If you are using Maven you can define the repo and dependency in your POM:
 <pre><code><dependency>
   <groupId>com.novoda.imageloader</groupId>
   <artifactId>imageloader-core</artifactId>
- <version>1.5.8</version>
+ <version>1.5.9</version>
 </dependency></code></pre>
 
 h3. As a .jar
 
-You can also simply include the "latest version":http://search.maven.org/remotecontent?filepath=com/novoda/imageloader/imageloader-core/1.5.8/imageloader-core-1.5.8.jar of the .jar file (v 1.5.8) in you project.
+You can also simply include the "latest version":http://search.maven.org/remotecontent?filepath=com/novoda/imageloader/imageloader-core/1.5.9/imageloader-core-1.5.9.jar of the .jar file (v 1.5.9) in you project.
 
 h2. Helping out
 
