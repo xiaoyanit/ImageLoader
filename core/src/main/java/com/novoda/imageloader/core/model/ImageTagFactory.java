@@ -275,8 +275,8 @@ public final class ImageTagFactory {
     }
 
     private void checkValidTagParameters() {
-        if (defaultImageResId == 0 || width == 0 || height == 0) {
-            throw new RuntimeException("defaultImageResId, width or height was not set before calling build()");
+        if (width == 0 || height == 0) {
+            throw new RuntimeException("width or height was not set before calling build()");
         }
     }
 
