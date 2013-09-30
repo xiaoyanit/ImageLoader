@@ -26,6 +26,7 @@ public class ImageLoaderDemoActivityTest extends ActivityInstrumentationTestCase
         assertNotNull(solo);
     }
 
+    @FlakyTest(tolerance=5)
     public void testScrollingThroughList() {
         AbsListView list = solo.getCurrentListViews().get(LIST_INDEX);
 
