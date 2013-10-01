@@ -1,6 +1,7 @@
 package com.novoda.imageloader.acceptance;
 
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.FlakyTest;
 import android.widget.AbsListView;
 
 import com.jayway.android.robotium.solo.Solo;
