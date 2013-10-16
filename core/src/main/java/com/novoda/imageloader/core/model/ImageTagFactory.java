@@ -247,9 +247,6 @@ public final class ImageTagFactory {
     public ImageTag build(String url, ImageView imageView) {
         ImageTag previousTag = (ImageTag) imageView.getTag();
         ImageTag it = build(url, new AnimationHelper(imageView.getContext()));
-        if (previousTag != null) {
-            it.setLoaderTask(previousTag.getLoaderTask());
-        }
         return it;
     }
 

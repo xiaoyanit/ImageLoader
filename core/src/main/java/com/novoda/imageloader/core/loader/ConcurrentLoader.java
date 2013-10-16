@@ -30,7 +30,6 @@ import java.lang.ref.WeakReference;
 public class ConcurrentLoader implements Loader {
 
     private final LoaderSettings loaderSettings;
-
     private WeakReference<OnImageLoadedListener> onImageLoadedListener;
 
     public ConcurrentLoader(LoaderSettings loaderSettings) {
@@ -51,16 +50,14 @@ public class ConcurrentLoader implements Loader {
     }
 
     private synchronized void loadBitmap(ImageWrapper w) {
-        if (!isTaskAlreadyRunning(w)) {
-            if (isBitmapAlreadyInCache(getCachedBitmap(w))) {
-                Bitmap cachedBitmap = getCachedBitmap(w);
-                w.setBitmap(cachedBitmap, false);
-                return;
-            }
-            setDefaultImage(w);
-            if (!w.isUseCacheOnly()) {
-                startTask(w);
-            }
+        if (isBitmapAlreadyInCache(getCachedBitmap(w))) {
+            Bitmap cachedBitmap = getCachedBitmap(w);
+            w.setBitmap(cachedBitmap, false);
+            return;
+        }
+        setDefaultImage(w);
+        if (!w.isUseCacheOnly()) {
+            startTask(w);
         }
     }
 
@@ -91,7 +88,6 @@ public class ConcurrentLoader implements Loader {
     private void startTask(ImageWrapper w) {
         try {
             LoaderTask task = createTask(w);
-            w.setLoaderTask(task);
             task.execute();
         } catch (ImageNotFoundException inf) {
             w.setResourceBitmap(getResourceAsBitmap(w, w.getNotFoundResourceId()));
@@ -122,27 +118,6 @@ public class ConcurrentLoader implements Loader {
     @Override
     public void setLoadListener(WeakReference<OnImageLoadedListener> onImageLoadedListener) {
         this.onImageLoadedListener = onImageLoadedListener;
-    }
-
-    /**
-     * checks whether a previous task is loading the same url
-     *
-     * @param imageWrapper url of the image to be fetched
-     *                     task that might already fetching an image, might be null
-     * @return false if there is no other concurrent task running
-     */
-
-    private static boolean isTaskAlreadyRunning(ImageWrapper imageWrapper) {
-        LoaderTask oldTask = imageWrapper.getLoaderTask();
-        if (oldTask == null) {
-            return false;
-        }
-
-        if (imageWrapper.getUrl().equals(oldTask.getUrl())) {
-            return true;
-        }
-        oldTask.cancel(true);
-        return false;
     }
 
 }
