@@ -19,10 +19,13 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.view.animation.Animation;
+import android.widget.ImageView;
 
 import com.novoda.imageloader.core.LoaderSettings;
 import com.novoda.imageloader.core.OnImageLoadedListener;
 import com.novoda.imageloader.core.exception.ImageNotFoundException;
+import com.novoda.imageloader.core.model.ImageTag;
 import com.novoda.imageloader.core.model.ImageWrapper;
 
 import java.io.File;
@@ -30,7 +33,6 @@ import java.lang.ref.WeakReference;
 
 public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
 
-    private final ImageWrapper imageWrapper;
     private final LoaderSettings loaderSettings;
     private final WeakReference<OnImageLoadedListener> onImageLoadedListener;
     private String url;
@@ -39,33 +41,33 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
     private int width;
     private int height;
     private int notFoundResourceId;
+    private ImageView imageView;
+    private Context context;
+    private File imageFile;
+    private Animation animation;
 
     public LoaderTask(ImageWrapper imageWrapper, LoaderSettings loaderSettings) {
         this(imageWrapper, loaderSettings, null);
     }
 
     public LoaderTask(ImageWrapper imageWrapper, LoaderSettings loaderSettings, WeakReference<OnImageLoadedListener> onImageLoadedListener) {
-        this.imageWrapper = imageWrapper;
         this.loaderSettings = loaderSettings;
         this.onImageLoadedListener = onImageLoadedListener;
         if (imageWrapper != null) {
-            setTagInformation(imageWrapper);
+            extractWrapperData(imageWrapper);
         }
     }
 
     @Override
     protected Bitmap doInBackground(String... args) {
-        if (imageWrapper == null || isCancelled()) {
+        if (isCancelled()) {
             return null;
         }
 
-        setTagInformation(imageWrapper);
-
         if (url == null || url.length() <= 0 || url.equals("_url_error")) {
-            return getNotFoundImage(imageWrapper.getContext());
+            return getNotFoundImage(context);
         }
 
-        File imageFile = getImageFile(imageWrapper);
         if (!imageFile.exists()) {
             if (useCacheOnly) {
                 return null;
@@ -76,9 +78,6 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
             } else {
                 return getNetworkImage(imageFile, uri);
             }
-        }
-        if (hasImageViewUrlChanged(imageWrapper)) {
-            return null;
         }
         return getImageFromFile(imageFile);
     }
@@ -92,7 +91,7 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
         if (image.exists()) {
             return getImageFromFile(image);
         } else {
-            return getNotFoundImage(imageWrapper.getContext());
+            return getNotFoundImage(context);
         }
     }
 
@@ -100,9 +99,9 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
         try {
             loaderSettings.getNetworkManager().retrieveImage(uri.toString(), imageFile);
         } catch (ImageNotFoundException inf) {
-            return getNotFoundImage(imageWrapper.getContext());
+            return getNotFoundImage(context);
         }
-        if (hasImageViewUrlChanged(imageWrapper)) {
+        if (hasImageViewUrlChanged()) {
             return null;
         }
         return getImageFromFile(imageFile);
@@ -128,12 +127,16 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
         return b;
     }
 
-    private void setTagInformation(ImageWrapper imageWrapper) {
+    private void extractWrapperData(ImageWrapper imageWrapper) {
         url = imageWrapper.getUrl();
         width = imageWrapper.getWidth();
         height = imageWrapper.getHeight();
         notFoundResourceId = imageWrapper.getNotFoundResourceId();
         useCacheOnly = imageWrapper.isUseCacheOnly();
+        imageView = imageWrapper.getImageView();
+        context = imageWrapper.getContext();
+        imageFile = getImageFile(imageWrapper);
+        animation = imageView.getAnimation();
     }
 
     private void saveScaledImage(File imageFile, Bitmap b) {
@@ -154,11 +157,11 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
         return imageFile;
     }
 
-    private boolean hasImageViewUrlChanged(ImageWrapper imageWrapper) {
+    private boolean hasImageViewUrlChanged() {
         if (url == null) {
             return false;
         } else {
-            return !url.equals(imageWrapper.getCurrentUrl());
+            return !url.equals(((ImageTag)imageView.getTag()).getUrl());
         }
     }
 
@@ -168,26 +171,30 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
             return;
         }
         if (isCancelled()) {
-            bitmap = null;
+            bitmap.recycle();
             return;
         }
 
-        if (validateImageView(imageWrapper)) {
-            listenerCallback(imageWrapper);
-            imageWrapper.setBitmap(bitmap, true);
+        if (!hasImageViewUrlChanged()) {
+            listenerCallback();
+            imageView.setImageBitmap(bitmap);
+            stopExistingAnimation();
+            if (animation != null) {
+                imageView.startAnimation(animation);
+            }
         }
     }
 
-    private boolean validateImageView(ImageWrapper imageWrapper) {
-        if (imageWrapper == null || hasImageViewUrlChanged(imageWrapper) || imageWrapper.getLoaderTask() != this) {
-            return false;
+    private void stopExistingAnimation() {
+        Animation old = imageView.getAnimation();
+        if (old != null && !old.hasEnded()) {
+            old.cancel();
         }
-        return true;
     }
 
-    private void listenerCallback(ImageWrapper imageWrapper) {
+    private void listenerCallback() {
         if (onImageLoadedListener != null && onImageLoadedListener.get() != null) {
-            onImageLoadedListener.get().onImageLoaded(imageWrapper.getImageView());
+            onImageLoadedListener.get().onImageLoaded(imageView);
         }
     }
 
