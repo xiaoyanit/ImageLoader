@@ -10,6 +10,7 @@ repositories {
 dependencies {
     compile project(":core")
     compile "com.bugsense.trace:bugsense:3.5"
+    instrumentTestCompile 'com.jayway.android.robotium:robotium-solo:3.6'
 }
 
 android {

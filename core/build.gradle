@@ -14,7 +14,6 @@ dependencies {
     testCompile 'org.powermock:powermock-classloading-objenesis:1.5'
     testCompile 'org.powermock:powermock-api-mockito:1.5'
     testCompile 'junit-addons:junit-addons:1.4'
-    instrumentTestCompile 'com.jayway.android.robotium:robotium-solo:3.6'
 }
 
 android {
