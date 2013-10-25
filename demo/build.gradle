@@ -1,23 +1,15 @@
-buildscript {
-    repositories {
-        maven { url 'http://repo1.maven.org/maven2' }
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:0.6+'
-    }
-}
 apply plugin: 'android'
 
 repositories {
     mavenCentral()
-    maven { 
-      url "http://www.bugsense.com/gradle/" 
-    } 
+    maven {
+        url "http://www.bugsense.com/gradle/"
+    }
 }
 
 dependencies {
-  compile project(":core")
-  compile "com.bugsense.trace:bugsense:3.5"
+    compile project(":core")
+    compile "com.bugsense.trace:bugsense:3.5"
 }
 
 android {
@@ -25,18 +17,18 @@ android {
     buildToolsVersion "18.0.1"
 
     defaultConfig {
-      testPackageName "com.novoda.imageloader.acceptance"
+        testPackageName "com.novoda.imageloader.acceptance"
     }
-    
+
     // define these in a local gradle.properties
-    if (hasProperty('signKeyStore')) {     
-     signingConfigs {
-          release {
-              storeFile file(signKeyStore)
-              storePassword signStorePass
-              keyAlias signAlias
-              keyPassword signAliasPassword
-          }
-      }
+    if (hasProperty('signKeyStore')) {
+        signingConfigs {
+            release {
+                storeFile file(signKeyStore)
+                storePassword signStorePass
+                keyAlias signAlias
+                keyPassword signAliasPassword
+            }
+        }
     }
 }
