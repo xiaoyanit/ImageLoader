@@ -15,11 +15,11 @@ dependencies {
 
 android {
     compileSdkVersion 16
-    buildToolsVersion "18.0.1"
+    buildToolsVersion "18.1.0"
 
     defaultConfig {
         minSdkVersion 9
-        targetSdkVersion 16
+        targetSdkVersion 18
         testPackageName "com.novoda.imageloader.acceptance"
     }
 
