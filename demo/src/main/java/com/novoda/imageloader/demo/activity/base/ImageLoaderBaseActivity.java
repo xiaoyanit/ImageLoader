@@ -66,7 +66,11 @@ public abstract class ImageLoaderBaseActivity extends Activity implements View.O
         if (binder != null) {
             adapter.setViewBinder(binder);
         }
-        view.setAdapter(adapter);
+        if (view instanceof ListView) {
+            ((ListView) view).setAdapter(adapter);
+        } else if (view instanceof GridView) {
+            ((GridView) view).setAdapter(adapter);
+        }
     }
 
     protected abstract ViewBinder getViewBinder();
