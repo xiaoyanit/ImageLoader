@@ -18,8 +18,7 @@ android {
     buildToolsVersion "18.0.1"
 
     defaultConfig {
-      // AbsListView.setAdapter is API 11 and up
-        minSdkVersion 11
+        minSdkVersion 9
         targetSdkVersion 16
         testPackageName "com.novoda.imageloader.acceptance"
     }
