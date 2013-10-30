@@ -17,7 +17,7 @@ buildscript {
 }
 
 allprojects {
-    version = '1.5.11-SNAPSHOT'
+    version = '1.5.11'
 }
 
 subprojects {
