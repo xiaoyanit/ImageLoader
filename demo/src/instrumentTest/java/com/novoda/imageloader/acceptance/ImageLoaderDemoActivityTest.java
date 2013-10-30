@@ -28,9 +28,11 @@ public class ImageLoaderDemoActivityTest extends ActivityInstrumentationTestCase
     public void testScrollingThroughList() {
         solo.waitForActivity(solo.getCurrentActivity().toString());
         AbsListView list = solo.getCurrentListViews().get(LIST_INDEX);
+        
         for (int i = 0; i < Math.max(2, list.getCount()); i++) {
             solo.scrollDown();
         }
+        
         assertEquals(list.getLastVisiblePosition(), list.getSelectedItemPosition());
     }
 
