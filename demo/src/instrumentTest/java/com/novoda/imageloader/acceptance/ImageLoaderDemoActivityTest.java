@@ -8,8 +8,6 @@ import com.novoda.imageloader.demo.activity.ImageLongList;
 import com.novoda.imageloader.demo.R;
 
 public class ImageLoaderDemoActivityTest extends ActivityInstrumentationTestCase2<ImageLongList> {
-
-    private static final int LIST_INDEX = 0;
     private Solo solo;
 
     public ImageLoaderDemoActivityTest() {
@@ -35,5 +33,5 @@ public class ImageLoaderDemoActivityTest extends ActivityInstrumentationTestCase
         
         assertEquals(list.getLastVisiblePosition(), list.getSelectedItemPosition());
     }
-
 }
+
