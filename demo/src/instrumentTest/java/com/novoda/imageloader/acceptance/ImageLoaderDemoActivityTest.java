@@ -24,11 +24,13 @@ public class ImageLoaderDemoActivityTest extends ActivityInstrumentationTestCase
         assertNotNull(solo);
     }
 
-    public void testScrollingThroughList() {
+    public void testScrollingDownTheList() {
         AbsListView list = (AbsListView) solo.getView(R.id.list_view);
+        solo.scrollListToTop(list);
         
-        for (int i = 0; i < Math.max(2, list.getCount()); i++) {
-            solo.scrollDown();
+        boolean shouldScroll = true;
+        while (shouldScroll) {
+            shouldScroll = solo.scrollDownList(list);
         }
         
         assertEquals(list.getLastVisiblePosition(), list.getSelectedItemPosition());
