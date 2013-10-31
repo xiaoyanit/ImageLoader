@@ -1,7 +1,6 @@
 package com.novoda.imageloader.acceptance;
 
 import android.test.ActivityInstrumentationTestCase2;
-import android.util.Log;
 import android.widget.AbsListView;
 
 import com.jayway.android.robotium.solo.Solo;
@@ -29,18 +28,12 @@ public class ImageLoaderDemoActivityTest extends ActivityInstrumentationTestCase
         AbsListView list = (AbsListView) solo.getView(R.id.list_view);
         solo.scrollListToTop(list);
 
-        boolean shouldScroll = true;
-        while (shouldScroll) {
-            shouldScroll = solo.scrollDownList(list);
+        boolean scrollMore = true;
+        while (scrollMore) {
+            scrollMore = solo.scrollDownList(list);
         }
 
-        int lastVisiblePosition = list.getLastVisiblePosition();
-        int selectedPosition = list.getSelectedItemPosition();
-
-        Log.d("IMAGELOADER", "adapter count: " + list.getAdapter().getCount());
-        Log.d("IMAGELOADER", "lastVis: " + lastVisiblePosition);
-        Log.d("IMAGELOADER", "selected: " + selectedPosition);
-        assertEquals(list.getLastVisiblePosition(), list.getSelectedItemPosition());
+        assertEquals(list.getLastVisiblePosition(), list.getAdapter().getCount() - 1);
     }
 }
 
