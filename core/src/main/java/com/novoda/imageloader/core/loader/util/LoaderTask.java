@@ -18,9 +18,11 @@ package com.novoda.imageloader.core.loader.util;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.view.animation.Animation;
 import android.widget.ImageView;
+import android.provider.ContactsContract;
 
 import com.novoda.imageloader.core.LoaderSettings;
 import com.novoda.imageloader.core.OnImageLoadedListener;
@@ -29,6 +31,7 @@ import com.novoda.imageloader.core.model.ImageTag;
 import com.novoda.imageloader.core.model.ImageWrapper;
 
 import java.io.File;
+import java.io.InputStream;
 import java.lang.ref.WeakReference;
 
 public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
@@ -73,13 +76,28 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
                 return null;
             }
             Uri uri = Uri.parse(url);
-            if (isFromFileSystem(uri)) {
+            if( isContactPhoto(uri) ) {
+                return getContactPhoto(uri);
+	    }
+            else if (isFromFileSystem(uri)) {
                 return getLocalImage(uri);
             } else {
                 return getNetworkImage(imageFile, uri);
             }
         }
         return getImageFromFile(imageFile);
+    }
+
+    private boolean isContactPhoto(Uri uri) 
+    {
+        return uri.toString().startsWith("content://com.android.contacts/");
+    }
+
+    private Bitmap getContactPhoto(Uri uri)
+    {
+        InputStream photoDataStream = ContactsContract.Contacts.openContactPhotoInputStream(imageWrapper.getContext().getContentResolver(), uri);
+        Bitmap photo = BitmapFactory.decodeStream(photoDataStream);
+        return photo;
     }
 
     private boolean isFromFileSystem(Uri uri) {
