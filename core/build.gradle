@@ -33,7 +33,7 @@ def isReleaseBuild
 
 def sonatypeRepositoryUrl
 
-if(hasProperty("release")) {
+if (hasProperty("release")) {
     isReleaseBuild = true
     sonatypeRepositoryUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
 } else if (hasProperty("ci")) {
@@ -52,17 +52,16 @@ uploadArchives {
     repositories {
         if (isDevBuild) {
             mavenLocal()
-        }
-        else {
+        } else {
             mavenDeployer {
 
-                
-                if(isReleaseBuild) {
+
+                if (isReleaseBuild) {
                     beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
                 }
 
                 repository(url: sonatypeRepositoryUrl) {
-                  authentication(userName: sonatypeUsername, password: sonatypePassword)
+                    authentication(userName: sonatypeUsername, password: sonatypePassword)
                 }
 
                 pom.project {
@@ -70,44 +69,44 @@ uploadArchives {
                     groupId 'com.novoda.imageloader'
 
 
-                   name 'ImageLoader'
-                   packaging 'jar'
-                   description 'ImageLoader for Android'
-                   url 'http://github.com/novoda/ImageLoader'
+                    name 'ImageLoader'
+                    packaging 'jar'
+                    description 'ImageLoader for Android'
+                    url 'http://github.com/novoda/ImageLoader'
 
-                   scm {
-                       url 'scm:git@github.com:novoda/ImageLoader.git'
-                       connection 'scm:git@github.com:novoda/ImageLoader.git'
-                       developerConnection 'scm:git@github.com:novoda/ImageLoader.git'
-                   }
+                    scm {
+                        url 'scm:git@github.com:novoda/ImageLoader.git'
+                        connection 'scm:git@github.com:novoda/ImageLoader.git'
+                        developerConnection 'scm:git@github.com:novoda/ImageLoader.git'
+                    }
 
-                   licenses {
-                       license {
-                           name 'The Apache Software License, Version 2.0'
-                           url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                           distribution 'repo'
-                       }
-                   }
+                    licenses {
+                        license {
+                            name 'The Apache Software License, Version 2.0'
+                            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                            distribution 'repo'
+                        }
+                    }
 
-                   developers {
+                    developers {
                         developer {
-                           id 'luigiagosti'
-                           name 'Luigi Agosti'
-                       }
-                       developer {
-                           id 'charroch'
-                           name 'Carl-Gustaf Harroch'
-                       }
-                       developer {
+                            id 'luigiagosti'
+                            name 'Luigi Agosti'
+                        }
+                        developer {
+                            id 'charroch'
+                            name 'Carl-Gustaf Harroch'
+                        }
+                        developer {
                             id 'frankiesardo'
                             name 'Frankie Sardo'
-                       }
-                       developer {
+                        }
+                        developer {
                             id 'ataulm'
                             name 'Ataul Munim'
-                       }
-                   }
-               }
+                        }
+                    }
+                }
             }
         }
     }

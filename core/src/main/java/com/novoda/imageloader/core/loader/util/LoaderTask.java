@@ -95,7 +95,7 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
 
     private Bitmap getContactPhoto(Uri uri)
     {
-        InputStream photoDataStream = ContactsContract.Contacts.openContactPhotoInputStream(imageWrapper.getContext().getContentResolver(), uri);
+        InputStream photoDataStream = ContactsContract.Contacts.openContactPhotoInputStream(context.getContentResolver(), uri);
         Bitmap photo = BitmapFactory.decodeStream(photoDataStream);
         return photo;
     }
