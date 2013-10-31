@@ -240,7 +240,7 @@ public final class ImageTagFactory {
      * <p/>
      * If useSameUrlForPreviewImage is set to false the preview url has to be set after building the ImageTag.
      *
-     * @param url url of original image to be shown in a ImageView
+     * @param url       url of original image to be shown in a ImageView
      * @param imageView the imageView the tag will be used on
      * @return an ImageTag to be used as tag property of the ImageView.
      */
@@ -272,8 +272,8 @@ public final class ImageTagFactory {
     }
 
     private void checkValidTagParameters() {
-        if (defaultImageResId == 0 || width == 0 || height == 0) {
-            throw new RuntimeException("defaultImageResId, width or height was not set before calling build()");
+        if (width == 0 || height == 0) {
+            throw new RuntimeException("width or height was not set before calling build()");
         }
     }
 

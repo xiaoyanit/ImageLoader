@@ -1,9 +1,5 @@
 package com.novoda.imageloader.demo.provider;
 
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,6 +10,10 @@ import com.novoda.imageloader.demo.activity.BigImages;
 import com.novoda.imageloader.demo.activity.ImageLongList;
 import com.novoda.imageloader.demo.activity.LongSmallImageList;
 import com.novoda.imageloader.demo.activity.base.ImageLoaderBaseActivity;
+
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseManager extends SQLiteOpenHelper {
 
