@@ -3,7 +3,8 @@ package com.novoda.imageloader.acceptance;
 import android.test.InstrumentationTestCase;
 import android.test.suitebuilder.annotation.Suppress;
 
-import com.novoda.imageloader.core.*;
+import com.novoda.imageloader.core.ImageManager;
+import com.novoda.imageloader.core.LoaderSettings;
 
 /**
  * Created with IntelliJ IDEA. User: friedger Date: 29.10.12 Time: 21:59 To change this template use File | Settings | File Templates.

@@ -20,9 +20,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.provider.ContactsContract;
 import android.view.animation.Animation;
 import android.widget.ImageView;
-import android.provider.ContactsContract;
 
 import com.novoda.imageloader.core.LoaderSettings;
 import com.novoda.imageloader.core.OnImageLoadedListener;
@@ -76,10 +76,9 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
                 return null;
             }
             Uri uri = Uri.parse(url);
-            if( isContactPhoto(uri) ) {
+            if (isContactPhoto(uri)) {
                 return getContactPhoto(uri);
-	    }
-            else if (isFromFileSystem(uri)) {
+            } else if (isFromFileSystem(uri)) {
                 return getLocalImage(uri);
             } else {
                 return getNetworkImage(imageFile, uri);
@@ -88,13 +87,11 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
         return getImageFromFile(imageFile);
     }
 
-    private boolean isContactPhoto(Uri uri) 
-    {
+    private boolean isContactPhoto(Uri uri) {
         return uri.toString().startsWith("content://com.android.contacts/");
     }
 
-    private Bitmap getContactPhoto(Uri uri)
-    {
+    private Bitmap getContactPhoto(Uri uri) {
         InputStream photoDataStream = ContactsContract.Contacts.openContactPhotoInputStream(context.getContentResolver(), uri);
         Bitmap photo = BitmapFactory.decodeStream(photoDataStream);
         return photo;
@@ -179,7 +176,7 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
         if (url == null) {
             return false;
         } else {
-            return !url.equals(((ImageTag)imageView.getTag()).getUrl());
+            return !url.equals(((ImageTag) imageView.getTag()).getUrl());
         }
     }
 
@@ -192,7 +189,6 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
             bitmap.recycle();
             return;
         }
-
         if (!hasImageViewUrlChanged()) {
             listenerCallback();
             imageView.setImageBitmap(bitmap);

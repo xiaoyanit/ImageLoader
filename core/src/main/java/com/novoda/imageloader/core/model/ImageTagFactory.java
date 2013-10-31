@@ -240,7 +240,7 @@ public final class ImageTagFactory {
      * <p/>
      * If useSameUrlForPreviewImage is set to false the preview url has to be set after building the ImageTag.
      *
-     * @param url url of original image to be shown in a ImageView
+     * @param url       url of original image to be shown in a ImageView
      * @param imageView the imageView the tag will be used on
      * @return an ImageTag to be used as tag property of the ImageView.
      */
