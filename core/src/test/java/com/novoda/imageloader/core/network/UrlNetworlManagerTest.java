@@ -15,23 +15,25 @@
  */
 package com.novoda.imageloader.core.network;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
-
 import com.novoda.imageloader.core.LoaderSettings;
 import com.novoda.imageloader.core.exception.ImageNotFoundException;
 import com.novoda.imageloader.core.file.FileTestCase;
 import com.novoda.imageloader.core.file.util.FileUtil;
 
-import org.junit.*;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
 
 public class UrlNetworlManagerTest extends FileTestCase {
 

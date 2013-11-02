@@ -15,7 +15,9 @@
  */
 package com.novoda.imageloader.core.file.util;
 
-import java.io.*;
+import java.io.FilterInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class FlushedInputStream extends FilterInputStream {
 

@@ -9,9 +9,12 @@
 .project
 release.properties
 project.properties
+local.properties
 **/project.properties
 target
 out
 .idea
 *.iml
 classes
+.gradle
+build

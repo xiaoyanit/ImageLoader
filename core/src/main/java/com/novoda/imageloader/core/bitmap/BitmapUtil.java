@@ -21,7 +21,10 @@ import android.graphics.BitmapFactory;
 
 import com.novoda.imageloader.core.model.ImageWrapper;
 
-import java.io.*;
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 /**
  * Utility class abstract the usage of the BitmapFactory. It is shielding the users of this class from bugs and OutOfMemory exceptions.

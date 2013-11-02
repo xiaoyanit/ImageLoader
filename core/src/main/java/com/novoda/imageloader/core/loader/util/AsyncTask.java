@@ -322,8 +322,8 @@ public abstract class AsyncTask<Params, Progress, Result> {
      *                              interrupted; otherwise, in-progress tasks are allowed to
      *                              complete.
      * @return <tt>false</tt> if the task could not be cancelled, typically
-     *         because it has already completed normally; <tt>true</tt>
-     *         otherwise
+     * because it has already completed normally; <tt>true</tt>
+     * otherwise
      * @see #isCancelled()
      * @see #onCancelled()
      */
