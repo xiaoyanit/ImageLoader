@@ -132,6 +132,7 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
 
         if (b == null) {
             // decoding failed
+            loaderSettings.getCacheManager().put(url, b);
             return b;
         }
 
