@@ -125,7 +125,7 @@ public class ImageManagerTest {
 
         imageManager.cacheImage("http://king.com/img.png", 100, 100);
         // file decode failed, therefore nothing in cache
-        verify(cache, never()).put("", null);
+        verify(cache, atLeastOnce()).put("http://king.com/img.png", null);
 
     }
 
