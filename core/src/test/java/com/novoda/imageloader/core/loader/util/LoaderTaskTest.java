@@ -52,6 +52,7 @@ public class LoaderTaskTest {
 
         // file decode failed, therefore nothing in cache
         verify(cache, atLeastOnce()).put("http://king.com/img.png", null);
+        verify(file, atLeastOnce()).delete();
 
     }
 }

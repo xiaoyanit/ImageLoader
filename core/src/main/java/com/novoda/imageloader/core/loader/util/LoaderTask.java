@@ -84,7 +84,20 @@ public class LoaderTask extends AsyncTask<String, Void, Bitmap> {
                 return getNetworkImage(imageFile, uri);
             }
         }
-        return getImageFromFile(imageFile);
+
+        Bitmap bitmap = getImageFromFile(imageFile);
+        if (bitmap == null){
+            onDecodeFailed();
+        }
+        return bitmap;
+    }
+
+    private void onDecodeFailed() {
+        try{
+            imageFile.delete();
+        } catch (SecurityException e){
+            //
+        }
     }
 
     private boolean isContactPhoto(Uri uri) {
