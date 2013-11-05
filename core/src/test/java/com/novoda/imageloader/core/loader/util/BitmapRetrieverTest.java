@@ -17,12 +17,13 @@ import org.junit.Test;
 
 import static org.mockito.Mockito.*;
 
-public class LoaderTaskTest {
+public class BitmapRetrieverTest {
 
     @Test
     public void testCacheImage() {
 
         File file = mock(File.class);
+        when(file.exists()).thenReturn(true);
         FileManager fm = mock(FileManager.class);
         when(fm.getFile("http://king.com/img.png", 100, 100)).thenReturn(file);
 
@@ -42,17 +43,22 @@ public class LoaderTaskTest {
         CacheManager cache = mock(CacheManager.class);
         loaderSettings.setCacheManager(cache);
 
-        ImageView imageView = new ImageView(mock(Context.class));
         ImageTag imageTag = new ImageTag("http://king.com/img.png", 0, 0, 100, 100);
-        imageView.setTag(imageTag);
+        ImageView imageView = createImageView(imageTag);
         ImageWrapper imageWrapper = new ImageWrapper(imageView);
 
-        LoaderTask task = new LoaderTask(imageWrapper, loaderSettings);
-        task.doInBackground();
+        BitmapRetriever retriever = new BitmapRetriever("http://king.com/img.png", file, 100, 100, 0, false, true, imageView, loaderSettings, mock(Context.class));
+        retriever.getBitmap();
 
         // file decode failed, therefore nothing in cache
         verify(cache, atLeastOnce()).put("http://king.com/img.png", null);
         verify(file, atLeastOnce()).delete();
 
+    }
+
+    private ImageView createImageView(ImageTag tag){
+        ImageView imageView = mock(ImageView.class);
+        when(imageView.getTag()).thenReturn(tag);
+        return imageView;
     }
 }
