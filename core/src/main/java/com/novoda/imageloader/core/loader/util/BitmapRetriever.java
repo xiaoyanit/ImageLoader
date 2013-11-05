@@ -44,7 +44,7 @@ public class BitmapRetriever {
 
     public Bitmap getBitmap() {
         if (url == null || url.length() <= 0 || url.equals("_url_error")) {
-            return getNotFoundImage(context);
+            return getNotFoundImage();
         }
 
         if (!imageFile.exists()) {
@@ -64,6 +64,10 @@ public class BitmapRetriever {
         Bitmap bitmap = getImageFromFile(imageFile);
         if (bitmap == null) {
             onDecodeFailed();
+        } else {
+            if (bitmap.isRecycled()){
+                bitmap = null;
+            }
         }
         return bitmap;
     }
@@ -81,9 +85,13 @@ public class BitmapRetriever {
     }
 
     private Bitmap getContactPhoto(Uri uri) {
-        InputStream photoDataStream = ContactsContract.Contacts.openContactPhotoInputStream(context.getContentResolver(), uri);
-        Bitmap photo = BitmapFactory.decodeStream(photoDataStream);
-        return photo;
+        if (context != null){
+            InputStream photoDataStream = ContactsContract.Contacts.openContactPhotoInputStream(context.getContentResolver(), uri);
+            Bitmap photo = BitmapFactory.decodeStream(photoDataStream);
+            return photo;
+        } else {
+            return null;
+        }
     }
 
     private boolean isFromFileSystem(Uri uri) {
@@ -95,7 +103,7 @@ public class BitmapRetriever {
         if (image.exists()) {
             return getImageFromFile(image);
         } else {
-            return getNotFoundImage(context);
+            return getNotFoundImage();
         }
     }
 
@@ -103,7 +111,7 @@ public class BitmapRetriever {
         try {
             loaderSettings.getNetworkManager().retrieveImage(uri.toString(), imageFile);
         } catch (ImageNotFoundException inf) {
-            return getNotFoundImage(context);
+            return getNotFoundImage();
         }
         if (hasImageViewUrlChanged()) {
             return null;
@@ -144,18 +152,20 @@ public class BitmapRetriever {
         loaderSettings.getFileManager().saveBitmap(imageFile.getAbsolutePath(), b, width, height);
     }
 
-    private Bitmap getNotFoundImage(Context c) {
+    private Bitmap getNotFoundImage() {
         String key = "resource" + notFoundResourceId + width + height;
         Bitmap b = loaderSettings.getResCacheManager().get(key, width, height);
         if (b != null) {
             return b;
         }
-        if (loaderSettings.isAlwaysUseOriginalSize()) {
-            b = loaderSettings.getBitmapUtil().decodeResourceBitmap(c, width, height, notFoundResourceId);
-        } else {
-            b = loaderSettings.getBitmapUtil().decodeResourceBitmapAndScale(c, width, height, notFoundResourceId, loaderSettings.isAllowUpsampling());
+        if (context != null){
+            if (loaderSettings.isAlwaysUseOriginalSize()) {
+                b = loaderSettings.getBitmapUtil().decodeResourceBitmap(context, width, height, notFoundResourceId);
+            } else {
+                b = loaderSettings.getBitmapUtil().decodeResourceBitmapAndScale(context, width, height, notFoundResourceId, loaderSettings.isAllowUpsampling());
+            }
+            loaderSettings.getResCacheManager().put(key, b);
         }
-        loaderSettings.getResCacheManager().put(key, b);
         return b;
     }
 
