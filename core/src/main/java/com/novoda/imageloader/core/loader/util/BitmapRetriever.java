@@ -137,7 +137,7 @@ public class BitmapRetriever {
 
         if (b == null) {
             // decoding failed
-            loaderSettings.getCacheManager().put(url, b);
+            loaderSettings.getCacheManager().remove(url);
             return b;
         }
 
