@@ -28,6 +28,8 @@ public interface CacheManager {
 
     void put(String url, Bitmap bmp);
 
+    void remove(String url);
+
     void clean();
 
 }
