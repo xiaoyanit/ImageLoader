@@ -126,11 +126,9 @@ public class ImageManager {
                     b = loaderSettings.getBitmapUtil().decodeFileAndScale(imageFile, width, height, loaderSettings.isAllowUpsampling());
                 }
 
-                if (b == null) {
-                    // decode failed
+                if (b != null) {
                     loaderSettings.getCacheManager().put(url, b);
                 }
-
             } catch (ImageNotFoundException inf) {
                 // no-op
                 inf.printStackTrace();

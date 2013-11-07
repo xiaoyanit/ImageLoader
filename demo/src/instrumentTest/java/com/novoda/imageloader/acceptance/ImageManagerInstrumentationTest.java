@@ -1,7 +1,6 @@
 package com.novoda.imageloader.acceptance;
 
 import android.test.InstrumentationTestCase;
-import android.test.suitebuilder.annotation.Suppress;
 
 import com.novoda.imageloader.core.ImageManager;
 import com.novoda.imageloader.core.LoaderSettings;
@@ -16,15 +15,13 @@ public class ImageManagerInstrumentationTest extends InstrumentationTestCase {
         setName(name);
     }
 
-    @Suppress()
-    // XXX No assertions so not running - gives NPE
     public void testCacheImage() {
-        // Bitmap bmOriginal = BitmapFactory.decodeResource(getInstrumentation().getContext().getResources(), R.drawable.icon); // unused
-
-        LoaderSettings settings = new LoaderSettings();
-
+        LoaderSettings settings = new LoaderSettings.SettingsBuilder().build(getInstrumentation().getContext());
         ImageManager imageManager = new ImageManager(getInstrumentation().getTargetContext(), settings);
-        imageManager.cacheImage("http://king.com/img.png", 100, 100);
 
+        String url = "http://imgur.com/5FirD.png";
+        imageManager.cacheImage(url, 64, 64);
+
+        assertTrue(imageManager.getCacheManager().get(url, 64, 64) != null);
     }
 }
