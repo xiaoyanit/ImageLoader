@@ -51,7 +51,7 @@ public class BitmapRetrieverTest {
         retriever.getBitmap();
 
         // file decode failed, therefore nothing in cache
-        verify(cache, atLeastOnce()).put("http://king.com/img.png", null);
+        verify(cache, atLeastOnce()).remove("http://king.com/img.png");
         verify(file, atLeastOnce()).delete();
 
     }
