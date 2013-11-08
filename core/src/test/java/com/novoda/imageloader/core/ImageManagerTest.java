@@ -37,6 +37,9 @@ import static org.mockito.Mockito.*;
 
 public class ImageManagerTest {
 
+    public static final String IMAGE_URL = "http://king.com/img.png";
+    public static final int WIDTH = 100;
+    public static final int HEIGHT = 100;
     private LoaderSettings loaderSettings;
     private Context context;
     private ImageManager imageManager;
@@ -50,7 +53,7 @@ public class ImageManagerTest {
     }
 
     @Test(expected = RuntimeException.class)
-    public void shouldComplaingIfInternetPermissionIsNotSet() {
+    public void shouldComplainIfInternetPermissionIsNotSet() {
         disableManifestPermission(Manifest.permission.INTERNET);
 
         new ImageManager(context, loaderSettings);
@@ -98,35 +101,37 @@ public class ImageManagerTest {
     }
 
     @Test
-    public void testCacheImage() {
-        setValidImageManagerPermissions();
+    public void testWhenCacheImageIsCalledTheCacheManagerPutsTheImageInCache() {
+        CacheManager cache = mock(CacheManager.class);
+        givenAnImageManagerWithAllSubManagers(cache);
 
+        imageManager.cacheImage(IMAGE_URL, WIDTH, HEIGHT);
+
+        verify(cache, atLeastOnce()).put(IMAGE_URL, null);
+    }
+
+    private void givenAnImageManagerWithAllSubManagers(CacheManager cache) {
+        updateLoaderSettingsWithSubmanagers(cache);
+        setUpImageManager();
+    }
+
+    private void updateLoaderSettingsWithSubmanagers(CacheManager cache) {
+        FileManager fileManager = mock(FileManager.class);
         File file = mock(File.class);
-        FileManager fm = mock(FileManager.class);
-        when(fm.getFile("http://king.com/img.png", 100, 100)).thenReturn(file);
+        when(fileManager.getFile(IMAGE_URL, WIDTH, WIDTH)).thenReturn(file);
 
-        final BitmapUtil bmUtil = mock(BitmapUtil.class);
-        when(bmUtil.decodeFile(file, 100, 100)).thenReturn(null);
-        LoaderSettings loaderSettings = new LoaderSettings() {
+        final BitmapUtil bitmapUtil = mock(BitmapUtil.class);
+        when(bitmapUtil.decodeFile(file, WIDTH, HEIGHT)).thenReturn(null);
+        loaderSettings = new LoaderSettings() {
             public BitmapUtil getBitmapUtil() {
-                return bmUtil;
+                return bitmapUtil;
             }
         };
-
         NetworkManager nm = mock(NetworkManager.class);
 
         loaderSettings.setNetworkManager(nm);
-        loaderSettings.setFileManager(fm);
-
-        CacheManager cache = mock(CacheManager.class);
+        loaderSettings.setFileManager(fileManager);
         loaderSettings.setCacheManager(cache);
-
-        imageManager = new ImageManager(context, loaderSettings);
-
-        imageManager.cacheImage("http://king.com/img.png", 100, 100);
-        // file decode failed, therefore nothing in cache
-        verify(cache, atLeastOnce()).put("http://king.com/img.png", null);
-
     }
 
     private void setUpImageManager() {
@@ -140,5 +145,4 @@ public class ImageManagerTest {
         when(pm.checkPermission(Manifest.permission.INTERNET, null)).thenReturn(PackageManager.PERMISSION_GRANTED);
         when(context.getPackageManager()).thenReturn(pm);
     }
-
 }
