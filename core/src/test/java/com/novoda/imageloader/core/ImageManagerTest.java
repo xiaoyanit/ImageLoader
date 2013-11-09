@@ -97,41 +97,6 @@ public class ImageManagerTest {
         assertNotNull(listenerReference.get());
         System.gc();
         assertNull(listenerReference.get());
-
-    }
-
-    @Test
-    public void testWhenCacheImageIsCalledTheCacheManagerPutsTheImageInCache() {
-        CacheManager cache = mock(CacheManager.class);
-        givenAnImageManagerWithAllSubManagers(cache);
-
-        imageManager.cacheImage(IMAGE_URL, WIDTH, HEIGHT);
-
-        verify(cache, atLeastOnce()).put(IMAGE_URL, null);
-    }
-
-    private void givenAnImageManagerWithAllSubManagers(CacheManager cache) {
-        updateLoaderSettingsWithSubmanagers(cache);
-        setUpImageManager();
-    }
-
-    private void updateLoaderSettingsWithSubmanagers(CacheManager cache) {
-        FileManager fileManager = mock(FileManager.class);
-        File file = mock(File.class);
-        when(fileManager.getFile(IMAGE_URL, WIDTH, WIDTH)).thenReturn(file);
-
-        final BitmapUtil bitmapUtil = mock(BitmapUtil.class);
-        when(bitmapUtil.decodeFile(file, WIDTH, HEIGHT)).thenReturn(null);
-        loaderSettings = new LoaderSettings() {
-            public BitmapUtil getBitmapUtil() {
-                return bitmapUtil;
-            }
-        };
-        NetworkManager nm = mock(NetworkManager.class);
-
-        loaderSettings.setNetworkManager(nm);
-        loaderSettings.setFileManager(fileManager);
-        loaderSettings.setCacheManager(cache);
     }
 
     private void setUpImageManager() {
