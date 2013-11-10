@@ -36,10 +36,6 @@ import static junit.framework.Assert.assertNull;
 import static org.mockito.Mockito.*;
 
 public class ImageManagerTest {
-
-    public static final String IMAGE_URL = "http://king.com/img.png";
-    public static final int WIDTH = 100;
-    public static final int HEIGHT = 100;
     private LoaderSettings loaderSettings;
     private Context context;
     private ImageManager imageManager;
@@ -64,13 +60,6 @@ public class ImageManagerTest {
         disableManifestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
         new ImageManager(context, loaderSettings);
-    }
-
-    private void disableManifestPermission(String permission) {
-        PackageManager pm = mock(PackageManager.class);
-        when(pm.checkPermission(permission, null)).thenReturn(
-                PackageManager.PERMISSION_DENIED);
-        when(context.getPackageManager()).thenReturn(pm);
     }
 
     @Test
@@ -108,6 +97,13 @@ public class ImageManagerTest {
         PackageManager pm = mock(PackageManager.class);
         when(pm.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, null)).thenReturn(PackageManager.PERMISSION_GRANTED);
         when(pm.checkPermission(Manifest.permission.INTERNET, null)).thenReturn(PackageManager.PERMISSION_GRANTED);
+        when(context.getPackageManager()).thenReturn(pm);
+    }
+    
+    private void disableManifestPermission(String permission) {
+        PackageManager pm = mock(PackageManager.class);
+        when(pm.checkPermission(permission, null)).thenReturn(
+                PackageManager.PERMISSION_DENIED);
         when(context.getPackageManager()).thenReturn(pm);
     }
 }
