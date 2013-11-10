@@ -19,18 +19,22 @@ public class ImageManagerInstrumentationTest extends InstrumentationTestCase {
         setName(name);
     }
 
-    public void testCacheImage() throws IOException {
+    public void testAfterImageIsCached_imageIsRetrievableFromCache() throws IOException {
         final File file = createImageFile();
 
-        LoaderSettings settings = new LoaderSettings.SettingsBuilder()
-                .withFileManager(new SingleFileManager(file))
-                .build(getInstrumentation().getTargetContext());
-        ImageManager imageManager = new ImageManager(getInstrumentation().getTargetContext(), settings);
+        ImageManager imageManager = createImageManagerBackedByFile(file);
 
         String url = "http://any_url_should_do_here.com";
         imageManager.cacheImage(url, 64, 64);
 
-        assertNotNull("should have cached the image!", imageManager.getCacheManager().get(url, 64, 64));
+        assertNotNull("image should be in cache!", imageManager.getCacheManager().get(url, 64, 64));
+    }
+
+    private ImageManager createImageManagerBackedByFile(File file) {
+        LoaderSettings settings = new LoaderSettings.SettingsBuilder()
+                .withFileManager(new SingleFileManager(file))
+                .build(getInstrumentation().getTargetContext());
+        return new ImageManager(getInstrumentation().getTargetContext(), settings);
     }
 
     private File createImageFile() throws IOException {
