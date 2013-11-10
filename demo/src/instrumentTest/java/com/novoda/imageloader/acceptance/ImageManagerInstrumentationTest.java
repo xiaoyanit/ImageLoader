@@ -1,15 +1,17 @@
 package com.novoda.imageloader.acceptance;
 
+import android.graphics.Bitmap;
 import android.test.InstrumentationTestCase;
 
 import com.novoda.imageloader.core.ImageManager;
 import com.novoda.imageloader.core.LoaderSettings;
-import com.novoda.imageloader.core.cache.CacheManager;
-import com.novoda.imageloader.core.cache.LruBitmapCache;
+import com.novoda.imageloader.core.file.FileManager;
 
-/**
- * Created with IntelliJ IDEA. User: friedger Date: 29.10.12 Time: 21:59 To change this template use File | Settings | File Templates.
- */
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 public class ImageManagerInstrumentationTest extends InstrumentationTestCase {
 
     public ImageManagerInstrumentationTest(String name) {
@@ -17,16 +19,65 @@ public class ImageManagerInstrumentationTest extends InstrumentationTestCase {
         setName(name);
     }
 
-    public void testCacheImage() {
-        CacheManager cache = new LruBitmapCache(getInstrumentation().getContext());
-        LoaderSettings settings = new LoaderSettings.SettingsBuilder().withCacheManager(cache).build(getInstrumentation().getContext());
+    public void testCacheImage() throws IOException {
+        final File file = createImageFile();
+
+        LoaderSettings settings = new LoaderSettings.SettingsBuilder()
+                .withFileManager(new SingleFileManager(file))
+                .build(getInstrumentation().getTargetContext());
         ImageManager imageManager = new ImageManager(getInstrumentation().getTargetContext(), settings);
 
-        String url = "http://imgur.com/5FirD.png";
-        int width = 651;
-        int height = 481;
-        imageManager.cacheImage(url, width, height);
+        String url = "http://any_url_should_do_here.com";
+        imageManager.cacheImage(url, 64, 64);
 
-        assertTrue(imageManager.getCacheManager().get(url, width, height) != null);
+        assertNotNull("should have cached the image!", imageManager.getCacheManager().get(url, 64, 64));
+    }
+
+    private File createImageFile() throws IOException {
+        InputStream imageStream = getInstrumentation().getContext().getAssets().open("ic_launcher.png");
+        int read;
+        final File file = new File(getInstrumentation().getTargetContext().getCacheDir(), "image.png");
+        FileOutputStream outputStream = new FileOutputStream(file);
+        while ((read = imageStream.read()) != -1) {
+            outputStream.write(read);
+        }
+        imageStream.close();
+        outputStream.close();
+        return file;
+    }
+
+    private static class SingleFileManager implements FileManager {
+        private final File file;
+
+        public SingleFileManager(File file) {
+            this.file = file;
+        }
+
+        @Override
+        public void clean() {
+        }
+
+        @Override
+        public void cleanOldFiles() {
+        }
+
+        @Override
+        public String getFilePath(String url) {
+            return null;
+        }
+
+        @Override
+        public File getFile(String url) {
+            return file;
+        }
+
+        @Override
+        public void saveBitmap(String fileName, Bitmap b, int width, int height) {
+        }
+
+        @Override
+        public File getFile(String url, int width, int height) {
+            return file;
+        }
     }
 }
