@@ -99,7 +99,7 @@ public class ImageManagerTest {
         when(pm.checkPermission(Manifest.permission.INTERNET, null)).thenReturn(PackageManager.PERMISSION_GRANTED);
         when(context.getPackageManager()).thenReturn(pm);
     }
-    
+
     private void disableManifestPermission(String permission) {
         PackageManager pm = mock(PackageManager.class);
         when(pm.checkPermission(permission, null)).thenReturn(

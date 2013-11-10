@@ -19,7 +19,7 @@ import static org.mockito.Mockito.*;
 public class BitmapRetrieverTest {
     final File fileCachedImage = mock(File.class);
     final CacheManager cacheManager = mock(CacheManager.class);
-    final static String IMAGE_URL = "http://king.com/img.png";
+    final static String IMAGE_URL = "http://i.imgur.com/8QAuXFw.jpg";
     static final int WIDTH = 100;
     static final int HEIGHT = 100;
 
