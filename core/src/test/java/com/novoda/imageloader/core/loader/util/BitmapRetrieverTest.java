@@ -25,7 +25,7 @@ public class BitmapRetrieverTest {
     final CacheManager cacheManager = mock(CacheManager.class);
 
     @Test
-    public void testWhenBitmapRetrievalFails_RemoveReferenceToCachedImage() {
+    public void testWhenBitmapRetrievalFails_ReferenceToCachedImageIsRemoved() {
         BitmapRetriever retriever = getRetrieverForCachedImageFileThatFailsRetrieval();
 
         retriever.getBitmap();
@@ -34,7 +34,7 @@ public class BitmapRetrieverTest {
     }
 
     @Test
-    public void testImageFileContainerIsDeletedWhenBitmapRetrievalFails() {
+    public void testWhenBitmapRetrievalFails_ImageFileContainerIsDeleted() {
         BitmapRetriever retriever = getRetrieverForCachedImageFileThatFailsRetrieval();
 
         retriever.getBitmap();
