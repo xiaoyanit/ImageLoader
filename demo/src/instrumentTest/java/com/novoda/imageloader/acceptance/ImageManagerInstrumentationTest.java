@@ -64,6 +64,9 @@ public class ImageManagerInstrumentationTest extends InstrumentationTestCase {
             FileOutputStream outputStream = null;
             try {
                 outputStream = new FileOutputStream(file);
+                if (outputStream == null) {
+                    return null;
+                }
                 while ((read = imageStream.read()) != -1) {
                     outputStream.write(read);
                 }
@@ -73,8 +76,7 @@ public class ImageManagerInstrumentationTest extends InstrumentationTestCase {
                 try {
                     imageStream.close();
                     outputStream.close();
-                } catch (IOException ignore) {
-                }
+                } catch (IOException ignore) {}
             }
             return file;
         }
