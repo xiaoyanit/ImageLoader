@@ -4,12 +4,10 @@ import android.test.InstrumentationTestCase;
 
 import com.novoda.imageloader.core.ImageManager;
 import com.novoda.imageloader.core.LoaderSettings;
+import com.novoda.imageloader.core.file.util.FileUtil;
 import com.novoda.imageloader.core.network.NetworkManager;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 public class ImageManagerInstrumentationTest extends InstrumentationTestCase {
     private static final String IMAGE_URL = "http://thisurldontmatter.co.whaat";
@@ -56,26 +54,20 @@ public class ImageManagerInstrumentationTest extends InstrumentationTestCase {
             }
         }
 
-        private File createImageFileFromStream(File file, InputStream imageStream) {
-            if (imageStream == null) {
+        private File createImageFileFromStream(File file, InputStream inputStream) {
+            if (inputStream == null) {
                 return null;
             }
-            int read;
-            FileOutputStream outputStream = null;
+            FileUtil fileUtil = new FileUtil();
+            OutputStream outputStream = null;
             try {
-                outputStream = new FileOutputStream(file);
-                while ((read = imageStream.read()) != -1) {
-                    outputStream.write(read);
-                }
-            } catch (IOException e) {
+                outputStream = new BufferedOutputStream(new FileOutputStream(file));
+                fileUtil.copyStream(inputStream, outputStream);
+            } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } finally {
-                try {
-                    imageStream.close();
-                    if (outputStream != null) {
-                        outputStream.close();
-                    }
-                } catch (IOException ignore) {}
+                fileUtil.closeSilently(inputStream);
+                fileUtil.closeSilently(outputStream);
             }
             return file;
         }
