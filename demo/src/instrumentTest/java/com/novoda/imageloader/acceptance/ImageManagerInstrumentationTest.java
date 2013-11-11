@@ -13,8 +13,8 @@ import java.io.InputStream;
 
 public class ImageManagerInstrumentationTest extends InstrumentationTestCase {
     private static final String IMAGE_URL = "http://thisurldontmatter.co.whaat";
-    private static final int WIDTH = 0;
-    private static final int HEIGHT = 0;
+    private static final int WIDTH = 64;
+    private static final int HEIGHT = 64;
 
     public ImageManagerInstrumentationTest(String name) {
         super();
@@ -64,9 +64,6 @@ public class ImageManagerInstrumentationTest extends InstrumentationTestCase {
             FileOutputStream outputStream = null;
             try {
                 outputStream = new FileOutputStream(file);
-                if (outputStream == null) {
-                    return null;
-                }
                 while ((read = imageStream.read()) != -1) {
                     outputStream.write(read);
                 }
@@ -75,7 +72,9 @@ public class ImageManagerInstrumentationTest extends InstrumentationTestCase {
             } finally {
                 try {
                     imageStream.close();
-                    outputStream.close();
+                    if (outputStream != null) {
+                        outputStream.close();
+                    }
                 } catch (IOException ignore) {}
             }
             return file;
