@@ -17,14 +17,15 @@ import org.junit.Test;
 import static org.mockito.Mockito.*;
 
 public class BitmapRetrieverTest {
-    final File fileCachedImage = mock(File.class);
-    final CacheManager cacheManager = mock(CacheManager.class);
-    final static String IMAGE_URL = "http://blog.novoda.com/blog/_themes/master/assets/images/logo-desktop.png";
+    static final String IMAGE_URL = "http://blog.novoda.com/blog/_themes/master/assets/images/logo-desktop.png";
     static final int WIDTH = 100;
     static final int HEIGHT = 100;
 
+    final File fileCachedImage = mock(File.class);
+    final CacheManager cacheManager = mock(CacheManager.class);
+
     @Test
-    public void testReferenceToCachedImageIsRemovedWhenBitmapRetrievalFails() {
+    public void testWhenBitmapRetrievalFails_RemoveReferenceToCachedImage() {
         BitmapRetriever retriever = getRetrieverForCachedImageFileThatFailsRetrieval();
 
         retriever.getBitmap();
