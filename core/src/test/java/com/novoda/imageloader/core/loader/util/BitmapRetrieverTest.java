@@ -19,21 +19,29 @@ import static org.mockito.Mockito.*;
 public class BitmapRetrieverTest {
     final File fileCachedImage = mock(File.class);
     final CacheManager cacheManager = mock(CacheManager.class);
-    final static String IMAGE_URL = "http://i.imgur.com/8QAuXFw.jpg";
+    final static String IMAGE_URL = "http://blog.novoda.com/blog/_themes/master/assets/images/logo-desktop.png";
     static final int WIDTH = 100;
     static final int HEIGHT = 100;
 
     @Test
     public void testReferenceToCachedImageIsRemovedWhenBitmapRetrievalFails() {
-        BitmapRetriever retriever = getRetrieverForCachedImageFile();
+        BitmapRetriever retriever = getRetrieverForCachedImageFileThatFailsRetrieval();
 
         retriever.getBitmap();
 
         verify(cacheManager, atLeastOnce()).remove(IMAGE_URL);
+    }
+
+    @Test
+    public void testImageFileContainerIsDeletedWhenBitmapRetrievalFails() {
+        BitmapRetriever retriever = getRetrieverForCachedImageFileThatFailsRetrieval();
+
+        retriever.getBitmap();
+
         verify(fileCachedImage, atLeastOnce()).delete();
     }
 
-    private BitmapRetriever getRetrieverForCachedImageFile() {
+    private BitmapRetriever getRetrieverForCachedImageFileThatFailsRetrieval() {
         final FileManager fileManager = mock(FileManager.class);
         final BitmapUtil bitmapUtil = mock(BitmapUtil.class);
         final NetworkManager networkManager = mock(NetworkManager.class);
