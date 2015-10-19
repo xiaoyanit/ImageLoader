@@ -100,7 +100,6 @@ public class ImageManager {
      * This method can be used for pre-fetching images.
      * If the image is already cached, the image is not fetched from the net.
      * <p/>
-     * <p/>
      * This method runs in the same thread as the caller method.
      * Hence, make sure that this method is not called from the main thread.
      * <p/>
@@ -126,11 +125,9 @@ public class ImageManager {
                     b = loaderSettings.getBitmapUtil().decodeFileAndScale(imageFile, width, height, loaderSettings.isAllowUpsampling());
                 }
 
-                if (b == null) {
-                    // decode failed
+                if (b != null) {
                     loaderSettings.getCacheManager().put(url, b);
                 }
-
             } catch (ImageNotFoundException inf) {
                 // no-op
                 inf.printStackTrace();

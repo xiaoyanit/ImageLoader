@@ -22,7 +22,6 @@ import android.view.animation.Animation;
 import android.widget.ImageView;
 
 import com.novoda.imageloader.core.loader.util.BitmapDisplayer;
-import com.novoda.imageloader.core.loader.util.LoaderTask;
 
 public class ImageWrapper {
 
@@ -162,13 +161,4 @@ public class ImageWrapper {
         return previewHeight;
     }
 
-    public LoaderTask getLoaderTask() {
-        ImageTag tag = (ImageTag) imageView.getTag();
-        return tag.getLoaderTask();
-    }
-
-    public void setLoaderTask(LoaderTask task) {
-        ImageTag tag = (ImageTag) imageView.getTag();
-        tag.setLoaderTask(task);
-    }
 }

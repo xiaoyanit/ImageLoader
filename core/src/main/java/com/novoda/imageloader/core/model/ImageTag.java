@@ -17,10 +17,6 @@ package com.novoda.imageloader.core.model;
 
 import android.view.animation.Animation;
 
-import com.novoda.imageloader.core.loader.util.LoaderTask;
-
-import java.lang.ref.WeakReference;
-
 /**
  * Model class for information of an image. The model is attached via the tag property of the ImageView.
  *
@@ -28,7 +24,7 @@ import java.lang.ref.WeakReference;
  */
 public class ImageTag {
 
-    private final String url;
+    private String url;
     private String previewUrl;
     private final int loadingResourceId;
     private final int notFoundResourceId;
@@ -41,7 +37,6 @@ public class ImageTag {
     private boolean saveThumbnail;
     private Animation animation;
     private String description;
-    private WeakReference<LoaderTask> loaderTaskReference;
 
     public ImageTag(String url, int loadingResourceId, int notFoundResourceId, int width, int height) {
         this.url = url;
@@ -117,17 +112,6 @@ public class ImageTag {
 
     public void setAnimation(Animation animation) {
         this.animation = animation;
-    }
-
-    public void setLoaderTask(LoaderTask task) {
-        loaderTaskReference = new WeakReference<LoaderTask>(task);
-    }
-
-    public LoaderTask getLoaderTask() {
-        if (loaderTaskReference != null) {
-            return loaderTaskReference.get();
-        }
-        return null;
     }
 
     public String getDescription() {

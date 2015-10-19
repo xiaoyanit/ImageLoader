@@ -15,23 +15,25 @@
  */
 package com.novoda.imageloader.core.file.util;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
-
 import com.novoda.imageloader.core.exception.ImageCopyException;
 import com.novoda.imageloader.core.file.FileTestCase;
-
-import org.apache.commons.io.FileUtils;
-import org.junit.*;
 
 import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import org.apache.commons.io.FileUtils;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import junit.framework.Assert;
 import junitx.framework.FileAssert;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
 
 public class FileUtilTest extends FileTestCase {
 

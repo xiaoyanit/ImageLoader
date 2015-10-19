@@ -1,13 +1,13 @@
 package com.novoda.imageloader.core.util;
 
-import java.io.InputStream;
-
 import android.graphics.Bitmap;
 
 import com.novoda.imageloader.core.LoaderSettings;
 import com.novoda.imageloader.core.bitmap.BitmapUtil;
 import com.novoda.imageloader.core.network.NetworkManager;
 import com.novoda.imageloader.core.network.UrlNetworkManager;
+
+import java.io.InputStream;
 
 /**
  * Direct loader make use of the NetworkManager and the BitmapUtil

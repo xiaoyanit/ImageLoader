@@ -5,6 +5,14 @@ Image download happens off the UI thread and the images are cached with a two-le
 
 h2. Recent changes
 
+h3. 1.6.0
+
+* API change: the deprecated build method build(String, Context) is un-deprecated and the newer one build(String, ImageView) has been removed.
+
+h3. 1.5.11
+
+* We no longer keep a copy of the loader task in the image tag as we now rely on the task itself to discover when it should stop and not update the image view.
+
 h3. 1.5.9
 * Merged pull request "#107":https://github.com/novoda/ImageLoader/pull/107 for reported issue Error with Network urls
 * Fixed flickering when dataset is refreshed even when an animation has been set "#105":https://github.com/novoda/ImageLoader/issue/105
@@ -118,7 +126,9 @@ h3. In the Activity, Fragment or Adapter
 When you want to load an image into an ImageView, you just get the image loader from the Application class and call the load method.
 Here is how you could use it in a ListView with the binder setting the image URL in the ImageView as a tag:
 
-<pre><code>ImageTagFactory imageTagFactory = new ImageTagFactory(this, R.drawable.bg_img_loading);
+<pre><code>
+/* newInstance(Context context, int defaultImageResource) */
+ImageTagFactory imageTagFactory = newInstance(this, R.drawable.bg_img_loading);
 imageTagFactory.setErrorImageId(R.drawable.bg_img_notfound);
 
 private ViewBinder getViewBinder() {
@@ -201,8 +211,8 @@ h3. Adding an animation
 If you want to load a an image using an animation you just have to add an Animation object to the imageLoader.load method
 
 <pre><code>
-
-ImageTagFactory imageTagFactory = new ImageTagFactory(this, R.drawable.bg_img_loading);
+/* newInstance(Context context, int defaultImageResource) */
+ImageTagFactory imageTagFactory = newInstance(this, R.drawable.bg_img_loading);
 imageTagFactory.setErrorImageId(R.drawable.bg_img_notfound);
 
 Animation fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
@@ -219,7 +229,7 @@ If you are using Maven you can define the repo and dependency in your POM:
 <pre><code><dependency>
   <groupId>com.novoda.imageloader</groupId>
   <artifactId>imageloader-core</artifactId>
- <version>1.5.8</version>
+ <version>1.5.8/version>
 </dependency></code></pre>
 
 h3. As a .jar

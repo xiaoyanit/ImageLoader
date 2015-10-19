@@ -36,7 +36,6 @@ import static junit.framework.Assert.assertNull;
 import static org.mockito.Mockito.*;
 
 public class ImageManagerTest {
-
     private LoaderSettings loaderSettings;
     private Context context;
     private ImageManager imageManager;
@@ -50,7 +49,7 @@ public class ImageManagerTest {
     }
 
     @Test(expected = RuntimeException.class)
-    public void shouldComplaingIfInternetPermissionIsNotSet() {
+    public void shouldComplainIfInternetPermissionIsNotSet() {
         disableManifestPermission(Manifest.permission.INTERNET);
 
         new ImageManager(context, loaderSettings);
@@ -61,13 +60,6 @@ public class ImageManagerTest {
         disableManifestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
         new ImageManager(context, loaderSettings);
-    }
-
-    private void disableManifestPermission(String permission) {
-        PackageManager pm = mock(PackageManager.class);
-        when(pm.checkPermission(permission, null)).thenReturn(
-                PackageManager.PERMISSION_DENIED);
-        when(context.getPackageManager()).thenReturn(pm);
     }
 
     @Test
@@ -94,39 +86,6 @@ public class ImageManagerTest {
         assertNotNull(listenerReference.get());
         System.gc();
         assertNull(listenerReference.get());
-
-    }
-
-    @Test
-    public void testCacheImage() {
-        setValidImageManagerPermissions();
-
-        File file = mock(File.class);
-        FileManager fm = mock(FileManager.class);
-        when(fm.getFile("http://king.com/img.png", 100, 100)).thenReturn(file);
-
-        final BitmapUtil bmUtil = mock(BitmapUtil.class);
-        when(bmUtil.decodeFile(file, 100, 100)).thenReturn(null);
-        LoaderSettings loaderSettings = new LoaderSettings() {
-            public BitmapUtil getBitmapUtil() {
-                return bmUtil;
-            }
-        };
-
-        NetworkManager nm = mock(NetworkManager.class);
-
-        loaderSettings.setNetworkManager(nm);
-        loaderSettings.setFileManager(fm);
-
-        CacheManager cache = mock(CacheManager.class);
-        loaderSettings.setCacheManager(cache);
-
-        imageManager = new ImageManager(context, loaderSettings);
-
-        imageManager.cacheImage("http://king.com/img.png", 100, 100);
-        // file decode failed, therefore nothing in cache
-        verify(cache, never()).put("", null);
-
     }
 
     private void setUpImageManager() {
@@ -141,4 +100,10 @@ public class ImageManagerTest {
         when(context.getPackageManager()).thenReturn(pm);
     }
 
+    private void disableManifestPermission(String permission) {
+        PackageManager pm = mock(PackageManager.class);
+        when(pm.checkPermission(permission, null)).thenReturn(
+                PackageManager.PERMISSION_DENIED);
+        when(context.getPackageManager()).thenReturn(pm);
+    }
 }
